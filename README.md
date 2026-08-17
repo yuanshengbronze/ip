@@ -2,6 +2,10 @@
 
 This is a greenfield Java project for the _Nico_ chatbot. Given below are instructions on how to use it.
 
+## AI usage acknowledgement
+
+I used AI assistance (ChatGPT Codex) throughout this project to help me implement features and debug issues. The level of usage is kept around AI-3 (Hand-code to start, get AI to finish).
+
 ## Setting up in Intellij
 
 Prerequisites: JDK 25, update Intellij to the most recent version.
