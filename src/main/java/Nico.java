@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -6,6 +8,7 @@ import java.util.Scanner;
 public class Nico {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
+        List<String> answers = new ArrayList<String>();
         String LINE = "____________________________________________________________";
         String banner =
                 "███╗   ██╗██╗ ██████╗ ██████╗ \n" +
@@ -16,18 +19,25 @@ public class Nico {
                 "╚═╝  ╚═══╝╚═╝ ╚═════╝ ╚═════╝ \n";
         System.out.println(LINE);
         System.out.println(banner);
-        System.out.println("     Hey man! It's Nico, what can I do for you?");
+        System.out.println("\tHey man! It's Nico, what can I do for you?");
         while(true) {
-            System.out.println("     " + LINE);
+            System.out.println("\t" + LINE);
             String ans = scanner.nextLine();
             if(ans.equals("bye")) {
-                System.out.println("     " + LINE);
-                System.out.println("     Nice seeing you. Until next time!");
-                System.out.println("     " + LINE);
+                System.out.println("\t" + LINE);
+                System.out.println("\tNice seeing you. Until next time!");
+                System.out.println("\t" + LINE);
                 break;
+            } else if(ans.equals("list")) {
+                System.out.println("\t" + LINE);
+                for(int i = 0; i < answers.size(); i++) {
+                    String text = String.format("\t %d. %s", i + 1, answers.get(i));
+                    System.out.println(text);
+                }
             } else {
-                System.out.println("     " + LINE);
-                System.out.println("     " + ans);
+                answers.add(ans);
+                System.out.println("\t" + LINE);
+                System.out.println("\tadded: " + ans);
             }
         }
     }
