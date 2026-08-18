@@ -60,7 +60,7 @@ public class Nico {
                             task.markAsDone();
                             System.out.println("\t" + LINE);
                             System.out.println("\tI've marked this task as done:");
-                            System.out.println("\t  " + task);
+                            System.out.println("\t\t" + task);
                         }
                         break;
                     }
@@ -80,7 +80,7 @@ public class Nico {
                             task.unmarkAsDone();
                             System.out.println("\t" + LINE);
                             System.out.println("\tI've marked this task as not done:");
-                            System.out.println("\t  " + task);
+                            System.out.println("\t\t" + task);
                         }
                         break;
                     }
@@ -93,7 +93,8 @@ public class Nico {
                         tasks.add(newTodo);
                         System.out.println("\t" + LINE);
                         System.out.println("\tNice! I've added this task: ");
-                        System.out.println("\t" + newTodo);
+                        System.out.println("\t\t" + newTodo);
+                        System.out.println("\tNow you have " + tasks.size() + " tasks.");
                         break;
                     }
                     case "deadline": {
@@ -114,7 +115,8 @@ public class Nico {
                             tasks.add(newDeadline);
                             System.out.println("\t" + LINE);
                             System.out.println("\tNice! I've added this task: ");
-                            System.out.println("\t" + newDeadline);
+                            System.out.println("\t\t" + newDeadline);
+                            System.out.println("\tNow you have " + tasks.size() + " tasks.");
                         }
                         break;
                     }
@@ -136,7 +138,29 @@ public class Nico {
                             Event newEvent = new Event(taskDescription, startTime, endTime);
                             tasks.add(newEvent);
                             System.out.println("\tNice! I've added this task: ");
-                            System.out.println("\t" + newEvent);
+                            System.out.println("\t\t" + newEvent);
+                            System.out.println("\tNow you have " + tasks.size() + " tasks.");
+                        }
+                        break;
+                    }
+                    case "delete": {
+                        if (!hasArgument(commandArray)) {
+                            throw new NicoException("\tNo task number. Please use: delete TASK_NUMBER");
+                        }
+                        if (!isInteger(commandArray[1])) {
+                            throw new NicoException("\tTask number must be an integer.");
+                        }
+                        int taskNumber = Integer.parseInt(commandArray[1].trim());
+                        if(taskNumber < 1 || taskNumber > tasks.size()) {
+                            System.out.println("\t" + LINE);
+                            throw new NicoException("\tSorry, that task number is not in the list.");
+                        } else {
+                            Task task = tasks.get(taskNumber - 1);
+                            tasks.remove(taskNumber - 1);
+                            System.out.println("\t" + LINE);
+                            System.out.println("\tI've removed this task");
+                            System.out.println("\t\t" + task);
+                            System.out.println("\tNow you have " + tasks.size() + " tasks.");
                         }
                         break;
                     }
