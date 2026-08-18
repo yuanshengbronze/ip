@@ -11,9 +11,9 @@ java -cp out/production/ip Nico
 javac -d out/production/ip src/main/java/Task.java src/main/java/Todo.java src/main/java/Deadline.java src/main/java/Event.java src/main/java/Nico.java
 ```
 
-## Test Case: Add a plain task
+## Test Case: Reject unknown command
 
-Aim: Verify that an unrecognized input is added as a plain task using the current confirmation format.
+Aim: Verify that an unrecognized command is rejected instead of being added as a task.
 
 ```input
 return book
@@ -21,8 +21,7 @@ bye
 ```
 
 ```expected
-Nice! I've added this task:
-[ ] return book
+Sorry, I don't know what that command means.
 ---
 Nice seeing you. Until next time!
 ```
@@ -45,66 +44,61 @@ Nice seeing you. Until next time!
 
 ## Test Case: Add a deadline task
 
-Aim: Verify that a `deadline` command parses the description and `/by` value.
+Aim: Verify that a `deadline` command parses the description and integer `/by` value.
 
 ```input
-deadline return book /by Sunday
+deadline return book /by 7
 bye
 ```
 
 ```expected
 Nice! I've added this task:
-[D] [ ] return book (by: Sunday)
+[D][ ] return book (by: 7)
 ---
 Nice seeing you. Until next time!
 ```
 
 ## Test Case: Add an event task
 
-Aim: Verify that an `event` command parses the description, `/from` value, and `/to` value.
+Aim: Verify that an `event` command parses the description, integer `/from` value, and integer `/to` value.
 
 ```input
-event project meeting /from Mon 2pm /to 4pm
+event project meeting /from 14 /to 16
 bye
 ```
 
 ```expected
 Nice! I've added this task:
-[E] [ ] project meeting (from: Mon 2pm to: 4pm)
+[E][ ] project meeting (from: 14 to: 16)
 ---
 Nice seeing you. Until next time!
 ```
 
 ## Test Case: List mixed task types
 
-Aim: Verify that `list` displays plain, Todo, Deadline, and Event tasks with their indices.
+Aim: Verify that `list` displays Todo, Deadline, and Event tasks with their indices.
 
 ```input
-return book
 todo borrow book
-deadline submit report /by Friday
-event project meeting /from Mon 2pm /to 4pm
+deadline submit report /by 23
+event project meeting /from 14 /to 16
 list
 bye
 ```
 
 ```expected
 Nice! I've added this task:
-[ ] return book
----
-Nice! I've added this task:
 [T][ ] borrow book
 ---
 Nice! I've added this task:
-[D] [ ] submit report (by: Friday)
+[D][ ] submit report (by: 23)
 ---
 Nice! I've added this task:
-[E] [ ] project meeting (from: Mon 2pm to: 4pm)
+[E][ ] project meeting (from: 14 to: 16)
 ---
-1. [ ] return book
-2. [T][ ] borrow book
-3. [D] [ ] submit report (by: Friday)
-4. [E] [ ] project meeting (from: Mon 2pm to: 4pm)
+1. [T][ ] borrow book
+2. [D][ ] submit report (by: 23)
+3. [E][ ] project meeting (from: 14 to: 16)
 ---
 Nice seeing you. Until next time!
 ```
@@ -114,17 +108,17 @@ Nice seeing you. Until next time!
 Aim: Verify that `mark 1` marks the first task as done.
 
 ```input
-return book
+todo borrow book
 mark 1
 bye
 ```
 
 ```expected
 Nice! I've added this task:
-[ ] return book
+[T][ ] borrow book
 ---
 I've marked this task as done:
-[X] return book
+[T][X] borrow book
 ---
 Nice seeing you. Until next time!
 ```
@@ -134,7 +128,7 @@ Nice seeing you. Until next time!
 Aim: Verify that `unmark 1` changes a previously marked task back to not done.
 
 ```input
-return book
+todo borrow book
 mark 1
 unmark 1
 bye
@@ -142,13 +136,13 @@ bye
 
 ```expected
 Nice! I've added this task:
-[ ] return book
+[T][ ] borrow book
 ---
 I've marked this task as done:
-[X] return book
+[T][X] borrow book
 ---
 I've marked this task as not done:
-[ ] return book
+[T][ ] borrow book
 ---
 Nice seeing you. Until next time!
 ```
@@ -158,14 +152,14 @@ Nice seeing you. Until next time!
 Aim: Verify that `mark` reports an error when the task number is outside the list.
 
 ```input
-return book
+todo borrow book
 mark 2
 bye
 ```
 
 ```expected
 Nice! I've added this task:
-[ ] return book
+[T][ ] borrow book
 ---
 Sorry, that task number is not in the list.
 ---
@@ -193,6 +187,111 @@ Aim: Verify that an `event` command without `/from` and `/to` shows the expected
 
 ```input
 event project meeting
+bye
+```
+
+```expected
+Please use: event DESCRIPTION /from WHEN /to WHEN
+---
+Nice seeing you. Until next time!
+```
+
+## Test Case: Reject non-integer deadline time
+
+Aim: Verify that a `deadline` command rejects a non-integer due time.
+
+```input
+deadline return book /by Sunday
+bye
+```
+
+```expected
+The due time must be an integer.
+---
+Nice seeing you. Until next time!
+```
+
+## Test Case: Reject non-integer event times
+
+Aim: Verify that an `event` command rejects non-integer start and end times.
+
+```input
+event project meeting /from Mon /to 4pm
+bye
+```
+
+```expected
+The start and end times must be integers.
+---
+Nice seeing you. Until next time!
+```
+
+## Test Case: Reject empty todo description
+
+Aim: Verify that a `todo` command with no description is rejected.
+
+```input
+todo
+bye
+```
+
+```expected
+The description cannot be empty.
+---
+Nice seeing you. Until next time!
+```
+
+## Test Case: Reject empty deadline description
+
+Aim: Verify that a `deadline` command with no description is rejected.
+
+```input
+deadline /by 7
+bye
+```
+
+```expected
+The description cannot be empty.
+---
+Nice seeing you. Until next time!
+```
+
+## Test Case: Reject empty event description
+
+Aim: Verify that an `event` command with no description is rejected.
+
+```input
+event /from 14 /to 16
+bye
+```
+
+```expected
+The description cannot be empty.
+---
+Nice seeing you. Until next time!
+```
+
+## Test Case: Reject empty event start time
+
+Aim: Verify that an `event` command with no start time shows the usage message.
+
+```input
+event main game /from /to 7pm
+bye
+```
+
+```expected
+Please use: event DESCRIPTION /from WHEN /to WHEN
+---
+Nice seeing you. Until next time!
+```
+
+## Test Case: Reject empty event end time
+
+Aim: Verify that an `event` command with no end time shows the same usage message.
+
+```input
+event main game /from 7pm /to
 bye
 ```
 
