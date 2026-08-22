@@ -1,3 +1,8 @@
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -7,19 +12,127 @@ import java.util.Scanner;
  */
 
 public class Nico {
+    public static final Path FILE_PATH = Paths.get("data", "tasks.txt");
+    public static final String LINE = "____________________________________________________________";
+    public static final String BANNER =
+        "███╗   ██╗██╗ ██████╗ ██████╗ \n" +
+        "████╗  ██║██║██╔════╝██╔═══██╗\n" +
+        "██╔██╗ ██║██║██║     ██║   ██║\n" +
+        "██║╚██╗██║██║██║     ██║   ██║\n" +
+        "██║ ╚████║██║╚██████╗╚██████╔╝\n" +
+        "╚═╝  ╚═══╝╚═╝ ╚═════╝ ╚═════╝ \n";
+
+    /**
+     * Loads tasks from the save file into the task list.
+     */
+    private static void readSavedTasks(List<Task> tasks) throws NicoException {
+        try {
+            createTasksFile();
+            List<String> taskStrings = Files.readAllLines(FILE_PATH);
+            for (String taskString : taskStrings) {
+                if (!taskString.trim().isEmpty()) {
+                    Task task = createTaskFromTaskString(taskString);
+                    tasks.add(task);
+                }
+            }
+        } catch (IOException e) {
+            throw new NicoException("\tSorry, I could not load tasks.txt.");
+        } catch (IllegalArgumentException | StringIndexOutOfBoundsException e) {
+            throw new NicoException("\tSorry, tasks.txt contains a task I could not understand.");
+        }
+    }
+
+    /**
+     * Appends one new task to the save file.
+     */
+    private static void writeSavedTask(Task task) throws NicoException {
+        try {
+            createTasksFile();
+            String taskString = task.toString();
+            Files.writeString(FILE_PATH, taskString + System.lineSeparator(), StandardOpenOption.APPEND);
+        } catch (IOException e) {
+            throw new NicoException("\tSorry, I could not save this task to tasks.txt.");
+        }
+    }
+
+    /**
+     * Rewrites the save file so it matches the current task list.
+     */
+    private static void writeAllSavedTasks(List<Task> tasks) throws NicoException {
+        try {
+            createTasksFile();
+            StringBuilder savedTasks = new StringBuilder();
+            for (Task task : tasks) {
+                savedTasks.append(task).append(System.lineSeparator());
+            }
+            Files.writeString(FILE_PATH, savedTasks.toString(), StandardOpenOption.TRUNCATE_EXISTING);
+        } catch (IOException e) {
+            throw new NicoException("\tSorry, I could not update tasks.txt.");
+        }
+    }
+
+    private static Task createTaskFromTaskString(String taskString) {
+        String taskType = taskString.substring(1, 2);
+        boolean isDone = taskString.charAt(4) == 'X';
+        String taskDetails = taskString.substring(7);
+
+        Task task;
+        switch (taskType) {
+            case "T": {
+                task = new Todo(taskDetails);
+                break;
+            }
+            case "D": {
+                int byStartIndex = taskDetails.lastIndexOf(" (by: ");
+                String description = taskDetails.substring(0, byStartIndex);
+                String dueTime = taskDetails.substring(byStartIndex + 6, taskDetails.length() - 1);
+                task = new Deadline(description, dueTime);
+                break;
+            }
+            case "E": {
+                int fromStartIndex = taskDetails.lastIndexOf(" (from: ");
+                int toStartIndex = taskDetails.lastIndexOf(" to: ");
+                String description = taskDetails.substring(0, fromStartIndex);
+                String startTime = taskDetails.substring(fromStartIndex + 8, toStartIndex);
+                String endTime = taskDetails.substring(toStartIndex + 5, taskDetails.length() - 1);
+                task = new Event(description, startTime, endTime);
+                break;
+            }
+            default: {
+                throw new IllegalArgumentException("Unknown task type: " + taskType);
+            }
+        }
+
+        if (isDone) {
+            task.markAsDone();
+        }
+        return task;
+    }
+
+    /**
+     * Creates the data folder and save file if they do not exist.
+     */
+    private static void createTasksFile() throws IOException {
+        Path parentDirectory = FILE_PATH.getParent();
+        if (parentDirectory != null) {
+            Files.createDirectories(parentDirectory);
+        }
+        if (!Files.exists(FILE_PATH)) {
+            Files.createFile(FILE_PATH);
+        }
+    }
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         List<Task> tasks = new ArrayList<Task>();
-        String LINE = "____________________________________________________________";
-        String banner =
-                "███╗   ██╗██╗ ██████╗ ██████╗ \n" +
-                "████╗  ██║██║██╔════╝██╔═══██╗\n" +
-                "██╔██╗ ██║██║██║     ██║   ██║\n" +
-                "██║╚██╗██║██║██║     ██║   ██║\n" +
-                "██║ ╚████║██║╚██████╗╚██████╔╝\n" +
-                "╚═╝  ╚═══╝╚═╝ ╚═════╝ ╚═════╝ \n";
+        try {
+            readSavedTasks(tasks);
+        } catch (NicoException e) {
+            System.out.println(e.getMessage());
+        }
+
         System.out.println(LINE);
-        System.out.println(banner);
+        System.out.println(BANNER);
         System.out.println("\tHey man! It's Nico, what can I do for you?");
         while(true) {
             System.out.println("\t" + LINE);
@@ -58,6 +171,7 @@ public class Nico {
                         } else {
                             Task task = tasks.get(taskNumber - 1);
                             task.markAsDone();
+                            writeAllSavedTasks(tasks);
                             System.out.println("\t" + LINE);
                             System.out.println("\tI've marked this task as done:");
                             System.out.println("\t\t" + task);
@@ -78,6 +192,7 @@ public class Nico {
                         } else {
                             Task task = tasks.get(taskNumber - 1);
                             task.unmarkAsDone();
+                            writeAllSavedTasks(tasks);
                             System.out.println("\t" + LINE);
                             System.out.println("\tI've marked this task as not done:");
                             System.out.println("\t\t" + task);
@@ -91,6 +206,7 @@ public class Nico {
                         String taskDescription = commandArray[1].trim();
                         Task newTodo = new Todo(taskDescription);
                         tasks.add(newTodo);
+                        writeSavedTask(newTodo);
                         System.out.println("\t" + LINE);
                         System.out.println("\tNice! I've added this task: ");
                         System.out.println("\t\t" + newTodo);
@@ -113,6 +229,7 @@ public class Nico {
                             String dueTime = parts[1].trim();
                             Deadline newDeadline = new Deadline(taskDescription, dueTime);
                             tasks.add(newDeadline);
+                            writeSavedTask(newDeadline);
                             System.out.println("\t" + LINE);
                             System.out.println("\tNice! I've added this task: ");
                             System.out.println("\t\t" + newDeadline);
@@ -137,6 +254,7 @@ public class Nico {
                             String endTime = parts[2].trim();
                             Event newEvent = new Event(taskDescription, startTime, endTime);
                             tasks.add(newEvent);
+                            writeSavedTask(newEvent);
                             System.out.println("\tNice! I've added this task: ");
                             System.out.println("\t\t" + newEvent);
                             System.out.println("\tNow you have " + tasks.size() + " tasks.");
@@ -157,6 +275,7 @@ public class Nico {
                         } else {
                             Task task = tasks.get(taskNumber - 1);
                             tasks.remove(taskNumber - 1);
+                            writeAllSavedTasks(tasks);
                             System.out.println("\t" + LINE);
                             System.out.println("\tI've removed this task");
                             System.out.println("\t\t" + task);

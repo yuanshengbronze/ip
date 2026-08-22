@@ -8,7 +8,7 @@ java -cp out/production/ip Nico
 ```
 
 ```build
-javac -d out/production/ip src/main/java/Task.java src/main/java/Todo.java src/main/java/Deadline.java src/main/java/Event.java src/main/java/Nico.java
+javac -d out/production/ip src/main/java/Task.java src/main/java/Todo.java src/main/java/Deadline.java src/main/java/Event.java src/main/java/NicoException.java src/main/java/Nico.java
 ```
 
 ## Test Case: Reject unknown command
