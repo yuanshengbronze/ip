@@ -3,9 +3,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 
 /**
  * Entry point for the Nico chatbot application.
@@ -13,6 +17,8 @@ import java.util.Scanner;
 
 public class Nico {
     public static final Path FILE_PATH = Paths.get("data", "tasks.txt");
+    public static final String DATE_TIME_INPUT_FORMAT = "dd-MM-yyyy HHmm";
+    public static final String DATE_TIME_OUTPUT_FORMAT = "MMM dd yyyy HH:mm";
     public static final String LINE = "____________________________________________________________";
     public static final String BANNER =
         "███╗   ██╗██╗ ██████╗ ██████╗ \n" +
@@ -85,7 +91,12 @@ public class Nico {
             case "D": {
                 int byStartIndex = taskDetails.lastIndexOf(" (by: ");
                 String description = taskDetails.substring(0, byStartIndex);
-                String dueTime = taskDetails.substring(byStartIndex + 6, taskDetails.length() - 1);
+                LocalDateTime dueTime;
+                try {
+                    dueTime = convertToLocalDateTime(taskDetails.substring(byStartIndex + 6, taskDetails.length() - 1), DATE_TIME_OUTPUT_FORMAT);
+                } catch (NicoException e) {
+                    throw new IllegalArgumentException("Invalid Saved Tasks File Formatting");
+                }
                 task = new Deadline(description, dueTime);
                 break;
             }
@@ -93,8 +104,15 @@ public class Nico {
                 int fromStartIndex = taskDetails.lastIndexOf(" (from: ");
                 int toStartIndex = taskDetails.lastIndexOf(" to: ");
                 String description = taskDetails.substring(0, fromStartIndex);
-                String startTime = taskDetails.substring(fromStartIndex + 8, toStartIndex);
-                String endTime = taskDetails.substring(toStartIndex + 5, taskDetails.length() - 1);
+                LocalDateTime startTime;
+                LocalDateTime endTime;
+
+                try {
+                    startTime = convertToLocalDateTime(taskDetails.substring(fromStartIndex + 8, toStartIndex), DATE_TIME_OUTPUT_FORMAT);
+                    endTime = convertToLocalDateTime(taskDetails.substring(toStartIndex + 5, taskDetails.length() - 1), DATE_TIME_OUTPUT_FORMAT);
+                } catch (NicoException e) {
+                    throw new IllegalArgumentException("Invalid Saved Tasks File Formatting");
+                }
                 task = new Event(description, startTime, endTime);
                 break;
             }
@@ -120,6 +138,17 @@ public class Nico {
         if (!Files.exists(FILE_PATH)) {
             Files.createFile(FILE_PATH);
         }
+    }
+
+    private static LocalDateTime convertToLocalDateTime(String input, String format) throws NicoException {
+        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern(format);
+        LocalDateTime dateTime;
+        try {
+            dateTime = LocalDateTime.parse(input, inputFormatter);
+        } catch (DateTimeParseException e) {
+            throw new NicoException(String.format("\tPlease use %s format for date and time!", format));
+        }
+        return dateTime;
     }
 
     public static void main(String[] args) {
@@ -226,8 +255,8 @@ public class Nico {
                             throw new NicoException("\tDue time can't be empty. Please use: deadline DESCRIPTION /by DUE TIME");
                         } else {
                             String taskDescription = parts[0].trim();
-                            String dueTime = parts[1].trim();
-                            Deadline newDeadline = new Deadline(taskDescription, dueTime);
+                            String dueTimeUserString = parts[1].trim();
+                            Deadline newDeadline = new Deadline(taskDescription, convertToLocalDateTime(dueTimeUserString, DATE_TIME_INPUT_FORMAT));
                             tasks.add(newDeadline);
                             writeSavedTask(newDeadline);
                             System.out.println("\t" + LINE);
@@ -250,9 +279,12 @@ public class Nico {
                             throw new NicoException("\tPlease use: event DESCRIPTION /from START TIME /to END TIME");
                         } else {
                             String taskDescription = parts[0].trim();
-                            String startTime = parts[1].trim();
-                            String endTime = parts[2].trim();
-                            Event newEvent = new Event(taskDescription, startTime, endTime);
+                            String startTimeUserString = parts[1].trim();
+                            String endTimeUserString = parts[2].trim();
+
+                            Event newEvent = new Event(taskDescription,
+                                    convertToLocalDateTime(startTimeUserString, DATE_TIME_INPUT_FORMAT),
+                                    convertToLocalDateTime(endTimeUserString, DATE_TIME_INPUT_FORMAT));
                             tasks.add(newEvent);
                             writeSavedTask(newEvent);
                             System.out.println("\tNice! I've added this task: ");
