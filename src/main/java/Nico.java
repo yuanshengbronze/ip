@@ -1,6 +1,8 @@
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -10,7 +12,7 @@ import java.util.Scanner;
  */
 
 public class Nico {
-    public static final String FILE_PATH = "data/tasks.txt";
+    public static final Path FILE_PATH = Paths.get("data", "tasks.txt");
     public static final String LINE = "____________________________________________________________";
     public static final String BANNER =
         "███╗   ██╗██╗ ██████╗ ██████╗ \n" +
@@ -26,14 +28,11 @@ public class Nico {
     private static void readSavedTasks(List<Task> tasks) throws NicoException {
         try {
             createTasksFile();
-            File tasksFile = new File(FILE_PATH);
-            try (Scanner scanner = new Scanner(tasksFile)) {
-                while (scanner.hasNextLine()) {
-                    String taskString = scanner.nextLine();
-                    if (!taskString.trim().isEmpty()) {
-                        Task task = createTaskFromTaskString(taskString);
-                        tasks.add(task);
-                    }
+            List<String> taskStrings = Files.readAllLines(FILE_PATH);
+            for (String taskString : taskStrings) {
+                if (!taskString.trim().isEmpty()) {
+                    Task task = createTaskFromTaskString(taskString);
+                    tasks.add(task);
                 }
             }
         } catch (IOException e) {
@@ -50,9 +49,7 @@ public class Nico {
         try {
             createTasksFile();
             String taskString = task.toString();
-            try (FileWriter fw = new FileWriter(FILE_PATH, true)) {
-                fw.write(taskString + System.lineSeparator());
-            }
+            Files.writeString(FILE_PATH, taskString + System.lineSeparator(), StandardOpenOption.APPEND);
         } catch (IOException e) {
             throw new NicoException("\tSorry, I could not save this task to tasks.txt.");
         }
@@ -64,11 +61,11 @@ public class Nico {
     private static void writeAllSavedTasks(List<Task> tasks) throws NicoException {
         try {
             createTasksFile();
-            try (FileWriter fw = new FileWriter(FILE_PATH)) {
-                for (Task task : tasks) {
-                    fw.write(task.toString() + System.lineSeparator());
-                }
+            StringBuilder savedTasks = new StringBuilder();
+            for (Task task : tasks) {
+                savedTasks.append(task).append(System.lineSeparator());
             }
+            Files.writeString(FILE_PATH, savedTasks.toString(), StandardOpenOption.TRUNCATE_EXISTING);
         } catch (IOException e) {
             throw new NicoException("\tSorry, I could not update tasks.txt.");
         }
@@ -116,12 +113,13 @@ public class Nico {
      * Creates the data folder and save file if they do not exist.
      */
     private static void createTasksFile() throws IOException {
-        File newFile = new File(FILE_PATH);
-        File parentDirectory = newFile.getParentFile();
+        Path parentDirectory = FILE_PATH.getParent();
         if (parentDirectory != null) {
-            parentDirectory.mkdirs(); //creates the data folder if it didn't exist.
+            Files.createDirectories(parentDirectory);
         }
-        newFile.createNewFile();
+        if (!Files.exists(FILE_PATH)) {
+            Files.createFile(FILE_PATH);
+        }
     }
 
     public static void main(String[] args) {
