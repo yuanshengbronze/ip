@@ -11,12 +11,14 @@ import subprocess
 import sys
 import threading
 import time
+import uuid
 from dataclasses import dataclass
 from pathlib import Path
 
 
 DEFAULT_PLAN = Path("test/ui-test-plan.md")
 DEFAULT_PROGRAM = "java -cp src/main/java Nico"
+TEST_RUNS_DIRECTORY = Path("_temp") / "ui-test-runs"
 
 
 @dataclass
@@ -162,6 +164,10 @@ def run_test_case(test: TestCase, program: str, timeout: float, quiet: float) ->
 
     env = os.environ.copy()
     env["PYTHONUNBUFFERED"] = "1"
+    env["REPO_ROOT"] = str(Path.cwd())
+
+    run_directory = TEST_RUNS_DIRECTORY / uuid.uuid4().hex
+    run_directory.mkdir(parents=True, exist_ok=False)
 
     process = subprocess.Popen(
         program,
@@ -172,6 +178,7 @@ def run_test_case(test: TestCase, program: str, timeout: float, quiet: float) ->
         text=True,
         bufsize=0,
         env=env,
+        cwd=run_directory,
     )
     assert process.stdin is not None
     assert process.stdout is not None

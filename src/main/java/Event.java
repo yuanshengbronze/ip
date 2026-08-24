@@ -1,14 +1,24 @@
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Represents a task that happens between a start date-time and an end date-time.
+ */
 public class Event extends Task {
     protected LocalDateTime startTime;
     protected LocalDateTime endTime;
+
     public Event(String description, LocalDateTime startTime, LocalDateTime endTime) {
         super(description);
         this.startTime = startTime;
         this.endTime = endTime;
+    }
+
+    /**
+     * Returns the event's start date and time for sorting and comparison.
+     */
+    public LocalDateTime getStartTime() {
+        return startTime;
     }
 
     @Override

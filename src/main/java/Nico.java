@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Scanner;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 
 /**
  * Entry point for the Nico chatbot application.
@@ -185,6 +184,14 @@ public class Nico {
                         }
                         break;
                     }
+                    case "urgent": {
+                        if (hasArgument(commandArray)) {
+                            throw new NicoException("\tPlease use: urgent");
+                        }
+                        System.out.println("\t" + LINE);
+                        printUrgentTasks(tasks);
+                        break;
+                    }
                     case "mark": {
                         if (!hasArgument(commandArray)) {
                             throw new NicoException("\tNo task number. Please use: mark TASK_NUMBER");
@@ -323,6 +330,62 @@ public class Nico {
                 System.out.println(e.getMessage());
             }
         }
+    }
+
+    /**
+     * Prints the event with the earliest start time and deadline with the earliest due time.
+     */
+    private static void printUrgentTasks(List<Task> tasks) {
+        Event closestEvent = findClosestEvent(tasks);
+        Deadline closestDeadline = findClosestDeadline(tasks);
+        System.out.println("\tClosest event: " + formatOptionalTask(closestEvent));
+        System.out.println("\tClosest deadline: " + formatOptionalTask(closestDeadline));
+    }
+
+    /**
+     * Finds the event that starts earliest among all saved tasks.
+     */
+    private static Event findClosestEvent(List<Task> tasks) {
+        Event closestEvent = null;
+        for (Task task : tasks) {
+            if (!(task instanceof Event)) {
+                continue;
+            }
+
+            Event event = (Event) task;
+            if (closestEvent == null || event.getStartTime().isBefore(closestEvent.getStartTime())) {
+                closestEvent = event;
+            }
+        }
+        return closestEvent;
+    }
+
+    /**
+     * Finds the deadline that is due earliest among all saved tasks.
+     */
+    private static Deadline findClosestDeadline(List<Task> tasks) {
+        Deadline closestDeadline = null;
+        for (Task task : tasks) {
+            if (!(task instanceof Deadline)) {
+                continue;
+            }
+
+            Deadline deadline = (Deadline) task;
+            if (closestDeadline == null || deadline.getDueTime().isBefore(closestDeadline.getDueTime())) {
+                closestDeadline = deadline;
+            }
+        }
+        return closestDeadline;
+    }
+
+    /**
+     * Formats a possible task result without crashing when no matching task exists.
+     */
+    private static String formatOptionalTask(Task task) {
+        if (task == null) {
+            return "None";
+        }
+        return task.toString();
     }
 
     /**

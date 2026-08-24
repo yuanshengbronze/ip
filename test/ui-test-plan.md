@@ -4,7 +4,7 @@ The `test-ui` skill uses this file as the source of truth for console UI tests.
 Each test case records its aim, the console inputs, and the expected output after each input.
 
 ```program
-java -cp out/production/ip Nico
+java -cp "%REPO_ROOT%\out\production\ip" Nico
 ```
 
 ```build
@@ -21,7 +21,7 @@ bye
 ```
 
 ```expected
-Sorry, I don't know what that command means.
+Sorry, I don't understand what that command means :(
 ---
 Nice seeing you. Until next time!
 ```
@@ -44,32 +44,32 @@ Nice seeing you. Until next time!
 
 ## Test Case: Add a deadline task
 
-Aim: Verify that a `deadline` command parses the description and integer `/by` value.
+Aim: Verify that a `deadline` command parses the description and `/by` date-time value.
 
 ```input
-deadline return book /by 7
+deadline return book /by 25-08-2026 1900
 bye
 ```
 
 ```expected
 Nice! I've added this task:
-[D][ ] return book (by: 7)
+[D][ ] return book (by: Aug 25 2026 19:00)
 ---
 Nice seeing you. Until next time!
 ```
 
 ## Test Case: Add an event task
 
-Aim: Verify that an `event` command parses the description, integer `/from` value, and integer `/to` value.
+Aim: Verify that an `event` command parses the description, `/from` date-time, and `/to` date-time.
 
 ```input
-event project meeting /from 14 /to 16
+event project meeting /from 25-08-2026 1400 /to 25-08-2026 1600
 bye
 ```
 
 ```expected
 Nice! I've added this task:
-[E][ ] project meeting (from: 14 to: 16)
+[E][ ] project meeting (from: Aug 25 2026 14:00 to: Aug 25 2026 16:00)
 ---
 Nice seeing you. Until next time!
 ```
@@ -80,8 +80,8 @@ Aim: Verify that `list` displays Todo, Deadline, and Event tasks with their indi
 
 ```input
 todo borrow book
-deadline submit report /by 23
-event project meeting /from 14 /to 16
+deadline submit report /by 25-08-2026 2300
+event project meeting /from 25-08-2026 1400 /to 25-08-2026 1600
 list
 bye
 ```
@@ -91,14 +91,81 @@ Nice! I've added this task:
 [T][ ] borrow book
 ---
 Nice! I've added this task:
-[D][ ] submit report (by: 23)
+[D][ ] submit report (by: Aug 25 2026 23:00)
 ---
 Nice! I've added this task:
-[E][ ] project meeting (from: 14 to: 16)
+[E][ ] project meeting (from: Aug 25 2026 14:00 to: Aug 25 2026 16:00)
 ---
 1. [T][ ] borrow book
-2. [D][ ] submit report (by: 23)
-3. [E][ ] project meeting (from: 14 to: 16)
+2. [D][ ] submit report (by: Aug 25 2026 23:00)
+3. [E][ ] project meeting (from: Aug 25 2026 14:00 to: Aug 25 2026 16:00)
+---
+Nice seeing you. Until next time!
+```
+
+## Test Case: Show urgent event and deadline
+
+Aim: Verify that `urgent` displays the event with the earliest start time and the deadline with the earliest due time.
+
+```input
+event later meeting /from 30-08-2026 1000 /to 30-08-2026 1100
+deadline later report /by 30-08-2026 2359
+event standup /from 25-08-2026 0900 /to 25-08-2026 0930
+deadline submit draft /by 26-08-2026 2359
+urgent
+bye
+```
+
+```expected
+Nice! I've added this task:
+[E][ ] later meeting (from: Aug 30 2026 10:00 to: Aug 30 2026 11:00)
+---
+Nice! I've added this task:
+[D][ ] later report (by: Aug 30 2026 23:59)
+---
+Nice! I've added this task:
+[E][ ] standup (from: Aug 25 2026 09:00 to: Aug 25 2026 09:30)
+---
+Nice! I've added this task:
+[D][ ] submit draft (by: Aug 26 2026 23:59)
+---
+Closest event: [E][ ] standup (from: Aug 25 2026 09:00 to: Aug 25 2026 09:30)
+Closest deadline: [D][ ] submit draft (by: Aug 26 2026 23:59)
+---
+Nice seeing you. Until next time!
+```
+
+## Test Case: Show urgent with missing task types
+
+Aim: Verify that `urgent` reports `None` for missing event and deadline task types.
+
+```input
+todo borrow book
+urgent
+bye
+```
+
+```expected
+Nice! I've added this task:
+[T][ ] borrow book
+---
+Closest event: None
+Closest deadline: None
+---
+Nice seeing you. Until next time!
+```
+
+## Test Case: Reject urgent arguments
+
+Aim: Verify that `urgent` rejects extra arguments with the expected usage message.
+
+```input
+urgent now
+bye
+```
+
+```expected
+Please use: urgent
 ---
 Nice seeing you. Until next time!
 ```
@@ -176,7 +243,7 @@ bye
 ```
 
 ```expected
-Please use: deadline DESCRIPTION /by WHEN
+Please use: deadline DESCRIPTION /by DUE TIME
 ---
 Nice seeing you. Until next time!
 ```
@@ -191,14 +258,14 @@ bye
 ```
 
 ```expected
-Please use: event DESCRIPTION /from WHEN /to WHEN
+Please use: event DESCRIPTION /from START TIME /to END TIME
 ---
 Nice seeing you. Until next time!
 ```
 
-## Test Case: Reject non-integer deadline time
+## Test Case: Reject invalid deadline date-time
 
-Aim: Verify that a `deadline` command rejects a non-integer due time.
+Aim: Verify that a `deadline` command rejects a due time that does not match the required date-time format.
 
 ```input
 deadline return book /by Sunday
@@ -206,14 +273,14 @@ bye
 ```
 
 ```expected
-The due time must be an integer.
+Please use dd-MM-yyyy HHmm format for date and time!
 ---
 Nice seeing you. Until next time!
 ```
 
-## Test Case: Reject non-integer event times
+## Test Case: Reject invalid event date-times
 
-Aim: Verify that an `event` command rejects non-integer start and end times.
+Aim: Verify that an `event` command rejects start and end times that do not match the required date-time format.
 
 ```input
 event project meeting /from Mon /to 4pm
@@ -221,7 +288,7 @@ bye
 ```
 
 ```expected
-The start and end times must be integers.
+Please use dd-MM-yyyy HHmm format for date and time!
 ---
 Nice seeing you. Until next time!
 ```
@@ -236,7 +303,7 @@ bye
 ```
 
 ```expected
-The description cannot be empty.
+Description can't be empty. Please use: todo DESCRIPTION
 ---
 Nice seeing you. Until next time!
 ```
@@ -246,12 +313,12 @@ Nice seeing you. Until next time!
 Aim: Verify that a `deadline` command with no description is rejected.
 
 ```input
-deadline /by 7
+deadline /by 25-08-2026 1900
 bye
 ```
 
 ```expected
-The description cannot be empty.
+Description can't be empty. Please use: deadline DESCRIPTION /by DUE TIME
 ---
 Nice seeing you. Until next time!
 ```
@@ -261,7 +328,7 @@ Nice seeing you. Until next time!
 Aim: Verify that an `event` command with no description is rejected.
 
 ```input
-event /from 14 /to 16
+event /from 25-08-2026 1400 /to 25-08-2026 1600
 bye
 ```
 
@@ -276,12 +343,12 @@ Nice seeing you. Until next time!
 Aim: Verify that an `event` command with no start time shows the usage message.
 
 ```input
-event main game /from /to 7pm
+event main game /from /to 25-08-2026 1900
 bye
 ```
 
 ```expected
-Please use: event DESCRIPTION /from WHEN /to WHEN
+Please use: event DESCRIPTION /from START TIME /to END TIME
 ---
 Nice seeing you. Until next time!
 ```
@@ -291,12 +358,12 @@ Nice seeing you. Until next time!
 Aim: Verify that an `event` command with no end time shows the same usage message.
 
 ```input
-event main game /from 7pm /to
+event main game /from 25-08-2026 1900 /to
 bye
 ```
 
 ```expected
-Please use: event DESCRIPTION /from WHEN /to WHEN
+Please use: event DESCRIPTION /from START TIME /to END TIME
 ---
 Nice seeing you. Until next time!
 ```
