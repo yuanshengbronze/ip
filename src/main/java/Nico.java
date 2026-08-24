@@ -333,59 +333,73 @@ public class Nico {
     }
 
     /**
-     * Prints the event with the earliest start time and deadline with the earliest due time.
+     * Prints the incomplete event with the earliest start time and incomplete deadline with the earliest due time.
      */
     private static void printUrgentTasks(List<Task> tasks) {
-        Event closestEvent = findClosestEvent(tasks);
-        Deadline closestDeadline = findClosestDeadline(tasks);
-        System.out.println("\tClosest event: " + formatOptionalTask(closestEvent));
-        System.out.println("\tClosest deadline: " + formatOptionalTask(closestDeadline));
+        List<Event> closestEvents = findClosestEvents(tasks);
+        List<Deadline> closestDeadlines = findClosestDeadlines(tasks);
+        printUrgentTaskGroup("Most urgent event", closestEvents);
+        printUrgentTaskGroup("Most urgent deadline", closestDeadlines);
     }
 
     /**
-     * Finds the event that starts earliest among all saved tasks.
+     * Finds all incomplete events that share the earliest start time among all saved tasks.
      */
-    private static Event findClosestEvent(List<Task> tasks) {
-        Event closestEvent = null;
+    private static List<Event> findClosestEvents(List<Task> tasks) {
+        List<Event> closestEvents = new ArrayList<Event>();
+        LocalDateTime closestStartTime = null;
         for (Task task : tasks) {
-            if (!(task instanceof Event)) {
+            if (!(task instanceof Event event) || task.isDone()) {
                 continue;
             }
 
-            Event event = (Event) task;
-            if (closestEvent == null || event.getStartTime().isBefore(closestEvent.getStartTime())) {
-                closestEvent = event;
+            if (closestStartTime == null || event.getStartTime().isBefore(closestStartTime)) {
+                closestEvents.clear();
+                closestEvents.add(event);
+                closestStartTime = event.getStartTime();
+            } else if (event.getStartTime().isEqual(closestStartTime)) {
+                closestEvents.add(event);
             }
         }
-        return closestEvent;
+        return closestEvents;
     }
 
     /**
-     * Finds the deadline that is due earliest among all saved tasks.
+     * Finds all incomplete deadlines that share the earliest due time among all saved tasks.
      */
-    private static Deadline findClosestDeadline(List<Task> tasks) {
-        Deadline closestDeadline = null;
+    private static List<Deadline> findClosestDeadlines(List<Task> tasks) {
+        List<Deadline> closestDeadlines = new ArrayList<Deadline>();
+        LocalDateTime closestDueTime = null;
         for (Task task : tasks) {
-            if (!(task instanceof Deadline)) {
+            if (!(task instanceof Deadline deadline) || task.isDone()) {
                 continue;
             }
 
-            Deadline deadline = (Deadline) task;
-            if (closestDeadline == null || deadline.getDueTime().isBefore(closestDeadline.getDueTime())) {
-                closestDeadline = deadline;
+            if (closestDueTime == null || deadline.getDueTime().isBefore(closestDueTime)) {
+                closestDeadlines.clear();
+                closestDeadlines.add(deadline);
+                closestDueTime = deadline.getDueTime();
+            } else if (deadline.getDueTime().isEqual(closestDueTime)) {
+                closestDeadlines.add(deadline);
             }
         }
-        return closestDeadline;
+        return closestDeadlines;
     }
 
     /**
-     * Formats a possible task result without crashing when no matching task exists.
+     * Prints one urgent task on the same line, or tied urgent tasks as bullet points.
      */
-    private static String formatOptionalTask(Task task) {
-        if (task == null) {
-            return "None";
+    private static void printUrgentTaskGroup(String label, List<? extends Task> tasks) {
+        if (tasks.isEmpty()) {
+            System.out.println("\t" + label + ": None");
+        } else if (tasks.size() == 1) {
+            System.out.println("\t" + label + ": " + tasks.getFirst());
+        } else {
+            System.out.println("\t" + label + ":");
+            for (Task task : tasks) {
+                System.out.println("\t- " + task);
+            }
         }
-        return task.toString();
     }
 
     /**

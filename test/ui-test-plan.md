@@ -105,13 +105,15 @@ Nice seeing you. Until next time!
 
 ## Test Case: Show urgent event and deadline
 
-Aim: Verify that `urgent` displays the event with the earliest start time and the deadline with the earliest due time.
+Aim: Verify that `urgent` displays the incomplete event with the earliest start time and the incomplete deadline with the earliest due time.
 
 ```input
 event later meeting /from 30-08-2026 1000 /to 30-08-2026 1100
 deadline later report /by 30-08-2026 2359
 event standup /from 25-08-2026 0900 /to 25-08-2026 0930
 deadline submit draft /by 26-08-2026 2359
+mark 3
+mark 4
 urgent
 bye
 ```
@@ -129,8 +131,14 @@ Nice! I've added this task:
 Nice! I've added this task:
 [D][ ] submit draft (by: Aug 26 2026 23:59)
 ---
-Closest event: [E][ ] standup (from: Aug 25 2026 09:00 to: Aug 25 2026 09:30)
-Closest deadline: [D][ ] submit draft (by: Aug 26 2026 23:59)
+I've marked this task as done:
+[E][X] standup (from: Aug 25 2026 09:00 to: Aug 25 2026 09:30)
+---
+I've marked this task as done:
+[D][X] submit draft (by: Aug 26 2026 23:59)
+---
+Most urgent event: [E][ ] later meeting (from: Aug 30 2026 10:00 to: Aug 30 2026 11:00)
+Most urgent deadline: [D][ ] later report (by: Aug 30 2026 23:59)
 ---
 Nice seeing you. Until next time!
 ```
@@ -149,8 +157,52 @@ bye
 Nice! I've added this task:
 [T][ ] borrow book
 ---
-Closest event: None
-Closest deadline: None
+Most urgent event: None
+Most urgent deadline: None
+---
+Nice seeing you. Until next time!
+```
+
+## Test Case: Show tied urgent tasks as bullets
+
+Aim: Verify that `urgent` displays all incomplete events and deadlines that tie for the most urgent time.
+
+```input
+event demo /from 25-08-2026 0900 /to 25-08-2026 1000
+event interview /from 25-08-2026 0900 /to 25-08-2026 0930
+event later meeting /from 30-08-2026 1000 /to 30-08-2026 1100
+deadline draft /by 26-08-2026 2359
+deadline slides /by 26-08-2026 2359
+deadline final report /by 30-08-2026 2359
+urgent
+bye
+```
+
+```expected
+Nice! I've added this task:
+[E][ ] demo (from: Aug 25 2026 09:00 to: Aug 25 2026 10:00)
+---
+Nice! I've added this task:
+[E][ ] interview (from: Aug 25 2026 09:00 to: Aug 25 2026 09:30)
+---
+Nice! I've added this task:
+[E][ ] later meeting (from: Aug 30 2026 10:00 to: Aug 30 2026 11:00)
+---
+Nice! I've added this task:
+[D][ ] draft (by: Aug 26 2026 23:59)
+---
+Nice! I've added this task:
+[D][ ] slides (by: Aug 26 2026 23:59)
+---
+Nice! I've added this task:
+[D][ ] final report (by: Aug 30 2026 23:59)
+---
+Most urgent event:
+- [E][ ] demo (from: Aug 25 2026 09:00 to: Aug 25 2026 10:00)
+- [E][ ] interview (from: Aug 25 2026 09:00 to: Aug 25 2026 09:30)
+Most urgent deadline:
+- [D][ ] draft (by: Aug 26 2026 23:59)
+- [D][ ] slides (by: Aug 26 2026 23:59)
 ---
 Nice seeing you. Until next time!
 ```
