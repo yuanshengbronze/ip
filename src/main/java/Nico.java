@@ -6,7 +6,6 @@ import java.nio.file.StandardOpenOption;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -151,45 +150,37 @@ public class Nico {
     }
 
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+        Ui ui = new Ui();
         List<Task> tasks = new ArrayList<Task>();
         try {
             readSavedTasks(tasks);
         } catch (NicoException e) {
-            System.out.println(e.getMessage());
+            ui.showMessage(e.getMessage());
         }
 
-        System.out.println(LINE);
-        System.out.println(BANNER);
-        System.out.println("\tHey man! It's Nico, what can I do for you?");
+        ui.showWelcome();
         while(true) {
-            System.out.println("\t" + LINE);
-            String ans = scanner.nextLine();
+            ui.showLine();
+            String ans = ui.readCommand();
             String[] commandArray = ans.trim().split("\\s+", 2);
             String commandWord = commandArray[0];
 
             try {
                 switch(commandWord) {
                     case "bye": {
-                        System.out.println("\t" + LINE);
-                        System.out.println("\tNice seeing you. Until next time!");
-                        System.out.println("\t" + LINE);
+                        ui.showGoodbye();
                         return;
                     }
                     case "list": {
-                        System.out.println("\t" + LINE);
-                        for(int i = 0; i < tasks.size(); i++) {
-                            String text = String.format("\t %d. %s", i + 1, tasks.get(i));
-                            System.out.println(text);
-                        }
+                        ui.showTaskList(tasks);
                         break;
                     }
                     case "urgent": {
                         if (hasArgument(commandArray)) {
                             throw new NicoException("\tPlease use: urgent");
                         }
-                        System.out.println("\t" + LINE);
-                        printUrgentTasks(tasks);
+                        ui.showLine();
+                        printUrgentTasks(tasks, ui);
                         break;
                     }
                     case "mark": {
@@ -202,15 +193,13 @@ public class Nico {
 
                         int taskNumber = Integer.parseInt(commandArray[1].trim());
                         if(taskNumber < 1 || taskNumber > tasks.size()) {
-                            System.out.println("\t" + LINE);
+                            ui.showLine();
                             throw new NicoException("\tSorry, that task number is not in the list.");
                         } else {
                             Task task = tasks.get(taskNumber - 1);
                             task.markAsDone();
                             writeAllSavedTasks(tasks);
-                            System.out.println("\t" + LINE);
-                            System.out.println("\tI've marked this task as done:");
-                            System.out.println("\t\t" + task);
+                            ui.showTaskMarkedDone(task);
                         }
                         break;
                     }
@@ -223,15 +212,13 @@ public class Nico {
                         }
                         int taskNumber = Integer.parseInt(commandArray[1].trim());
                         if(taskNumber < 1 || taskNumber > tasks.size()) {
-                            System.out.println("\t" + LINE);
+                            ui.showLine();
                             throw new NicoException("\tSorry, that task number is not in the list.");
                         } else {
                             Task task = tasks.get(taskNumber - 1);
                             task.unmarkAsDone();
                             writeAllSavedTasks(tasks);
-                            System.out.println("\t" + LINE);
-                            System.out.println("\tI've marked this task as not done:");
-                            System.out.println("\t\t" + task);
+                            ui.showTaskMarkedNotDone(task);
                         }
                         break;
                     }
@@ -243,10 +230,8 @@ public class Nico {
                         Task newTodo = new Todo(taskDescription);
                         tasks.add(newTodo);
                         writeSavedTask(newTodo);
-                        System.out.println("\t" + LINE);
-                        System.out.println("\tNice! I've added this task: ");
-                        System.out.println("\t\t" + newTodo);
-                        System.out.println("\tNow you have " + tasks.size() + " tasks.");
+                        ui.showLine();
+                        ui.showTaskAdded(newTodo, tasks.size());
                         break;
                     }
                     case "deadline": {
@@ -266,10 +251,8 @@ public class Nico {
                             Deadline newDeadline = new Deadline(taskDescription, convertToLocalDateTime(dueTimeUserString, DATE_TIME_INPUT_FORMAT));
                             tasks.add(newDeadline);
                             writeSavedTask(newDeadline);
-                            System.out.println("\t" + LINE);
-                            System.out.println("\tNice! I've added this task: ");
-                            System.out.println("\t\t" + newDeadline);
-                            System.out.println("\tNow you have " + tasks.size() + " tasks.");
+                            ui.showLine();
+                            ui.showTaskAdded(newDeadline, tasks.size());
                         }
                         break;
                     }
@@ -294,9 +277,7 @@ public class Nico {
                                     convertToLocalDateTime(endTimeUserString, DATE_TIME_INPUT_FORMAT));
                             tasks.add(newEvent);
                             writeSavedTask(newEvent);
-                            System.out.println("\tNice! I've added this task: ");
-                            System.out.println("\t\t" + newEvent);
-                            System.out.println("\tNow you have " + tasks.size() + " tasks.");
+                            ui.showTaskAdded(newEvent, tasks.size());
                         }
                         break;
                     }
@@ -309,16 +290,13 @@ public class Nico {
                         }
                         int taskNumber = Integer.parseInt(commandArray[1].trim());
                         if(taskNumber < 1 || taskNumber > tasks.size()) {
-                            System.out.println("\t" + LINE);
+                            ui.showLine();
                             throw new NicoException("\tSorry, that task number is not in the list.");
                         } else {
                             Task task = tasks.get(taskNumber - 1);
                             tasks.remove(taskNumber - 1);
                             writeAllSavedTasks(tasks);
-                            System.out.println("\t" + LINE);
-                            System.out.println("\tI've removed this task");
-                            System.out.println("\t\t" + task);
-                            System.out.println("\tNow you have " + tasks.size() + " tasks.");
+                            ui.showTaskRemoved(task, tasks.size());
                         }
                         break;
                     }
@@ -327,7 +305,7 @@ public class Nico {
                     }
                 }
             } catch(NicoException e) {
-                System.out.println(e.getMessage());
+                ui.showMessage(e.getMessage());
             }
         }
     }
@@ -335,11 +313,11 @@ public class Nico {
     /**
      * Prints the incomplete event with the earliest start time and incomplete deadline with the earliest due time.
      */
-    private static void printUrgentTasks(List<Task> tasks) {
+    private static void printUrgentTasks(List<Task> tasks, Ui ui) {
         List<Event> closestEvents = findClosestEvents(tasks);
         List<Deadline> closestDeadlines = findClosestDeadlines(tasks);
-        printUrgentTaskGroup("Most urgent event", closestEvents);
-        printUrgentTaskGroup("Most urgent deadline", closestDeadlines);
+        ui.showUrgentTaskGroup("Most urgent event", closestEvents);
+        ui.showUrgentTaskGroup("Most urgent deadline", closestDeadlines);
     }
 
     /**
@@ -384,22 +362,6 @@ public class Nico {
             }
         }
         return closestDeadlines;
-    }
-
-    /**
-     * Prints one urgent task on the same line, or tied urgent tasks as bullet points.
-     */
-    private static void printUrgentTaskGroup(String label, List<? extends Task> tasks) {
-        if (tasks.isEmpty()) {
-            System.out.println("\t" + label + ": None");
-        } else if (tasks.size() == 1) {
-            System.out.println("\t" + label + ": " + tasks.getFirst());
-        } else {
-            System.out.println("\t" + label + ":");
-            for (Task task : tasks) {
-                System.out.println("\t- " + task);
-            }
-        }
     }
 
     /**
