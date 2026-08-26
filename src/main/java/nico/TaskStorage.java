@@ -1,3 +1,5 @@
+package nico;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -5,7 +7,7 @@ import java.nio.file.StandardOpenOption;
 import java.util.List;
 
 /**
- * Saves the current task list to Nico's data file.
+ * Saves the current task list to nico.Nico's data file.
  */
 public class TaskStorage {
     /**

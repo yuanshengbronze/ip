@@ -1,8 +1,10 @@
+package nico;
+
 import java.util.List;
 import java.util.Scanner;
 
 /**
- * Handles all console input and output for the Nico chatbot.
+ * Handles all console input and output for the nico.Nico chatbot.
  */
 public class Ui {
     private final Scanner scanner;
@@ -32,7 +34,7 @@ public class Ui {
     public void showWelcome() {
         System.out.println(LINE);
         System.out.println(BANNER);
-        System.out.println("\tHey man! It's Nico, what can I do for you?");
+        System.out.println("\tHey man! It's nico.Nico, what can I do for you?");
     }
 
     /**

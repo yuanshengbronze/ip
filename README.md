@@ -1,4 +1,4 @@
-# Nico project
+# nico.Nico project
 
 This is a greenfield Java project for the _Nico_ chatbot. Given below are instructions on how to use it.
 
@@ -27,7 +27,7 @@ Prerequisites: JDK 25, update Intellij to the most recent version.
    ██║ ╚████║██║╚██████╗╚██████╔╝
    ╚═╝  ╚═══╝╚═╝ ╚═════╝ ╚═════╝
    
-   Hey man! It's Nico, what can I do for you?
+   Hey man! It's nico.Nico, what can I do for you?
    ____________________________________________________________
    Nice seeing you. Until next time!
    ____________________________________________________________

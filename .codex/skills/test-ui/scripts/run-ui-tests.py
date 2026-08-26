@@ -17,7 +17,7 @@ from pathlib import Path
 
 
 DEFAULT_PLAN = Path("test/ui-test-plan.md")
-DEFAULT_PROGRAM = "java -cp src/main/java Nico"
+DEFAULT_PROGRAM = "java -cp src/main/java nico.Nico"
 TEST_RUNS_DIRECTORY = Path("_temp") / "ui-test-runs"
 
 
@@ -205,7 +205,7 @@ def run_test_case(test: TestCase, program: str, timeout: float, quiet: float) ->
             if normalize(expected) not in normalize(actual):
                 print("\nFAILED")
                 print(f"Test case: {test.name}")
-                print(f"Command: {user_input}")
+                print(f"nico.Command: {user_input}")
                 print("\nExpected output:")
                 print(expected)
                 print("\nActual output:")

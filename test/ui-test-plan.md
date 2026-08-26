@@ -4,7 +4,7 @@ The `test-ui` skill uses this file as the source of truth for console UI tests.
 Each test case records its aim, the console inputs, and the expected output after each input.
 
 ```program
-java -cp "%REPO_ROOT%\out\production\ip" Nico
+java -cp "%REPO_ROOT%\out\production\ip" nico.Nico
 ```
 
 ```build
@@ -28,7 +28,7 @@ Nice seeing you. Until next time!
 
 ## Test Case: Add a todo task
 
-Aim: Verify that a `todo` command creates a Todo task formatted with `[T]`.
+Aim: Verify that a `todo` command creates a nico.Todo task formatted with `[T]`.
 
 ```input
 todo borrow book
@@ -76,7 +76,7 @@ Nice seeing you. Until next time!
 
 ## Test Case: List mixed task types
 
-Aim: Verify that `list` displays Todo, Deadline, and Event tasks with their indices.
+Aim: Verify that `list` displays nico.Todo, nico.Deadline, and nico.Event tasks with their indices.
 
 ```input
 todo borrow book
