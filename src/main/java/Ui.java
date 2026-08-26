@@ -6,6 +6,14 @@ import java.util.Scanner;
  */
 public class Ui {
     private final Scanner scanner;
+    public static final String LINE = "____________________________________________________________";
+    public static final String BANNER =
+            "███╗   ██╗██╗ ██████╗ ██████╗ \n" +
+            "████╗  ██║██║██╔════╝██╔═══██╗\n" +
+            "██╔██╗ ██║██║██║     ██║   ██║\n" +
+            "██║╚██╗██║██║██║     ██║   ██║\n" +
+            "██║ ╚████║██║╚██████╗╚██████╔╝\n" +
+            "╚═╝  ╚═══╝╚═╝ ╚═════╝ ╚═════╝ \n";
 
     public Ui() {
         scanner = new Scanner(System.in);
@@ -22,8 +30,8 @@ public class Ui {
      * Shows the startup banner and greeting.
      */
     public void showWelcome() {
-        System.out.println(Nico.LINE);
-        System.out.println(Nico.BANNER);
+        System.out.println(LINE);
+        System.out.println(BANNER);
         System.out.println("\tHey man! It's Nico, what can I do for you?");
     }
 
@@ -31,7 +39,7 @@ public class Ui {
      * Shows the separator printed before command output.
      */
     public void showLine() {
-        System.out.println("\t" + Nico.LINE);
+        System.out.println("\t" + LINE);
     }
 
     /**
