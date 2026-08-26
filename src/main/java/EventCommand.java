@@ -1,0 +1,40 @@
+import java.time.LocalDateTime;
+import java.util.List;
+
+/**
+ * Adds an event task to the task list.
+ */
+public class EventCommand extends Command {
+    private final String details;
+
+    /**
+     * Creates a command with the event details supplied by the user.
+     */
+    public EventCommand(String details) {
+        this.details = details;
+    }
+
+    @Override
+    public void execute(List<Task> tasks, Ui ui) throws NicoException {
+        if (details == null) {
+            throw new NicoException("\tDescription can't be empty. Please use: event DESCRIPTION /from START TIME /to END TIME");
+        }
+        String[] parts = details.split("\\s*/from\\s*|\\s*/to\\s*", 3);
+        if (parts.length < 3) {
+            throw new NicoException("\tPlease use: event DESCRIPTION /from START TIME /to END TIME");
+        }
+        if (parts[0].trim().isEmpty()) {
+            throw new NicoException("\tThe description cannot be empty.");
+        }
+        if (parts[1].trim().isEmpty() || parts[2].trim().isEmpty()) {
+            throw new NicoException("\tPlease use: event DESCRIPTION /from START TIME /to END TIME");
+        }
+
+        LocalDateTime startTime = Parser.parseDateTime(parts[1].trim(), Nico.DATE_TIME_INPUT_FORMAT);
+        LocalDateTime endTime = Parser.parseDateTime(parts[2].trim(), Nico.DATE_TIME_INPUT_FORMAT);
+        Event newEvent = new Event(parts[0].trim(), startTime, endTime);
+        tasks.add(newEvent);
+        TaskStorage.writeTask(Nico.FILE_PATH, newEvent);
+        ui.showTaskAdded(newEvent, tasks.size());
+    }
+}
