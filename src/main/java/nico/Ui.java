@@ -34,7 +34,7 @@ public class Ui {
     public void showWelcome() {
         System.out.println(LINE);
         System.out.println(BANNER);
-        System.out.println("\tHey man! It's nico.Nico, what can I do for you?");
+        System.out.println("\tHey man! It's Nico, what can I do for you?");
     }
 
     /**
