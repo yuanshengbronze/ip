@@ -1,3 +1,5 @@
+package nico;
+
 import java.util.List;
 
 /**
@@ -30,7 +32,7 @@ public abstract class TaskNumberCommand extends Command {
             }
             return tasks.get(taskNumber - 1);
         } catch (NumberFormatException e) {
-            throw new NicoException("\tTask number must be an integer.");
+            throw new NicoException("\tnico.Task number must be an integer.");
         }
     }
 }

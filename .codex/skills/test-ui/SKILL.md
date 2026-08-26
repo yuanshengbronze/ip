@@ -53,7 +53,7 @@ The runner checks each expected chunk as text that must appear in the output pro
 3. If the app needs a different command, pass it explicitly:
 
    ```bash
-   python .codex/skills/test-ui/scripts/run-ui-tests.py --program "java -cp src/main/java Nico"
+   python .codex/skills/test-ui/scripts/run-ui-tests.py --program "java -cp src/main/java nico.Nico"
    ```
 
 4. Use Java 25 for project runs. If compilation is needed, use the build command recorded in the test plan or pass `--build "<command>"`.

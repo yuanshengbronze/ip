@@ -1,3 +1,5 @@
+package nico;
+
 public class NicoException extends Exception{
     public NicoException() {
         super();
