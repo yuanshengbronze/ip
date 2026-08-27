@@ -33,7 +33,7 @@ public class Event extends Task {
     /**
      * Returns this event in the format used for display and storage.
      *
-     * @return formatted event text, including its completion status and time range
+     * @return Formatted event text, including its completion status and time range.
      */
     @Override
     public String toString() {

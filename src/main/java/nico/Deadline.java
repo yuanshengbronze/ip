@@ -30,7 +30,7 @@ public class Deadline extends Task {
     /**
      * Returns this deadline in the format used for display and storage.
      *
-     * @return formatted deadline text, including its completion status and due time
+     * @return Formatted deadline text, including its completion status and due time.
      */
     @Override
     public String toString() {
