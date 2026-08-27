@@ -115,12 +115,12 @@ public class Ui {
     }
 
     /**
-     * Shows one urgent task on the same line, or tied urgent tasks as bullet points.
+     * Shows one task on the same line, or multiple tasks as bullet points.
      *
      * @param label Label describing the task group.
-     * @param tasks Urgent tasks to display.
+     * @param tasks Tasks to display.
      */
-    public void showUrgentTaskGroup(String label, List<? extends Task> tasks) {
+    public void showTaskGroup(String label, List<? extends Task> tasks) {
         if (tasks.isEmpty()) {
             System.out.println("\t" + label + ": None");
         } else if (tasks.size() == 1) {

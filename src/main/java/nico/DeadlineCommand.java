@@ -6,14 +6,12 @@ import java.util.List;
 /**
  * Adds a deadline task to the task list.
  */
-public class DeadlineCommand extends Command {
-    private final String details;
-
+public class DeadlineCommand extends ParamCommand {
     /**
      * Creates a command with the deadline details supplied by the user.
      */
     public DeadlineCommand(String details) {
-        this.details = details;
+        super("deadline", details);
     }
 
     @Override
@@ -25,6 +23,7 @@ public class DeadlineCommand extends Command {
      * @throws NicoException if the description or due time is invalid
      */
     public void execute(List<Task> tasks, Ui ui) throws NicoException {
+        String details = getParameter();
         if (details == null) {
             throw new NicoException("\tDescription can't be empty. Please use: deadline DESCRIPTION /by DUE TIME");
         }

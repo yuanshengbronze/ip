@@ -5,10 +5,7 @@ import java.util.List;
 /**
  * Provides common validation for commands that identify a task by its list number.
  */
-public abstract class TaskNumberCommand extends Command {
-    private final String taskNumberText;
-    private final String commandWord;
-
+public abstract class TaskNumberCommand extends ParamCommand {
     /**
      * Creates a command that operates on a task number.
      *
@@ -16,8 +13,7 @@ public abstract class TaskNumberCommand extends Command {
      * @param taskNumberText user-entered one-based task number
      */
     protected TaskNumberCommand(String commandWord, String taskNumberText) {
-        this.commandWord = commandWord;
-        this.taskNumberText = taskNumberText;
+        super(commandWord, taskNumberText);
     }
 
     /**
@@ -29,8 +25,9 @@ public abstract class TaskNumberCommand extends Command {
      * @throws NicoException if the task number is missing, non-numeric, or outside the list
      */
     protected Task getTask(List<Task> tasks, Ui ui) throws NicoException {
-        if (taskNumberText == null) {
-            throw new NicoException("\tNo task number. Please use: " + commandWord + " TASK_NUMBER");
+        String taskNumberText = getParameter();
+        if (taskNumberText == null || taskNumberText.trim().isEmpty()) {
+            throw new NicoException("\tNo task number. Please use: " + getCommandWord() + " TASK_NUMBER");
         }
         try {
             int taskNumber = Integer.parseInt(taskNumberText.trim());

@@ -11,6 +11,65 @@ java -cp "%REPO_ROOT%\out\production\ip" nico.Nico
 javac -d out/production/ip src/main/java/*.java
 ```
 
+## Test Case: Find tasks case-insensitively
+
+Aim: Verify that `find` returns every task description containing its keyword, regardless of letter case.
+
+```input
+todo Borrow Book
+deadline return book /by 25-08-2026 1900
+find BOOK
+bye
+```
+
+```expected
+Nice! I've added this task:
+[T][ ] Borrow Book
+---
+Nice! I've added this task:
+[D][ ] return book (by: Aug 25 2026 19:00)
+---
+Here are the matching tasks in your list:
+- [T][ ] Borrow Book
+- [D][ ] return book (by: Aug 25 2026 19:00)
+---
+Nice seeing you. Until next time!
+```
+
+## Test Case: Find with no matching tasks
+
+Aim: Verify that `find` reports no matching tasks when no description contains the keyword.
+
+```input
+todo borrow book
+find report
+bye
+```
+
+```expected
+Nice! I've added this task:
+[T][ ] borrow book
+---
+Here are the matching tasks in your list: None
+---
+Nice seeing you. Until next time!
+```
+
+## Test Case: Reject find without keyword
+
+Aim: Verify that `find` rejects a missing keyword with a usage message.
+
+```input
+find
+bye
+```
+
+```expected
+Please use: find KEYWORD
+---
+Nice seeing you. Until next time!
+```
+
 ## Test Case: Reject unknown command
 
 Aim: Verify that an unrecognized command is rejected instead of being added as a task.

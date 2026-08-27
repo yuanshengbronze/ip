@@ -40,6 +40,8 @@ public class Parser {
                 return new EventCommand(argument);
             case "delete":
                 return new DeleteCommand(argument);
+            case "find":
+                return new FindCommand(argument);
             default:
                 throw new NicoException("Sorry, I don't understand what that command means :(");
             }

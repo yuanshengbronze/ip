@@ -5,14 +5,12 @@ import java.util.List;
 /**
  * Adds a todo task to the task list.
  */
-public class TodoCommand extends Command {
-    private final String description;
-
+public class TodoCommand extends ParamCommand {
     /**
      * Creates a command with the todo description supplied by the user.
      */
     public TodoCommand(String description) {
-        this.description = description;
+        super("todo", description);
     }
 
     @Override
@@ -24,6 +22,7 @@ public class TodoCommand extends Command {
      * @throws NicoException if the description is empty or the task cannot be saved
      */
     public void execute(List<Task> tasks, Ui ui) throws NicoException {
+        String description = getParameter();
         if (description == null || description.trim().isEmpty()) {
             throw new NicoException("\tDescription can't be empty. Please use: todo DESCRIPTION");
         }
