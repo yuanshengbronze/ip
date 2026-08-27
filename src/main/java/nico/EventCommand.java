@@ -6,20 +6,20 @@ import java.util.List;
 /**
  * Adds an event task to the task list.
  */
-public class EventCommand extends Command {
-    private final String details;
-
+public class EventCommand extends ParamCommand {
     /**
      * Creates a command with the event details supplied by the user.
      */
     public EventCommand(String details) {
-        this.details = details;
+        super("event", details);
     }
 
     @Override
     public void execute(List<Task> tasks, Ui ui) throws NicoException {
+        String details = getParameter();
         if (details == null) {
-            throw new NicoException("\tDescription can't be empty. Please use: event DESCRIPTION /from START TIME /to END TIME");
+            throw new NicoException(
+                    "\tDescription can't be empty. Please use: event DESCRIPTION /from START TIME /to END TIME");
         }
         String[] parts = details.split("\\s*/from\\s*|\\s*/to\\s*", 3);
         if (parts.length < 3) {

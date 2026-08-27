@@ -53,7 +53,9 @@ public class Nico {
                 String description = taskDetails.substring(0, byStartIndex);
                 LocalDateTime dueTime;
                 try {
-                    dueTime = Parser.parseDateTime(taskDetails.substring(byStartIndex + 6, taskDetails.length() - 1), DATE_TIME_OUTPUT_FORMAT);
+                    dueTime = Parser.parseDateTime(
+                            taskDetails.substring(byStartIndex + 6, taskDetails.length() - 1),
+                            DATE_TIME_OUTPUT_FORMAT);
                 } catch (NicoException e) {
                     throw new IllegalArgumentException("Invalid Saved Tasks File Formatting");
                 }
@@ -68,8 +70,11 @@ public class Nico {
                 LocalDateTime endTime;
 
                 try {
-                    startTime = Parser.parseDateTime(taskDetails.substring(fromStartIndex + 8, toStartIndex), DATE_TIME_OUTPUT_FORMAT);
-                    endTime = Parser.parseDateTime(taskDetails.substring(toStartIndex + 5, taskDetails.length() - 1), DATE_TIME_OUTPUT_FORMAT);
+                    startTime = Parser.parseDateTime(
+                            taskDetails.substring(fromStartIndex + 8, toStartIndex), DATE_TIME_OUTPUT_FORMAT);
+                    endTime = Parser.parseDateTime(
+                            taskDetails.substring(toStartIndex + 5, taskDetails.length() - 1),
+                            DATE_TIME_OUTPUT_FORMAT);
                 } catch (NicoException e) {
                     throw new IllegalArgumentException("Invalid Saved Tasks File Formatting");
                 }

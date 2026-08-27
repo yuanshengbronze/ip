@@ -13,8 +13,8 @@ public class UrgentCommand extends Command {
         List<Event> closestEvents = findClosestEvents(tasks);
         List<Deadline> closestDeadlines = findClosestDeadlines(tasks);
         ui.showLine();
-        ui.showUrgentTaskGroup("Most urgent event", closestEvents);
-        ui.showUrgentTaskGroup("Most urgent deadline", closestDeadlines);
+        ui.showTaskGroup("Most urgent event", closestEvents);
+        ui.showTaskGroup("Most urgent deadline", closestDeadlines);
     }
 
     /**

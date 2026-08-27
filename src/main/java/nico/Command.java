@@ -10,7 +10,6 @@ public abstract class Command {
      * Executes this command using the current task list and UI.
      */
     public abstract void execute(List<Task> tasks, Ui ui) throws NicoException;
-
     /**
      * Returns whether this command should exit the chatbot.
      */
