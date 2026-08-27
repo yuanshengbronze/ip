@@ -25,7 +25,7 @@ public class Parser {
                 return new ListCommand();
             case "urgent":
                 if (argument != null) {
-                    throw new NicoException("\tPlease use: urgent");
+                    throw new NicoException("Please use: urgent");
                 }
                 return new UrgentCommand();
             case "mark":
@@ -41,7 +41,7 @@ public class Parser {
             case "delete":
                 return new DeleteCommand(argument);
             default:
-                throw new NicoException("\tSorry, I don't understand what that command means :(");
+                throw new NicoException("Sorry, I don't understand what that command means :(");
             }
     }
 
@@ -57,7 +57,7 @@ public class Parser {
         try {
             return LocalDateTime.parse(input, DateTimeFormatter.ofPattern(format));
         } catch (DateTimeParseException e) {
-            throw new NicoException(String.format("\tPlease use %s format for date and time!", format));
+            throw new NicoException(String.format("Please use %s format for date and time!", format));
         }
     }
 }
