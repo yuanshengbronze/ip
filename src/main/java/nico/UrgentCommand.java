@@ -21,7 +21,7 @@ public class UrgentCommand extends Command {
      * Finds all incomplete events that share the earliest start time among all saved tasks.
      */
     private List<Event> findClosestEvents(List<Task> tasks) {
-        List<Event> closestEvents = new ArrayList<Event>();
+        List<Event> closestEvents = new ArrayList<>();
         LocalDateTime closestStartTime = null;
         for (Task task : tasks) {
             if (!(task instanceof Event event) || task.isDone()) {
@@ -43,7 +43,7 @@ public class UrgentCommand extends Command {
      * Finds all incomplete deadlines that share the earliest due time among all saved tasks.
      */
     private List<Deadline> findClosestDeadlines(List<Task> tasks) {
-        List<Deadline> closestDeadlines = new ArrayList<Deadline>();
+        List<Deadline> closestDeadlines = new ArrayList<>();
         LocalDateTime closestDueTime = null;
         for (Task task : tasks) {
             if (!(task instanceof Deadline deadline) || task.isDone()) {

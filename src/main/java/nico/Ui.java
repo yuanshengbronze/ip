@@ -7,7 +7,6 @@ import java.util.Scanner;
  * Handles all console input and output for the nico.Nico chatbot.
  */
 public class Ui {
-    private final Scanner scanner;
     public static final String LINE = "____________________________________________________________";
     public static final String BANNER =
             " _   _ _           \n" +
@@ -15,7 +14,9 @@ public class Ui {
             "|  \\| | |/ __/ _ \\ \n" +
             "| |\\  | | (_| (_) |\n" +
             "|_| \\_|_|\\___\\___/ \n";
+    private final Scanner scanner;
 
+    /** Creates a user interface that reads commands from standard input. */
     public Ui() {
         scanner = new Scanner(System.in);
     }

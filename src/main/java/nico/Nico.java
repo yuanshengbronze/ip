@@ -4,14 +4,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.time.LocalDateTime;
 
-/**
- * Entry point for the nico.Nico chatbot application.
- */
-
+/** Entry point for the Nico chatbot application. */
 public class Nico {
     public static final Path FILE_PATH = Paths.get("data", "tasks.txt");
     public static final String DATE_TIME_INPUT_FORMAT = "dd-MM-yyyy HHmm";
@@ -53,7 +50,9 @@ public class Nico {
                 String description = taskDetails.substring(0, byStartIndex);
                 LocalDateTime dueTime;
                 try {
-                    dueTime = Parser.parseDateTime(taskDetails.substring(byStartIndex + 6, taskDetails.length() - 1), DATE_TIME_OUTPUT_FORMAT);
+                    dueTime = Parser.parseDateTime(
+                            taskDetails.substring(byStartIndex + 6, taskDetails.length() - 1),
+                            DATE_TIME_OUTPUT_FORMAT);
                 } catch (NicoException e) {
                     throw new IllegalArgumentException("Invalid Saved Tasks File Formatting");
                 }
@@ -68,8 +67,11 @@ public class Nico {
                 LocalDateTime endTime;
 
                 try {
-                    startTime = Parser.parseDateTime(taskDetails.substring(fromStartIndex + 8, toStartIndex), DATE_TIME_OUTPUT_FORMAT);
-                    endTime = Parser.parseDateTime(taskDetails.substring(toStartIndex + 5, taskDetails.length() - 1), DATE_TIME_OUTPUT_FORMAT);
+                    startTime = Parser.parseDateTime(
+                            taskDetails.substring(fromStartIndex + 8, toStartIndex), DATE_TIME_OUTPUT_FORMAT);
+                    endTime = Parser.parseDateTime(
+                            taskDetails.substring(toStartIndex + 5, taskDetails.length() - 1),
+                            DATE_TIME_OUTPUT_FORMAT);
                 } catch (NicoException e) {
                     throw new IllegalArgumentException("Invalid Saved Tasks File Formatting");
                 }
@@ -87,9 +89,14 @@ public class Nico {
         return task;
     }
 
+    /**
+     * Starts the chatbot and processes commands until the user exits.
+     *
+     * @param args Command-line arguments, which are not used.
+     */
     public static void main(String[] args) {
         Ui ui = new Ui();
-        List<Task> tasks = new ArrayList<Task>();
+        List<Task> tasks = new ArrayList<>();
         try {
             readSavedTasks(tasks);
         } catch (NicoException e) {
@@ -97,7 +104,7 @@ public class Nico {
         }
 
         ui.showWelcome();
-        while(true) {
+        while (true) {
             ui.showLine();
             String ans = ui.readCommand();
 
@@ -107,7 +114,7 @@ public class Nico {
                 if (command.isExit()) {
                     return;
                 }
-            } catch(NicoException e) {
+            } catch (NicoException e) {
                 ui.showMessage(e.getMessage());
             }
         }

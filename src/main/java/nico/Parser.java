@@ -10,6 +10,10 @@ import java.time.format.DateTimeParseException;
 public class Parser {
     /**
      * Splits user input into a command word and its optional argument.
+     *
+     * @param fullCommand Complete command entered by the user.
+     * @return Command corresponding to the user input.
+     * @throws NicoException If the command is not recognized or has invalid arguments.
      */
     public static Command parseCommand(String fullCommand) throws NicoException {
         String[] commandArray = fullCommand.trim().split("\\s+", 2);
@@ -43,6 +47,11 @@ public class Parser {
 
     /**
      * Converts user-entered date-time text to a LocalDateTime value.
+     *
+     * @param input Date-time text to parse.
+     * @param format Expected date-time format.
+     * @return Parsed date and time.
+     * @throws NicoException If the input does not match the expected format.
      */
     public static LocalDateTime parseDateTime(String input, String format) throws NicoException {
         try {
