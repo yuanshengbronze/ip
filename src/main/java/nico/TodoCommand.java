@@ -16,6 +16,13 @@ public class TodoCommand extends Command {
     }
 
     @Override
+    /**
+     * Validates the supplied description, adds a todo task, and saves it.
+     *
+     * @param tasks tasks currently managed by the chatbot
+     * @param ui user interface used to display confirmation
+     * @throws NicoException if the description is empty or the task cannot be saved
+     */
     public void execute(List<Task> tasks, Ui ui) throws NicoException {
         if (description == null || description.trim().isEmpty()) {
             throw new NicoException("\tDescription can't be empty. Please use: todo DESCRIPTION");

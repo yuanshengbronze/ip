@@ -11,6 +11,9 @@ public abstract class TaskNumberCommand extends Command {
 
     /**
      * Creates a command that operates on a task number.
+     *
+     * @param commandWord word that identifies this command in error messages
+     * @param taskNumberText user-entered one-based task number
      */
     protected TaskNumberCommand(String commandWord, String taskNumberText) {
         this.commandWord = commandWord;
@@ -19,6 +22,11 @@ public abstract class TaskNumberCommand extends Command {
 
     /**
      * Returns the requested task after validating its one-based list number.
+     *
+     * @param tasks tasks currently managed by the chatbot
+     * @param ui user interface used to display validation separators
+     * @return task identified by the supplied one-based task number
+     * @throws NicoException if the task number is missing, non-numeric, or outside the list
      */
     protected Task getTask(List<Task> tasks, Ui ui) throws NicoException {
         if (taskNumberText == null) {
