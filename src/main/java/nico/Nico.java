@@ -19,6 +19,9 @@ public class Nico {
 
     /**
      * Loads tasks from the save file into the task list.
+     *
+     * @param tasks list that receives the saved tasks
+     * @throws NicoException if the save file cannot be read or contains an invalid task
      */
     private static void readSavedTasks(List<Task> tasks) throws NicoException {
         try {
@@ -37,6 +40,13 @@ public class Nico {
         }
     }
 
+    /**
+     * Reconstructs one task object from its saved display-format text.
+     *
+     * @param taskString saved representation of a task
+     * @return the reconstructed task, with its saved completion status
+     * @throws IllegalArgumentException if the saved task type or date-time values are invalid
+     */
     private static Task createTaskFromTaskString(String taskString) {
         String taskType = taskString.substring(1, 2);
         boolean isDone = taskString.charAt(4) == 'X';
@@ -87,6 +97,11 @@ public class Nico {
         return task;
     }
 
+    /**
+     * Starts the chatbot, loads saved tasks, and processes commands until exit.
+     *
+     * @param args command-line arguments; not used by this application
+     */
     public static void main(String[] args) {
         Ui ui = new Ui();
         List<Task> tasks = new ArrayList<Task>();

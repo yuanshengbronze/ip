@@ -16,12 +16,17 @@ public class Ui {
             "| |\\  | | (_| (_) |\n" +
             "|_| \\_|_|\\___\\___/ \n";
 
+    /**
+     * Creates a user interface that reads commands from standard input.
+     */
     public Ui() {
         scanner = new Scanner(System.in);
     }
 
     /**
      * Reads the next command entered by the user.
+     *
+     * @return next line entered through standard input
      */
     public String readCommand() {
         return scanner.nextLine();
@@ -54,6 +59,8 @@ public class Ui {
 
     /**
      * Shows a message that has already been formatted by the caller.
+     *
+     * @param message text to display
      */
     public void showMessage(String message) {
         System.out.println(message);
@@ -61,6 +68,8 @@ public class Ui {
 
     /**
      * Shows all tasks with their one-based list numbers.
+     *
+     * @param tasks tasks to display
      */
     public void showTaskList(List<Task> tasks) {
         showLine();
@@ -72,6 +81,9 @@ public class Ui {
 
     /**
      * Shows the confirmation after a task is added.
+     *
+     * @param task task that was added
+     * @param taskCount number of tasks after the addition
      */
     public void showTaskAdded(Task task, int taskCount) {
         System.out.println("\tNice! I've added this task: ");
@@ -81,6 +93,8 @@ public class Ui {
 
     /**
      * Shows the confirmation after a task is marked as done.
+     *
+     * @param task task marked as complete
      */
     public void showTaskMarkedDone(Task task) {
         showLine();
@@ -90,6 +104,8 @@ public class Ui {
 
     /**
      * Shows the confirmation after a task is marked as not done.
+     *
+     * @param task task marked as incomplete
      */
     public void showTaskMarkedNotDone(Task task) {
         showLine();
@@ -99,6 +115,9 @@ public class Ui {
 
     /**
      * Shows the confirmation after a task is removed.
+     *
+     * @param task task that was removed
+     * @param taskCount number of tasks after the removal
      */
     public void showTaskRemoved(Task task, int taskCount) {
         showLine();
@@ -109,6 +128,9 @@ public class Ui {
 
     /**
      * Shows one urgent task on the same line, or tied urgent tasks as bullet points.
+     *
+     * @param label label describing the task group
+     * @param tasks urgent tasks to display
      */
     public void showUrgentTaskGroup(String label, List<? extends Task> tasks) {
         if (tasks.isEmpty()) {

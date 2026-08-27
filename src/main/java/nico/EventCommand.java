@@ -17,6 +17,13 @@ public class EventCommand extends Command {
     }
 
     @Override
+    /**
+     * Validates the supplied details, adds an event task, and saves it.
+     *
+     * @param tasks tasks currently managed by the chatbot
+     * @param ui user interface used to display confirmation
+     * @throws NicoException if the description or event times are invalid
+     */
     public void execute(List<Task> tasks, Ui ui) throws NicoException {
         if (details == null) {
             throw new NicoException("\tDescription can't be empty. Please use: event DESCRIPTION /from START TIME /to END TIME");

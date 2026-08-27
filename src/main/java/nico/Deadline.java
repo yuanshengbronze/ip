@@ -9,6 +9,12 @@ import java.time.format.DateTimeFormatter;
 public class Deadline extends Task {
     protected LocalDateTime dueTime;
 
+    /**
+     * Creates a deadline task with its description and due date-time.
+     *
+     * @param description text describing the task
+     * @param dueTime date and time by which the task is due
+     */
     public Deadline(String description, LocalDateTime dueTime) {
         super(description);
         this.dueTime = dueTime;
@@ -16,11 +22,18 @@ public class Deadline extends Task {
 
     /**
      * Returns the deadline's due date and time for sorting and comparison.
+     *
+     * @return this deadline's due date and time
      */
     public LocalDateTime getDueTime() {
         return dueTime;
     }
 
+    /**
+     * Returns this deadline in the format used for display and storage.
+     *
+     * @return formatted deadline text, including its completion status and due time
+     */
     @Override
     public String toString() {
         String status = this.isDone ? "[X]" : "[ ]";
