@@ -1,15 +1,11 @@
 package nico;
 
-/**
- * Represents a task without an associated date or time.
- */
-public class Todo extends Task{
-    protected String startTime;
-    protected String endTime;
+/** Represents a task without a date or time. */
+public class Todo extends Task {
     /**
      * Creates a todo task with the given description.
      *
-     * @param description text describing the task
+     * @param description Task description.
      */
     public Todo(String description) {
         super(description);
@@ -18,7 +14,7 @@ public class Todo extends Task{
     /**
      * Returns this todo in the format used for display and storage.
      *
-     * @return formatted todo text, including its completion status
+     * @return Formatted todo text, including its completion status.
      */
     @Override
     public String toString() {

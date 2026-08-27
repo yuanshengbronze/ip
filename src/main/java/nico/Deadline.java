@@ -10,10 +10,10 @@ public class Deadline extends Task {
     protected LocalDateTime dueTime;
 
     /**
-     * Creates a deadline task with its description and due date-time.
+     * Creates a deadline task with its due date and time.
      *
-     * @param description text describing the task
-     * @param dueTime date and time by which the task is due
+     * @param description Task description.
+     * @param dueTime Date and time the task is due.
      */
     public Deadline(String description, LocalDateTime dueTime) {
         super(description);
@@ -22,8 +22,6 @@ public class Deadline extends Task {
 
     /**
      * Returns the deadline's due date and time for sorting and comparison.
-     *
-     * @return this deadline's due date and time
      */
     public LocalDateTime getDueTime() {
         return dueTime;

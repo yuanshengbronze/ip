@@ -10,31 +10,25 @@ public class Task {
     /**
      * Creates an incomplete task with the given description.
      *
-     * @param description text describing the task
+     * @param description Task description.
      */
     public Task(String description) {
         this.description = description;
         this.isDone = false;
     }
 
-    /**
-     * Marks this task as complete.
-     */
+    /** Marks this task as complete. */
     public void markAsDone() {
         this.isDone = true;
     }
 
-    /**
-     * Marks this task as incomplete.
-     */
+    /** Marks this task as incomplete. */
     public void unmarkAsDone() {
         this.isDone = false;
     }
 
     /**
      * Returns whether this task has been marked as completed.
-     *
-     * @return {@code true} if this task is complete
      */
     public boolean isDone() {
         return isDone;

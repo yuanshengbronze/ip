@@ -1,20 +1,16 @@
 package nico;
 
-/**
- * Represents an error caused by invalid chatbot input or task storage operations.
- */
-public class NicoException extends Exception{
-    /**
-     * Creates an exception without a detail message.
-     */
+/** Represents an error caused by invalid user input or task storage. */
+public class NicoException extends Exception {
+    /** Creates an exception without a detail message. */
     public NicoException() {
         super();
     }
 
     /**
-     * Creates an exception with a message suitable for displaying to the user.
+     * Creates an exception with a detail message.
      *
-     * @param message explanation of the error
+     * @param message Detail message for the user.
      */
     public NicoException(String message) {
         super(message);

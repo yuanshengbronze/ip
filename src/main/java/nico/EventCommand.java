@@ -26,7 +26,8 @@ public class EventCommand extends Command {
      */
     public void execute(List<Task> tasks, Ui ui) throws NicoException {
         if (details == null) {
-            throw new NicoException("\tDescription can't be empty. Please use: event DESCRIPTION /from START TIME /to END TIME");
+            throw new NicoException(
+                    "\tDescription can't be empty. Please use: event DESCRIPTION /from START TIME /to END TIME");
         }
         String[] parts = details.split("\\s*/from\\s*|\\s*/to\\s*", 3);
         if (parts.length < 3) {

@@ -11,11 +11,11 @@ public class Event extends Task {
     protected LocalDateTime endTime;
 
     /**
-     * Creates an event task with its description, start time, and end time.
+     * Creates an event task with its start and end date-times.
      *
-     * @param description text describing the event
-     * @param startTime date and time at which the event starts
-     * @param endTime date and time at which the event ends
+     * @param description Event description.
+     * @param startTime Event start date and time.
+     * @param endTime Event end date and time.
      */
     public Event(String description, LocalDateTime startTime, LocalDateTime endTime) {
         super(description);
@@ -25,8 +25,6 @@ public class Event extends Task {
 
     /**
      * Returns the event's start date and time for sorting and comparison.
-     *
-     * @return this event's start date and time
      */
     public LocalDateTime getStartTime() {
         return startTime;

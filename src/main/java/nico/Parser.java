@@ -11,9 +11,9 @@ public class Parser {
     /**
      * Splits user input into a command word and its optional argument.
      *
-     * @param fullCommand complete command text entered by the user
-     * @return command object representing the entered command
-     * @throws NicoException if the command is unknown or has invalid arguments
+     * @param fullCommand Complete command entered by the user.
+     * @return Command corresponding to the user input.
+     * @throws NicoException If the command is not recognized or has invalid arguments.
      */
     public static Command parseCommand(String fullCommand) throws NicoException {
         String[] commandArray = fullCommand.trim().split("\\s+", 2);
@@ -48,10 +48,10 @@ public class Parser {
     /**
      * Converts user-entered date-time text to a LocalDateTime value.
      *
-     * @param input date-time text to parse
-     * @param format date-time pattern the input must follow
-     * @return parsed date-time value
-     * @throws NicoException if the input does not match the requested format
+     * @param input Date-time text to parse.
+     * @param format Expected date-time format.
+     * @return Parsed date and time.
+     * @throws NicoException If the input does not match the expected format.
      */
     public static LocalDateTime parseDateTime(String input, String format) throws NicoException {
         try {

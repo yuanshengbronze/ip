@@ -13,9 +13,9 @@ public class TaskStorage {
     /**
      * Appends one newly created task to the data file.
      *
-     * @param filePath path of the task data file
-     * @param task task to append to the file
-     * @throws NicoException if the task cannot be saved
+     * @param filePath Path to the task data file.
+     * @param task Newly created task to save.
+     * @throws NicoException If the task cannot be saved.
      */
     public static void writeTask(Path filePath, Task task) throws NicoException {
         try {
@@ -29,9 +29,9 @@ public class TaskStorage {
     /**
      * Rewrites the data file so it matches the current task list.
      *
-     * @param filePath path of the task data file
-     * @param tasks tasks to save
-     * @throws NicoException if the task list cannot be saved
+     * @param filePath Path to the task data file.
+     * @param tasks Tasks to save.
+     * @throws NicoException If the tasks cannot be saved.
      */
     public static void writeAllTasks(Path filePath, List<Task> tasks) throws NicoException {
         try {
@@ -49,8 +49,8 @@ public class TaskStorage {
     /**
      * Creates the data folder and task file when they do not yet exist.
      *
-     * @param filePath path of the task data file to create
-     * @throws IOException if the folder or file cannot be created
+     * @param filePath Path to the task data file.
+     * @throws IOException If the folder or file cannot be created.
      */
     public static void createTasksFile(Path filePath) throws IOException {
         Path parentDirectory = filePath.getParent();
