@@ -14,7 +14,6 @@ public class EventCommand extends ParamCommand {
         super("event", details);
     }
 
-    @Override
     /**
      * Validates the supplied details, adds an event task, and saves it.
      *
@@ -22,6 +21,7 @@ public class EventCommand extends ParamCommand {
      * @param ui user interface used to display confirmation
      * @throws NicoException if the description or event times are invalid
      */
+    @Override
     public void execute(List<Task> tasks, Ui ui) throws NicoException {
         String details = getParameter();
         if (details == null) {

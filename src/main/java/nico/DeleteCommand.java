@@ -13,7 +13,6 @@ public class DeleteCommand extends TaskNumberCommand {
         super("delete", taskNumberText);
     }
 
-    @Override
     /**
      * Deletes the requested task and saves the remaining task list.
      *
@@ -21,6 +20,7 @@ public class DeleteCommand extends TaskNumberCommand {
      * @param ui user interface used to display confirmation
      * @throws NicoException if the task number is invalid or the updated list cannot be saved
      */
+    @Override
     public void execute(List<Task> tasks, Ui ui) throws NicoException {
         Task task = getTask(tasks, ui);
         tasks.remove(task);
