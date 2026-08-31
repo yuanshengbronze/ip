@@ -1,7 +1,8 @@
 package nico;
 
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -9,9 +10,8 @@ import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 class TaskStorageTest {
     @TempDir
@@ -63,8 +63,8 @@ class TaskStorageTest {
 
     @Test
     void writeTask_directoryPath_nicoExceptionThrown() {
-        NicoException exception = assertThrows(NicoException.class,
-                () -> TaskStorage.writeTask(temporaryDirectory, new Todo("read book")));
+        NicoException exception = assertThrows(NicoException.class, () ->
+                TaskStorage.writeTask(temporaryDirectory, new Todo("read book")));
 
         assertEquals("Sorry, I could not save this task to tasks.txt.", exception.getMessage());
     }
