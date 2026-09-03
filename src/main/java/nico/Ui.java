@@ -1,46 +1,66 @@
 package nico;
 
+import java.io.IOException;
 import java.util.List;
 
 import javafx.application.Application;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-/** Provides the JavaFX user interface for the Nico chatbot. */
+/** Provides the JavaFX user interface and FXML controller for the Nico chatbot. */
 public class Ui extends Application {
-    private final ScrollPane scrollPane;
-    private final VBox dialogContainer;
-    private final TextField userInput;
-    private final Button sendButton;
+    @FXML
+    private ScrollPane scrollPane;
+    @FXML
+    private VBox dialogContainer;
+    @FXML
+    private TextField userInput;
+    @FXML
+    private Button sendButton;
+
     private final Nico nico;
     private final StringBuilder responseBuilder;
     private Stage stage;
 
-    /** Creates the controls and the state used by the JavaFX application. */
+    /** Creates the state used by the JavaFX application. */
     public Ui() {
         nico = new Nico();
         responseBuilder = new StringBuilder();
-        scrollPane = new ScrollPane();
-        dialogContainer = new VBox();
-        userInput = new TextField();
-        sendButton = new Button("Send");
-        scrollPane.setContent(dialogContainer);
     }
 
-    /** Starts and displays the Nico application window. */
+    /** Initializes event handlers after the FXML controls have been injected. */
+    @FXML
+    private void initialize() {
+        sendButton.setOnAction(event -> handleUserInput());
+        userInput.setOnAction(event -> handleUserInput());
+        dialogContainer.heightProperty().addListener((observable, oldHeight, newHeight) ->
+                scrollPane.setVvalue(1.0));
+    }
+
+    /** Loads and displays the FXML-based Nico application window. */
     @Override
     public void start(Stage primaryStage) {
         stage = primaryStage;
-        AnchorPane root = createRootPane();
-        Scene scene = new Scene(root);
-        configureStage(root, scene);
-        configureInputHandling();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/Ui.fxml"));
+        loader.setController(this);
+
+        Parent root;
+        try {
+            root = loader.load();
+        } catch (IOException exception) {
+            throw new IllegalStateException("Unable to load the Nico user interface.", exception);
+        }
+
+        stage.setTitle("Nico");
+        stage.setResizable(false);
+        stage.setScene(new Scene(root));
         stage.show();
 
         try {
@@ -51,45 +71,6 @@ public class Ui extends Application {
             displayResponse();
         }
         addBotDialog("Hey man! It's Nico, what can I do for you?");
-    }
-
-    /** Creates the root layout containing the conversation and input controls. */
-    private AnchorPane createRootPane() {
-        AnchorPane root = new AnchorPane();
-        root.setPrefSize(400.0, 600.0);
-        root.getChildren().addAll(scrollPane, userInput, sendButton);
-        return root;
-    }
-
-    /** Applies the fixed window and control layout settings. */
-    private void configureStage(AnchorPane root, Scene scene) {
-        stage.setTitle("Nico");
-        stage.setResizable(false);
-        stage.setMinHeight(600.0);
-        stage.setMinWidth(400.0);
-        stage.setScene(scene);
-
-        scrollPane.setPrefSize(385.0, 535.0);
-        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
-        scrollPane.setFitToWidth(true);
-        dialogContainer.setPrefHeight(Region.USE_COMPUTED_SIZE);
-        userInput.setPrefWidth(325.0);
-        sendButton.setPrefWidth(55.0);
-
-        AnchorPane.setTopAnchor(scrollPane, 1.0);
-        AnchorPane.setBottomAnchor(sendButton, 1.0);
-        AnchorPane.setRightAnchor(sendButton, 1.0);
-        AnchorPane.setLeftAnchor(userInput, 1.0);
-        AnchorPane.setBottomAnchor(userInput, 1.0);
-        dialogContainer.heightProperty().addListener((observable, oldHeight, newHeight) ->
-                scrollPane.setVvalue(1.0));
-    }
-
-    /** Connects both the button and the Enter key to command submission. */
-    private void configureInputHandling() {
-        sendButton.setOnAction(event -> handleUserInput());
-        userInput.setOnAction(event -> handleUserInput());
     }
 
     /** Executes the current input and renders either its response or its error. */
