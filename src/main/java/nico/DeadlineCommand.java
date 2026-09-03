@@ -40,9 +40,8 @@ public class DeadlineCommand extends ParamCommand {
 
         LocalDateTime dueTime = Parser.parseDateTime(parts[1].trim(), Nico.DATE_TIME_INPUT_FORMAT);
         Deadline newDeadline = new Deadline(parts[0].trim(), dueTime);
-        tasks.add(newDeadline);
         TaskStorage.writeTask(Nico.FILE_PATH, newDeadline);
-        ui.showLine();
+        tasks.add(newDeadline);
         ui.showTaskAdded(newDeadline, tasks.size());
     }
 }
