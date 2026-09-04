@@ -16,7 +16,9 @@ public class DialogBox extends HBox {
     public DialogBox(String s) {
         text = new Label(s);
         text.setWrapText(true);
-        this.setAlignment(Pos.TOP_RIGHT);
+        text.setMaxWidth(270);
+        text.getStyleClass().add("message-bubble");
+        getStyleClass().add("dialog");
         this.getChildren().add(text);
     }
 
@@ -32,13 +34,17 @@ public class DialogBox extends HBox {
 
     /** Creates a right-aligned dialog box for a user message. */
     public static DialogBox getUserDialog(String s) {
-        return new DialogBox(s);
+        DialogBox dialogBox = new DialogBox(s);
+        dialogBox.setAlignment(Pos.TOP_RIGHT);
+        dialogBox.getStyleClass().add("user-dialog");
+        return dialogBox;
     }
 
     /** Creates a left-aligned dialog box for a Nico message. */
     public static DialogBox getDukeDialog(String s) {
-        var db = new DialogBox(s);
-        db.flip();
-        return db;
+        DialogBox dialogBox = new DialogBox(s);
+        dialogBox.flip();
+        dialogBox.getStyleClass().add("nico-dialog");
+        return dialogBox;
     }
 }
