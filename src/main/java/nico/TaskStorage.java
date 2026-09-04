@@ -21,7 +21,7 @@ public class TaskStorage {
         try {
             createTasksFile(filePath);
             Files.writeString(filePath, task + System.lineSeparator(), StandardOpenOption.APPEND);
-        } catch (IOException e) {
+        } catch (IOException exception) {
             throw new NicoException("Sorry, I could not save this task to tasks.txt.");
         }
     }
@@ -41,7 +41,7 @@ public class TaskStorage {
                 savedTasks.append(task).append(System.lineSeparator());
             }
             Files.writeString(filePath, savedTasks.toString(), StandardOpenOption.TRUNCATE_EXISTING);
-        } catch (IOException e) {
+        } catch (IOException exception) {
             throw new NicoException("Sorry, I could not update tasks.txt.");
         }
     }

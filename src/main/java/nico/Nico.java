@@ -16,7 +16,11 @@ public class Nico {
 
     private final List<Task> tasks = new ArrayList<>();
 
-    /** Loads saved tasks into this chatbot instance. */
+    /**
+     * Loads saved tasks into this chatbot instance.
+     *
+     * @throws NicoException if the saved task file cannot be read or parsed
+     */
     public void loadTasks() throws NicoException {
         List<Task> loadedTasks = new ArrayList<>();
         readSavedTasks(loadedTasks);
@@ -24,7 +28,14 @@ public class Nico {
         tasks.addAll(loadedTasks);
     }
 
-    /** Executes one user command against this chatbot's persistent task list. */
+    /**
+     * Executes one user command against this chatbot's persistent task list.
+     *
+     * @param inputText command text entered by the user
+     * @param ui user interface used to display command output
+     * @return whether the command requests that the application exit
+     * @throws NicoException if the command cannot be parsed or executed
+     */
     public boolean processCommand(String inputText, Ui ui) throws NicoException {
         Command command = Parser.parseCommand(inputText);
         command.execute(tasks, ui);
@@ -40,9 +51,9 @@ public class Nico {
                     tasks.add(createTaskFromTaskString(taskString));
                 }
             }
-        } catch (IOException e) {
+        } catch (IOException exception) {
             throw new NicoException("Sorry, I could not load tasks.txt.");
-        } catch (IllegalArgumentException | StringIndexOutOfBoundsException e) {
+        } catch (IllegalArgumentException | StringIndexOutOfBoundsException exception) {
             throw new NicoException("Sorry, tasks.txt contains a task I could not understand.");
         }
     }
@@ -65,8 +76,8 @@ public class Nico {
                 try {
                     dueTime = Parser.parseDateTime(
                             taskDetails.substring(byStartIndex + 6, taskDetails.length() - 1), DATE_TIME_OUTPUT_FORMAT);
-                } catch (NicoException e) {
-                    throw new IllegalArgumentException("Invalid saved task formatting", e);
+                } catch (NicoException exception) {
+                    throw new IllegalArgumentException("Invalid saved task formatting", exception);
                 }
                 task = new Deadline(description, dueTime);
                 break;
@@ -81,8 +92,8 @@ public class Nico {
                     LocalDateTime endTime = Parser.parseDateTime(
                             taskDetails.substring(toStartIndex + 5, taskDetails.length() - 1), DATE_TIME_OUTPUT_FORMAT);
                     task = new Event(eventDescription, startTime, endTime);
-                } catch (NicoException e) {
-                    throw new IllegalArgumentException("Invalid saved task formatting", e);
+                } catch (NicoException exception) {
+                    throw new IllegalArgumentException("Invalid saved task formatting", exception);
                 }
                 break;
             }

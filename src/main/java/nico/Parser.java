@@ -58,7 +58,7 @@ public class Parser {
     public static LocalDateTime parseDateTime(String input, String format) throws NicoException {
         try {
             return LocalDateTime.parse(input, DateTimeFormatter.ofPattern(format));
-        } catch (DateTimeParseException e) {
+        } catch (DateTimeParseException exception) {
             throw new NicoException(String.format("Please use %s format for date and time!", format));
         }
     }

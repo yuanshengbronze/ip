@@ -13,8 +13,8 @@ public class DialogBox extends HBox {
     private final Label text;
 
     /** Creates a dialog box containing the supplied message. */
-    public DialogBox(String s) {
-        text = new Label(s);
+    public DialogBox(String message) {
+        text = new Label(message);
         text.setWrapText(true);
         text.setMaxWidth(270);
         text.getStyleClass().add("message-bubble");
@@ -23,26 +23,26 @@ public class DialogBox extends HBox {
     }
 
     /**
-     * Flips the dialog box such that the ImageView is on the left and text on the right.
+     * Aligns the dialog box on the left for a Nico response.
      */
     private void flip() {
-        this.setAlignment(Pos.TOP_LEFT);
-        ObservableList<Node> tmp = FXCollections.observableArrayList(this.getChildren());
-        FXCollections.reverse(tmp);
-        this.getChildren().setAll(tmp);
+        setAlignment(Pos.TOP_LEFT);
+        ObservableList<Node> dialogNodes = FXCollections.observableArrayList(getChildren());
+        FXCollections.reverse(dialogNodes);
+        getChildren().setAll(dialogNodes);
     }
 
     /** Creates a right-aligned dialog box for a user message. */
-    public static DialogBox getUserDialog(String s) {
-        DialogBox dialogBox = new DialogBox(s);
+    public static DialogBox getUserDialog(String message) {
+        DialogBox dialogBox = new DialogBox(message);
         dialogBox.setAlignment(Pos.TOP_RIGHT);
         dialogBox.getStyleClass().add("user-dialog");
         return dialogBox;
     }
 
     /** Creates a left-aligned dialog box for a Nico message. */
-    public static DialogBox getDukeDialog(String s) {
-        DialogBox dialogBox = new DialogBox(s);
+    public static DialogBox getDukeDialog(String message) {
+        DialogBox dialogBox = new DialogBox(message);
         dialogBox.flip();
         dialogBox.getStyleClass().add("nico-dialog");
         return dialogBox;
