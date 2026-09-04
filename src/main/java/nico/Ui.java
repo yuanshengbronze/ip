@@ -9,11 +9,11 @@ import java.util.Scanner;
 public class Ui {
     public static final String LINE = "____________________________________________________________";
     public static final String BANNER =
-            " _   _ _           \n" +
-            "| \\ | (_) ___ ___  \n" +
-            "|  \\| | |/ __/ _ \\ \n" +
-            "| |\\  | | (_| (_) |\n" +
-            "|_| \\_|_|\\___\\___/ \n";
+          " _   _ _           \n"
+        + "| \\ | (_) ___ ___  \n"
+        + "|  \\| | |/ __/ _ \\ \n"
+        + "| |\\  | | (_| (_) |\n"
+        + "|_| \\_|_|\\___\\___/ \n";
     private final Scanner scanner;
 
     /** Creates a user interface that reads commands from standard input. */

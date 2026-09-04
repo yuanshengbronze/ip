@@ -44,7 +44,7 @@ public class Parser {
                 return new FindCommand(argument);
             default:
                 throw new NicoException("Sorry, I don't understand what that command means :(");
-            }
+        }
     }
 
     /**

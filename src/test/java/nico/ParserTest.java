@@ -1,12 +1,12 @@
 package nico;
 
-import org.junit.jupiter.api.Test;
-
-import java.time.LocalDateTime;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import java.time.LocalDateTime;
+
+import org.junit.jupiter.api.Test;
 
 class ParserTest {
     @Test
@@ -64,8 +64,8 @@ class ParserTest {
 
     @Test
     void parseDateTime_invalidDateTime_nicoExceptionThrown() {
-        NicoException exception = assertThrows(NicoException.class,
-                () -> Parser.parseDateTime("Sunday", Nico.DATE_TIME_INPUT_FORMAT));
+        NicoException exception = assertThrows(NicoException.class, () ->
+                Parser.parseDateTime("Sunday", Nico.DATE_TIME_INPUT_FORMAT));
 
         assertEquals("Please use dd-MM-yyyy HHmm format for date and time!", exception.getMessage());
     }

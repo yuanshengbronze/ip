@@ -8,13 +8,13 @@ import java.util.List;
  * Shows the incomplete events and deadlines with the earliest date-time values.
  */
 public class UrgentCommand extends Command {
-    @Override
     /**
      * Displays the incomplete events and deadlines with the earliest date-time values.
      *
      * @param tasks tasks currently managed by the chatbot
      * @param ui user interface used to display urgent task groups
      */
+    @Override
     public void execute(List<Task> tasks, Ui ui) {
         List<Event> closestEvents = findClosestEvents(tasks);
         List<Deadline> closestDeadlines = findClosestDeadlines(tasks);

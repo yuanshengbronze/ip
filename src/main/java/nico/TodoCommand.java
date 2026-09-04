@@ -13,7 +13,6 @@ public class TodoCommand extends ParamCommand {
         super("todo", description);
     }
 
-    @Override
     /**
      * Validates the supplied description, adds a todo task, and saves it.
      *
@@ -21,6 +20,7 @@ public class TodoCommand extends ParamCommand {
      * @param ui user interface used to display confirmation
      * @throws NicoException if the description is empty or the task cannot be saved
      */
+    @Override
     public void execute(List<Task> tasks, Ui ui) throws NicoException {
         String description = getParameter();
         if (description == null || description.trim().isEmpty()) {

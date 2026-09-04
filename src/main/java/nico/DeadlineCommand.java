@@ -14,7 +14,6 @@ public class DeadlineCommand extends ParamCommand {
         super("deadline", details);
     }
 
-    @Override
     /**
      * Validates the supplied details, adds a deadline task, and saves it.
      *
@@ -22,6 +21,7 @@ public class DeadlineCommand extends ParamCommand {
      * @param ui user interface used to display confirmation
      * @throws NicoException if the description or due time is invalid
      */
+    @Override
     public void execute(List<Task> tasks, Ui ui) throws NicoException {
         String details = getParameter();
         if (details == null) {
