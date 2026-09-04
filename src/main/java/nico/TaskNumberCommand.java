@@ -32,12 +32,11 @@ public abstract class TaskNumberCommand extends ParamCommand {
         try {
             int taskNumber = Integer.parseInt(taskNumberText.trim());
             if (taskNumber < 1 || taskNumber > tasks.size()) {
-                ui.showLine();
                 throw new NicoException("\tSorry, that task number is not in the list.");
             }
             return tasks.get(taskNumber - 1);
-        } catch (NumberFormatException e) {
-            throw new NicoException("\tnico.Task number must be an integer.");
+        } catch (NumberFormatException exception) {
+            throw new NicoException("\tTask number must be an integer.");
         }
     }
 }

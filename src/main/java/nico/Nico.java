@@ -8,42 +8,56 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Entry point for the Nico chatbot application. */
+/** Coordinates Nico's task list, storage, and command execution. */
 public class Nico {
     public static final Path FILE_PATH = Paths.get("data", "tasks.txt");
     public static final String DATE_TIME_INPUT_FORMAT = "dd-MM-yyyy HHmm";
     public static final String DATE_TIME_OUTPUT_FORMAT = "MMM dd yyyy HH:mm";
 
+    private final List<Task> tasks = new ArrayList<>();
+
     /**
-     * Loads tasks from the save file into the task list.
+     * Loads saved tasks into this chatbot instance.
      *
-     * @param tasks List that receives the saved tasks.
-     * @throws NicoException If the save file cannot be read or contains an invalid task.
+     * @throws NicoException if the saved task file cannot be read or parsed
      */
+    public void loadTasks() throws NicoException {
+        List<Task> loadedTasks = new ArrayList<>();
+        readSavedTasks(loadedTasks);
+        tasks.clear();
+        tasks.addAll(loadedTasks);
+    }
+
+    /**
+     * Executes one user command against this chatbot's persistent task list.
+     *
+     * @param inputText command text entered by the user
+     * @param ui user interface used to display command output
+     * @return whether the command requests that the application exit
+     * @throws NicoException if the command cannot be parsed or executed
+     */
+    public boolean processCommand(String inputText, Ui ui) throws NicoException {
+        Command command = Parser.parseCommand(inputText);
+        command.execute(tasks, ui);
+        return command.isExit();
+    }
+
     private static void readSavedTasks(List<Task> tasks) throws NicoException {
         try {
             TaskStorage.createTasksFile(FILE_PATH);
             List<String> taskStrings = Files.readAllLines(FILE_PATH);
             for (String taskString : taskStrings) {
                 if (!taskString.trim().isEmpty()) {
-                    Task task = createTaskFromTaskString(taskString);
-                    tasks.add(task);
+                    tasks.add(createTaskFromTaskString(taskString));
                 }
             }
-        } catch (IOException e) {
-            throw new NicoException("\tSorry, I could not load tasks.txt.");
-        } catch (IllegalArgumentException | StringIndexOutOfBoundsException e) {
-            throw new NicoException("\tSorry, tasks.txt contains a task I could not understand.");
+        } catch (IOException exception) {
+            throw new NicoException("Sorry, I could not load tasks.txt.");
+        } catch (IllegalArgumentException | StringIndexOutOfBoundsException exception) {
+            throw new NicoException("Sorry, tasks.txt contains a task I could not understand.");
         }
     }
 
-    /**
-     * Reconstructs one task object from its saved display-format text.
-     *
-     * @param taskString Saved representation of a task.
-     * @return The reconstructed task, with its saved completion status.
-     * @throws IllegalArgumentException If the saved task type or date-time values are invalid.
-     */
     private static Task createTaskFromTaskString(String taskString) {
         String taskType = taskString.substring(1, 2);
         boolean isDone = taskString.charAt(4) == 'X';
@@ -61,10 +75,9 @@ public class Nico {
                 LocalDateTime dueTime;
                 try {
                     dueTime = Parser.parseDateTime(
-                            taskDetails.substring(byStartIndex + 6, taskDetails.length() - 1),
-                            DATE_TIME_OUTPUT_FORMAT);
-                } catch (NicoException e) {
-                    throw new IllegalArgumentException("Invalid Saved Tasks File Formatting");
+                            taskDetails.substring(byStartIndex + 6, taskDetails.length() - 1), DATE_TIME_OUTPUT_FORMAT);
+                } catch (NicoException exception) {
+                    throw new IllegalArgumentException("Invalid saved task formatting", exception);
                 }
                 task = new Deadline(description, dueTime);
                 break;
@@ -72,20 +85,16 @@ public class Nico {
             case "E": {
                 int fromStartIndex = taskDetails.lastIndexOf(" (from: ");
                 int toStartIndex = taskDetails.lastIndexOf(" to: ");
-                String description = taskDetails.substring(0, fromStartIndex);
-                LocalDateTime startTime;
-                LocalDateTime endTime;
-
+                String eventDescription = taskDetails.substring(0, fromStartIndex);
                 try {
-                    startTime = Parser.parseDateTime(
+                    LocalDateTime startTime = Parser.parseDateTime(
                             taskDetails.substring(fromStartIndex + 8, toStartIndex), DATE_TIME_OUTPUT_FORMAT);
-                    endTime = Parser.parseDateTime(
-                            taskDetails.substring(toStartIndex + 5, taskDetails.length() - 1),
-                            DATE_TIME_OUTPUT_FORMAT);
-                } catch (NicoException e) {
-                    throw new IllegalArgumentException("Invalid Saved Tasks File Formatting");
+                    LocalDateTime endTime = Parser.parseDateTime(
+                            taskDetails.substring(toStartIndex + 5, taskDetails.length() - 1), DATE_TIME_OUTPUT_FORMAT);
+                    task = new Event(eventDescription, startTime, endTime);
+                } catch (NicoException exception) {
+                    throw new IllegalArgumentException("Invalid saved task formatting", exception);
                 }
-                task = new Event(description, startTime, endTime);
                 break;
             }
             default: {
@@ -97,36 +106,5 @@ public class Nico {
             task.markAsDone();
         }
         return task;
-    }
-
-    /**
-     * Starts the chatbot and processes commands until the user exits.
-     *
-     * @param args Command-line arguments, which are not used.
-     */
-    public static void main(String[] args) {
-        Ui ui = new Ui();
-        List<Task> tasks = new ArrayList<>();
-        try {
-            readSavedTasks(tasks);
-        } catch (NicoException e) {
-            ui.showMessage(e.getMessage());
-        }
-
-        ui.showWelcome();
-        while (true) {
-            ui.showLine();
-            String ans = ui.readCommand();
-
-            try {
-                Command command = Parser.parseCommand(ans);
-                command.execute(tasks, ui);
-                if (command.isExit()) {
-                    return;
-                }
-            } catch (NicoException e) {
-                ui.showMessage(e.getMessage());
-            }
-        }
     }
 }

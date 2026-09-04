@@ -42,8 +42,8 @@ public class EventCommand extends ParamCommand {
         LocalDateTime startTime = Parser.parseDateTime(parts[1].trim(), Nico.DATE_TIME_INPUT_FORMAT);
         LocalDateTime endTime = Parser.parseDateTime(parts[2].trim(), Nico.DATE_TIME_INPUT_FORMAT);
         Event newEvent = new Event(parts[0].trim(), startTime, endTime);
-        tasks.add(newEvent);
         TaskStorage.writeTask(Nico.FILE_PATH, newEvent);
+        tasks.add(newEvent);
         ui.showTaskAdded(newEvent, tasks.size());
     }
 }

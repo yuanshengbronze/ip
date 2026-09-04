@@ -1,134 +1,181 @@
 package nico;
 
+import java.io.IOException;
 import java.util.List;
-import java.util.Scanner;
 
-/**
- * Handles all console input and output for the nico.Nico chatbot.
- */
-public class Ui {
-    public static final String LINE = "____________________________________________________________";
-    public static final String BANNER =
-          " _   _ _           \n"
-        + "| \\ | (_) ___ ___  \n"
-        + "|  \\| | |/ __/ _ \\ \n"
-        + "| |\\  | | (_| (_) |\n"
-        + "|_| \\_|_|\\___\\___/ \n";
-    private final Scanner scanner;
+import javafx.application.Application;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
-    /** Creates a user interface that reads commands from standard input. */
+/** Provides the JavaFX user interface and FXML controller for the Nico chatbot. */
+public class Ui extends Application {
+    @FXML
+    private ScrollPane scrollPane;
+    @FXML
+    private VBox dialogContainer;
+    @FXML
+    private TextField userInput;
+    @FXML
+    private Button sendButton;
+
+    private final Nico nico;
+    private final StringBuilder responseBuilder;
+    private Stage stage;
+
+    /** Creates the state used by the JavaFX application. */
     public Ui() {
-        scanner = new Scanner(System.in);
+        nico = new Nico();
+        responseBuilder = new StringBuilder();
     }
 
-    /**
-     * Reads the next command entered by the user.
-     */
-    public String readCommand() {
-        return scanner.nextLine();
+    /** Initializes event handlers after the FXML controls have been injected. */
+    @FXML
+    private void initialize() {
+        sendButton.setOnAction(event -> handleUserInput());
+        userInput.setOnAction(event -> handleUserInput());
+        dialogContainer.heightProperty().addListener((observable, oldHeight, newHeight) ->
+                scrollPane.setVvalue(1.0));
     }
 
-    /**
-     * Shows the startup banner and greeting.
-     */
-    public void showWelcome() {
-        System.out.println(LINE);
-        System.out.println(BANNER);
-        System.out.println("\tHey man! It's Nico, what can I do for you?");
+    /** Loads and displays the FXML-based Nico application window. */
+    @Override
+    public void start(Stage primaryStage) {
+        stage = primaryStage;
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/Ui.fxml"));
+        loader.setController(this);
+
+        Parent root;
+        try {
+            root = loader.load();
+        } catch (IOException exception) {
+            throw new IllegalStateException("Unable to load the Nico user interface.", exception);
+        }
+
+        stage.setTitle("Nico");
+        stage.setResizable(false);
+        stage.setScene(new Scene(root));
+        stage.show();
+
+        try {
+            nico.loadTasks();
+        } catch (NicoException exception) {
+            beginResponse();
+            showMessage(exception.getMessage());
+            displayResponse();
+        }
+        addBotDialog("Hey man! It's Nico, what can I do for you?");
     }
 
-    /**
-     * Shows the separator printed before command output.
-     */
-    public void showLine() {
-        System.out.println("\t" + LINE);
-    }
+    /** Executes the current input and renders either its response or its error. */
+    private void handleUserInput() {
+        String userText = userInput.getText();
+        dialogContainer.getChildren().add(DialogBox.getUserDialog(userText));
+        userInput.clear();
+        beginResponse();
 
-    /**
-     * Shows the farewell message before the program exits.
-     */
-    public void showGoodbye() {
-        showLine();
-        System.out.println("\tNice seeing you. Until next time!");
-        showLine();
-    }
-
-    /**
-     * Shows a message that has already been formatted by the caller.
-     */
-    public void showMessage(String message) {
-        System.out.println("\t" + message);
-    }
-
-    /**
-     * Shows all tasks with their one-based list numbers.
-     */
-    public void showTaskList(List<Task> tasks) {
-        showLine();
-        for (int i = 0; i < tasks.size(); i++) {
-            String text = String.format("\t %d. %s", i + 1, tasks.get(i));
-            System.out.println(text);
+        try {
+            boolean shouldExit = nico.processCommand(userText, this);
+            displayResponse();
+            if (shouldExit) {
+                stage.close();
+            }
+        } catch (NicoException exception) {
+            showMessage(exception.getMessage());
+            displayResponse();
+        } catch (RuntimeException exception) {
+            System.err.println("Unexpected error while processing a command: " + exception.getMessage());
+            exception.printStackTrace();
+            showMessage("Sorry, something went wrong while processing that command.");
+            displayResponse();
         }
     }
 
-    /**
-     * Shows the confirmation after a task is added.
-     *
-     * @param task Task that was added.
-     * @param taskCount Number of tasks after the addition.
-     */
+    /** Starts collecting output for the next chatbot response. */
+    private void beginResponse() {
+        responseBuilder.setLength(0);
+    }
+
+    /** Adds the collected chatbot response to the conversation. */
+    private void displayResponse() {
+        String response = responseBuilder.toString().stripTrailing();
+        if (!response.isEmpty()) {
+            addBotDialog(response);
+        }
+    }
+
+    /** Adds a chatbot message to the conversation. */
+    private void addBotDialog(String message) {
+        dialogContainer.getChildren().add(DialogBox.getDukeDialog(message));
+    }
+
+    /** Appends one line to the current chatbot response. */
+    private void appendLine(String message) {
+        if (responseBuilder.length() > 0) {
+            responseBuilder.append(System.lineSeparator());
+        }
+        responseBuilder.append(message.stripLeading());
+    }
+
+    /** Shows the farewell message before the application closes. */
+    public void showGoodbye() {
+        appendLine("Nice seeing you. Until next time!");
+    }
+
+    /** Shows an error or informational message from the chatbot. */
+    public void showMessage(String message) {
+        appendLine(message);
+    }
+
+    /** Shows all tasks with their one-based list numbers. */
+    public void showTaskList(List<Task> tasks) {
+        for (int i = 0; i < tasks.size(); i++) {
+            appendLine(String.format("%d. %s", i + 1, tasks.get(i)));
+        }
+    }
+
+    /** Shows the confirmation after a task is added. */
     public void showTaskAdded(Task task, int taskCount) {
-        System.out.println("\tNice! I've added this task: ");
-        System.out.println("\t\t" + task);
-        System.out.println("\tNow you have " + taskCount + " tasks.");
+        appendLine("Nice! I've added this task:");
+        appendLine(task.toString());
+        appendLine("Now you have " + taskCount + " tasks.");
     }
 
-    /**
-     * Shows the confirmation after a task is marked as done.
-     */
+    /** Shows the confirmation after a task is marked as done. */
     public void showTaskMarkedDone(Task task) {
-        showLine();
-        System.out.println("\tI've marked this task as done:");
-        System.out.println("\t\t" + task);
+        appendLine("I've marked this task as done:");
+        appendLine(task.toString());
     }
 
-    /**
-     * Shows the confirmation after a task is marked as not done.
-     */
+    /** Shows the confirmation after a task is marked as not done. */
     public void showTaskMarkedNotDone(Task task) {
-        showLine();
-        System.out.println("\tI've marked this task as not done:");
-        System.out.println("\t\t" + task);
+        appendLine("I've marked this task as not done:");
+        appendLine(task.toString());
     }
 
-    /**
-     * Shows the confirmation after a task is removed.
-     *
-     * @param task Task that was removed.
-     * @param taskCount number of tasks after the removal.
-     */
+    /** Shows the confirmation after a task is removed. */
     public void showTaskRemoved(Task task, int taskCount) {
-        showLine();
-        System.out.println("\tI've removed this task");
-        System.out.println("\t\t" + task);
-        System.out.println("\tNow you have " + taskCount + " tasks.");
+        appendLine("I've removed this task");
+        appendLine(task.toString());
+        appendLine("Now you have " + taskCount + " tasks.");
     }
 
-    /**
-     * Shows one task on the same line, or multiple tasks as bullet points.
-     *
-     * @param label Label describing the task group.
-     * @param tasks Tasks to display.
-     */
+    /** Shows one task or all tasks tied for the requested group. */
     public void showTaskGroup(String label, List<? extends Task> tasks) {
         if (tasks.isEmpty()) {
-            System.out.println("\t" + label + ": None");
+            appendLine(label + ": None");
         } else if (tasks.size() == 1) {
-            System.out.println("\t" + label + ": " + tasks.getFirst());
+            appendLine(label + ": " + tasks.getFirst());
         } else {
-            System.out.println("\t" + label + ":");
+            appendLine(label + ":");
             for (Task task : tasks) {
-                System.out.println("\t- " + task);
+                appendLine("- " + task);
             }
         }
     }

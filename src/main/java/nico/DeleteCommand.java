@@ -23,8 +23,14 @@ public class DeleteCommand extends TaskNumberCommand {
     @Override
     public void execute(List<Task> tasks, Ui ui) throws NicoException {
         Task task = getTask(tasks, ui);
+        int taskIndex = tasks.indexOf(task);
         tasks.remove(task);
-        TaskStorage.writeAllTasks(Nico.FILE_PATH, tasks);
+        try {
+            TaskStorage.writeAllTasks(Nico.FILE_PATH, tasks);
+        } catch (NicoException exception) {
+            tasks.add(taskIndex, task);
+            throw exception;
+        }
         ui.showTaskRemoved(task, tasks.size());
     }
 }

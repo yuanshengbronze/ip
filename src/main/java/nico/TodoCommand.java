@@ -27,9 +27,8 @@ public class TodoCommand extends ParamCommand {
             throw new NicoException("\tDescription can't be empty. Please use: todo DESCRIPTION");
         }
         Task newTodo = new Todo(description.trim());
-        tasks.add(newTodo);
         TaskStorage.writeTask(Nico.FILE_PATH, newTodo);
-        ui.showLine();
+        tasks.add(newTodo);
         ui.showTaskAdded(newTodo, tasks.size());
     }
 }

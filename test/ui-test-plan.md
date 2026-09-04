@@ -344,6 +344,21 @@ Sorry, that task number is not in the list.
 Nice seeing you. Until next time!
 ```
 
+## Test Case: Reject non-numeric task number
+
+Aim: Verify that a task-number command rejects a non-numeric task number without a package prefix in its message.
+
+```input
+mark one
+bye
+```
+
+```expected
+Task number must be an integer.
+---
+Nice seeing you. Until next time!
+```
+
 ## Test Case: Reject malformed deadline
 
 Aim: Verify that a `deadline` command without `/by` shows the expected usage message.
