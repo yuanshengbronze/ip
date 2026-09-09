@@ -34,6 +34,8 @@ public abstract class TaskNumberCommand extends ParamCommand {
             if (taskNumber < 1 || taskNumber > tasks.size()) {
                 throw new NicoException("\tSorry, that task number is not in the list.");
             }
+            assert taskNumber >= 1 && taskNumber <= tasks.size()
+                    : "a validated task number must identify an element in the task list";
             return tasks.get(taskNumber - 1);
         } catch (NumberFormatException exception) {
             throw new NicoException("\tTask number must be an integer.");
