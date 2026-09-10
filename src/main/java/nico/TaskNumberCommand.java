@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Provides common validation for commands that identify a task by its list number.
  */
-public abstract class TaskNumberCommand extends ParamCommand {
+public abstract class TaskNumberCommand extends ParameterCommand {
     /**
      * Creates a command that operates on a task number.
      *
@@ -20,11 +20,10 @@ public abstract class TaskNumberCommand extends ParamCommand {
      * Returns the requested task after validating its one-based list number.
      *
      * @param tasks tasks currently managed by the chatbot
-     * @param ui user interface used to display validation separators
      * @return task identified by the supplied one-based task number
      * @throws NicoException if the task number is missing, non-numeric, or outside the list
      */
-    protected Task getTask(List<Task> tasks, Ui ui) throws NicoException {
+    protected Task getTask(List<Task> tasks) throws NicoException {
         String taskNumberText = getParameter();
         if (taskNumberText == null || taskNumberText.trim().isEmpty()) {
             throw new NicoException("\tNo task number. Please use: " + getCommandWord() + " TASK_NUMBER");

@@ -15,4 +15,14 @@ public class NicoException extends Exception {
     public NicoException(String message) {
         super(message);
     }
+
+    /**
+     * Creates an exception with a user-facing message and its underlying cause.
+     *
+     * @param message detail message for the user
+     * @param cause underlying failure that caused this exception
+     */
+    public NicoException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }

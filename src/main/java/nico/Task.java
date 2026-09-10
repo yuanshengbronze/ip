@@ -1,11 +1,20 @@
 package nico;
 
+import java.time.format.DateTimeFormatter;
+
 /**
  * Represents a task with a description and completion status.
  */
 public class Task {
-    protected String description;
-    protected boolean isDone;
+    /** Date-time format shared by task display and saved task records. */
+    static final DateTimeFormatter DATE_TIME_FORMATTER =
+            DateTimeFormatter.ofPattern("MMM dd yyyy HH:mm");
+
+    private static final String DONE_STATUS = "[X]";
+    private static final String NOT_DONE_STATUS = "[ ]";
+
+    private final String description;
+    private boolean isDone;
 
     /**
      * Creates an incomplete task with the given description.
@@ -23,7 +32,7 @@ public class Task {
     }
 
     /** Marks this task as incomplete. */
-    public void unmarkAsDone() {
+    public void markAsNotDone() {
         this.isDone = false;
     }
 
@@ -35,13 +44,26 @@ public class Task {
     }
 
     /**
+     * Returns this task's description.
+     *
+     * @return task description
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /** Returns the display marker for this task's completion status. */
+    protected String getStatusMarker() {
+        return isDone ? DONE_STATUS : NOT_DONE_STATUS;
+    }
+
+    /**
      * Returns this task in the format used for display and storage.
      *
      * @return formatted task text, including its completion status
      */
     @Override
     public String toString() {
-        String status = this.isDone ? "[X]" : "[ ]";
-        return status + " " + this.description;
+        return getStatusMarker() + " " + description;
     }
 }
