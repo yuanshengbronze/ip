@@ -76,54 +76,60 @@ public class Nico {
         String taskType = taskString.substring(TASK_TYPE_START_INDEX, TASK_TYPE_END_INDEX);
         boolean isDone = taskString.charAt(TASK_STATUS_INDEX) == DONE_STATUS;
         String taskDetails = taskString.substring(TASK_DETAILS_START_INDEX);
-
-        Task task;
-        switch (taskType) {
-            case TODO_TASK_TYPE: {
-                task = new Todo(taskDetails);
-                break;
-            }
-            case DEADLINE_TASK_TYPE: {
-                int byStartIndex = taskDetails.lastIndexOf(DEADLINE_TIME_PREFIX);
-                String description = taskDetails.substring(0, byStartIndex);
-                LocalDateTime dueTime;
-                try {
-                    dueTime = Parser.parseDateTime(
-                            taskDetails.substring(byStartIndex + DEADLINE_TIME_PREFIX.length(),
-                                    taskDetails.length() - CLOSING_PARENTHESIS_LENGTH),
-                            DATE_TIME_OUTPUT_FORMAT);
-                } catch (NicoException exception) {
-                    throw new IllegalArgumentException("Invalid saved task formatting", exception);
-                }
-                task = new Deadline(description, dueTime);
-                break;
-            }
-            case EVENT_TASK_TYPE: {
-                int fromStartIndex = taskDetails.lastIndexOf(EVENT_START_TIME_PREFIX);
-                int toStartIndex = taskDetails.lastIndexOf(EVENT_END_TIME_PREFIX);
-                String eventDescription = taskDetails.substring(0, fromStartIndex);
-                try {
-                    LocalDateTime startTime = Parser.parseDateTime(
-                            taskDetails.substring(fromStartIndex + EVENT_START_TIME_PREFIX.length(), toStartIndex),
-                            DATE_TIME_OUTPUT_FORMAT);
-                    LocalDateTime endTime = Parser.parseDateTime(
-                            taskDetails.substring(toStartIndex + EVENT_END_TIME_PREFIX.length(),
-                                    taskDetails.length() - CLOSING_PARENTHESIS_LENGTH),
-                            DATE_TIME_OUTPUT_FORMAT);
-                    task = new Event(eventDescription, startTime, endTime);
-                } catch (NicoException exception) {
-                    throw new IllegalArgumentException("Invalid saved task formatting", exception);
-                }
-                break;
-            }
-            default: {
-                throw new IllegalArgumentException("Unknown task type: " + taskType);
-            }
-        }
+        Task task = createTask(taskType, taskDetails);
 
         if (isDone) {
             task.markAsDone();
         }
         return task;
+    }
+
+    private static Task createTask(String taskType, String taskDetails) {
+        switch (taskType) {
+            case TODO_TASK_TYPE: {
+                return new Todo(taskDetails);
+            }
+            case DEADLINE_TASK_TYPE: {
+                return createDeadlineFromTaskDetails(taskDetails);
+            }
+            case EVENT_TASK_TYPE: {
+                return createEventFromTaskDetails(taskDetails);
+            }
+            default: {
+                throw new IllegalArgumentException("Unknown task type: " + taskType);
+            }
+        }
+    }
+
+    private static Deadline createDeadlineFromTaskDetails(String taskDetails) {
+        int dueTimeStartIndex = taskDetails.lastIndexOf(DEADLINE_TIME_PREFIX);
+        String description = taskDetails.substring(0, dueTimeStartIndex);
+        String dueTimeString = taskDetails.substring(
+                dueTimeStartIndex + DEADLINE_TIME_PREFIX.length(),
+                taskDetails.length() - CLOSING_PARENTHESIS_LENGTH);
+        LocalDateTime dueTime = parseSavedDateTime(dueTimeString);
+        return new Deadline(description, dueTime);
+    }
+
+    private static Event createEventFromTaskDetails(String taskDetails) {
+        int startTimeStartIndex = taskDetails.lastIndexOf(EVENT_START_TIME_PREFIX);
+        int endTimeStartIndex = taskDetails.lastIndexOf(EVENT_END_TIME_PREFIX);
+        String description = taskDetails.substring(0, startTimeStartIndex);
+        String startTimeString = taskDetails.substring(
+                startTimeStartIndex + EVENT_START_TIME_PREFIX.length(), endTimeStartIndex);
+        String endTimeString = taskDetails.substring(
+                endTimeStartIndex + EVENT_END_TIME_PREFIX.length(),
+                taskDetails.length() - CLOSING_PARENTHESIS_LENGTH);
+        LocalDateTime startTime = parseSavedDateTime(startTimeString);
+        LocalDateTime endTime = parseSavedDateTime(endTimeString);
+        return new Event(description, startTime, endTime);
+    }
+
+    private static LocalDateTime parseSavedDateTime(String dateTimeString) {
+        try {
+            return Parser.parseDateTime(dateTimeString, DATE_TIME_OUTPUT_FORMAT);
+        } catch (NicoException exception) {
+            throw new IllegalArgumentException("Invalid saved task formatting", exception);
+        }
     }
 }
