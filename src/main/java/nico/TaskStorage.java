@@ -20,6 +20,7 @@ public class TaskStorage {
     public static void writeTask(Path filePath, Task task) throws NicoException {
         try {
             createTasksFile(filePath);
+            assert Files.exists(filePath) : "the task file must exist before a task is written";
             Files.writeString(filePath, task + System.lineSeparator(), StandardOpenOption.APPEND);
         } catch (IOException exception) {
             throw new NicoException("Sorry, I could not save this task to tasks.txt.");
@@ -36,6 +37,7 @@ public class TaskStorage {
     public static void writeAllTasks(Path filePath, List<Task> tasks) throws NicoException {
         try {
             createTasksFile(filePath);
+            assert Files.exists(filePath) : "the task file must exist before the task list is written";
             StringBuilder savedTasks = new StringBuilder();
             for (Task task : tasks) {
                 savedTasks.append(task).append(System.lineSeparator());
