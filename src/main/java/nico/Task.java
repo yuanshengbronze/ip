@@ -15,6 +15,8 @@ public class Task {
 
     private final String description;
     private boolean isDone;
+    /** Null until the user assigns a priority. */
+    private Priority priority;
 
     /**
      * Creates an incomplete task with the given description.
@@ -54,7 +56,18 @@ public class Task {
 
     /** Returns the display marker for this task's completion status. */
     protected String getStatusMarker() {
-        return isDone ? DONE_STATUS : NOT_DONE_STATUS;
+        String status = isDone ? DONE_STATUS : NOT_DONE_STATUS;
+        return priority == null ? status : status + "[" + priority + "]";
+    }
+
+    /** Returns the assigned priority, or null if none has been assigned. */
+    public Priority getPriority() {
+        return priority;
+    }
+
+    /** Sets the priority; null restores the unassigned state. */
+    public void setPriority(Priority priority) {
+        this.priority = priority;
     }
 
     /**

@@ -45,6 +45,10 @@ public final class Parser {
                 return new DeleteCommand(argument);
             case "find":
                 return new FindCommand(argument);
+            case "addpriority":
+                return new AddPriorityCommand(argument);
+            case "showpriority":
+                return new ShowPriorityCommand(argument);
             default:
                 throw new NicoException("Sorry, I don't understand what that command means :(");
         }
