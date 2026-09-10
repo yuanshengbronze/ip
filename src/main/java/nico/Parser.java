@@ -7,7 +7,10 @@ import java.time.format.DateTimeParseException;
 /**
  * Interprets user input and creates command objects when possible.
  */
-public class Parser {
+public final class Parser {
+    private Parser() {
+    }
+
     /**
      * Splits user input into a command word and its optional argument.
      *
@@ -16,9 +19,9 @@ public class Parser {
      * @throws NicoException If the command is not recognized or has invalid arguments.
      */
     public static Command parseCommand(String fullCommand) throws NicoException {
-        String[] commandArray = fullCommand.trim().split("\\s+", 2);
-        String argument = commandArray.length > 1 ? commandArray[1] : null;
-        switch (commandArray[0]) {
+        String[] commandParts = fullCommand.trim().split("\\s+", 2);
+        String argument = commandParts.length > 1 ? commandParts[1] : null;
+        switch (commandParts[0]) {
             case "bye":
                 return new ExitCommand();
             case "list":
@@ -59,7 +62,7 @@ public class Parser {
         try {
             return LocalDateTime.parse(input, DateTimeFormatter.ofPattern(format));
         } catch (DateTimeParseException exception) {
-            throw new NicoException(String.format("Please use %s format for date and time!", format));
+            throw new NicoException(String.format("Please use %s format for date and time!", format), exception);
         }
     }
 }

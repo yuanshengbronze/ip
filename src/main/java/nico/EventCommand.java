@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Adds an event task to the task list.
  */
-public class EventCommand extends ParamCommand {
+public class EventCommand extends ParameterCommand {
     /**
      * Creates a command with the event details supplied by the user.
      */

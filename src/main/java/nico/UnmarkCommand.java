@@ -22,8 +22,8 @@ public class UnmarkCommand extends TaskNumberCommand {
      */
     @Override
     public void execute(List<Task> tasks, Ui ui) throws NicoException {
-        Task task = getTask(tasks, ui);
-        task.unmarkAsDone();
+        Task task = getTask(tasks);
+        task.markAsNotDone();
         try {
             TaskStorage.writeAllTasks(Nico.FILE_PATH, tasks);
         } catch (NicoException exception) {

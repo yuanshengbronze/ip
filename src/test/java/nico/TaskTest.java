@@ -26,11 +26,11 @@ class TaskTest {
     }
 
     @Test
-    void unmarkAsDone_completedTask_taskBecomesIncomplete() {
+    void markAsNotDone_completedTask_taskBecomesIncomplete() {
         Task task = new Task("read book");
         task.markAsDone();
 
-        task.unmarkAsDone();
+        task.markAsNotDone();
 
         assertFalse(task.isDone());
         assertEquals("[ ] read book", task.toString());

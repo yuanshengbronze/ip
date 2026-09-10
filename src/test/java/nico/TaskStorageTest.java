@@ -27,6 +27,43 @@ class TaskStorageTest {
     }
 
     @Test
+    void readTasks_savedTasks_tasksRestoredWithTypesAndStatuses() throws IOException, NicoException {
+        Path filePath = temporaryDirectory.resolve("tasks.txt");
+        Files.write(filePath, List.of(
+                "[T][X] read book",
+                "[D][ ] return book (by: Aug 25 2026 19:00)",
+                "[E][ ] project meeting (from: Aug 26 2026 14:00 to: Aug 26 2026 16:00)"));
+
+        List<Task> tasks = TaskStorage.readTasks(filePath);
+
+        assertEquals(List.of(
+                "[T][X] read book",
+                "[D][ ] return book (by: Aug 25 2026 19:00)",
+                "[E][ ] project meeting (from: Aug 26 2026 14:00 to: Aug 26 2026 16:00)"),
+                tasks.stream().map(Task::toString).toList());
+    }
+
+    @Test
+    void readTasks_missingFile_emptyFileCreated() throws NicoException {
+        Path filePath = temporaryDirectory.resolve("nested/tasks.txt");
+
+        List<Task> tasks = TaskStorage.readTasks(filePath);
+
+        assertTrue(tasks.isEmpty());
+        assertTrue(Files.isRegularFile(filePath));
+    }
+
+    @Test
+    void readTasks_invalidRecord_nicoExceptionThrown() throws IOException {
+        Path filePath = temporaryDirectory.resolve("tasks.txt");
+        Files.writeString(filePath, "invalid task record");
+
+        NicoException exception = assertThrows(NicoException.class, () -> TaskStorage.readTasks(filePath));
+
+        assertEquals("Sorry, tasks.txt contains a task I could not understand.", exception.getMessage());
+    }
+
+    @Test
     void writeTask_multipleTasks_tasksAppendedInOrder() throws IOException, NicoException {
         Path filePath = temporaryDirectory.resolve("tasks.txt");
 

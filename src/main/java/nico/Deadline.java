@@ -1,13 +1,12 @@
 package nico;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 /**
  * Represents a task that must be completed by a specific date and time.
  */
 public class Deadline extends Task {
-    protected LocalDateTime dueTime;
+    private final LocalDateTime dueTime;
 
     /**
      * Creates a deadline task with its due date and time.
@@ -34,8 +33,7 @@ public class Deadline extends Task {
      */
     @Override
     public String toString() {
-        String status = this.isDone ? "[X]" : "[ ]";
-        String dueTimeString = dueTime.format(DateTimeFormatter.ofPattern(Nico.DATE_TIME_OUTPUT_FORMAT));
-        return String.format("[D]%s %s (by: %s)", status, description, dueTimeString);
+        String dueTimeString = dueTime.format(DATE_TIME_FORMATTER);
+        return String.format("[D]%s %s (by: %s)", getStatusMarker(), getDescription(), dueTimeString);
     }
 }
