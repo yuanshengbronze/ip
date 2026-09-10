@@ -1,14 +1,13 @@
 package nico;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 /**
  * Represents a task that happens between a start date-time and an end date-time.
  */
 public class Event extends Task {
-    protected LocalDateTime startTime;
-    protected LocalDateTime endTime;
+    private final LocalDateTime startTime;
+    private final LocalDateTime endTime;
 
     /**
      * Creates an event task with its start and end date-times.
@@ -37,9 +36,9 @@ public class Event extends Task {
      */
     @Override
     public String toString() {
-        String status = this.isDone ? "[X]" : "[ ]";
-        String startTimeString = startTime.format(DateTimeFormatter.ofPattern(Nico.DATE_TIME_OUTPUT_FORMAT));
-        String endTimeString = endTime.format(DateTimeFormatter.ofPattern(Nico.DATE_TIME_OUTPUT_FORMAT));
-        return String.format("[E]%s %s (from: %s to: %s)", status, description, startTimeString, endTimeString);
+        String startTimeString = startTime.format(DATE_TIME_FORMATTER);
+        String endTimeString = endTime.format(DATE_TIME_FORMATTER);
+        return String.format("[E]%s %s (from: %s to: %s)",
+                getStatusMarker(), getDescription(), startTimeString, endTimeString);
     }
 }

@@ -18,7 +18,6 @@ public class Todo extends Task {
      */
     @Override
     public String toString() {
-        String status = this.isDone ? "[X]" : "[ ]";
-        return "[T]" + status + " " + this.description;
+        return "[T]" + getStatusMarker() + " " + getDescription();
     }
 }

@@ -33,7 +33,7 @@ public class FindCommand extends ParamCommand {
         List<Task> result = new ArrayList<>();
         String normalizedKeyword = keyword.toLowerCase(Locale.ROOT);
         for (Task task : tasks) {
-            if (task.description.toLowerCase(Locale.ROOT).contains(normalizedKeyword)) {
+            if (task.getDescription().toLowerCase(Locale.ROOT).contains(normalizedKeyword)) {
                 result.add(task);
             }
         }

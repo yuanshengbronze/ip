@@ -4,12 +4,114 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Saves the current task list to nico.Nico's data file.
+ * Reads and writes tasks using Nico's saved-file format.
  */
-public class TaskStorage {
+public final class TaskStorage {
+    private static final int TASK_TYPE_START_INDEX = 1;
+    private static final int TASK_TYPE_END_INDEX = 2;
+    private static final int TASK_STATUS_INDEX = 4;
+    private static final int TASK_DETAILS_START_INDEX = 7;
+    private static final int CLOSING_PARENTHESIS_LENGTH = 1;
+
+    private static final char DONE_STATUS = 'X';
+    private static final String TODO_TASK_TYPE = "T";
+    private static final String DEADLINE_TASK_TYPE = "D";
+    private static final String EVENT_TASK_TYPE = "E";
+    private static final String DEADLINE_TIME_PREFIX = " (by: ";
+    private static final String EVENT_START_TIME_PREFIX = " (from: ";
+    private static final String EVENT_END_TIME_PREFIX = " to: ";
+
+    private TaskStorage() {
+    }
+
+    /**
+     * Reads all tasks from the data file, creating an empty file if necessary.
+     *
+     * @param filePath path to the task data file
+     * @return tasks represented by the saved records
+     * @throws NicoException if the task file cannot be read or contains an invalid record
+     */
+    public static List<Task> readTasks(Path filePath) throws NicoException {
+        try {
+            createTasksFile(filePath);
+            return parseTaskRecords(Files.readAllLines(filePath));
+        } catch (IOException exception) {
+            throw new NicoException("Sorry, I could not load tasks.txt.", exception);
+        } catch (IllegalArgumentException | StringIndexOutOfBoundsException exception) {
+            throw new NicoException("Sorry, tasks.txt contains a task I could not understand.", exception);
+        }
+    }
+
+    private static List<Task> parseTaskRecords(List<String> taskRecords) {
+        List<Task> tasks = new ArrayList<>();
+        for (String taskRecord : taskRecords) {
+            if (!taskRecord.isBlank()) {
+                tasks.add(parseTaskRecord(taskRecord));
+            }
+        }
+        return tasks;
+    }
+
+    private static Task parseTaskRecord(String taskRecord) {
+        String taskType = taskRecord.substring(TASK_TYPE_START_INDEX, TASK_TYPE_END_INDEX);
+        boolean isDone = taskRecord.charAt(TASK_STATUS_INDEX) == DONE_STATUS;
+        String taskDetails = taskRecord.substring(TASK_DETAILS_START_INDEX);
+        Task task = createTask(taskType, taskDetails);
+
+        if (isDone) {
+            task.markAsDone();
+        }
+        return task;
+    }
+
+    private static Task createTask(String taskType, String taskDetails) {
+        switch (taskType) {
+            case TODO_TASK_TYPE:
+                return new Todo(taskDetails);
+            case DEADLINE_TASK_TYPE:
+                return createDeadline(taskDetails);
+            case EVENT_TASK_TYPE:
+                return createEvent(taskDetails);
+            default:
+                throw new IllegalArgumentException("Unknown task type: " + taskType);
+        }
+    }
+
+    private static Deadline createDeadline(String taskDetails) {
+        int dueTimeStartIndex = taskDetails.lastIndexOf(DEADLINE_TIME_PREFIX);
+        String description = taskDetails.substring(0, dueTimeStartIndex);
+        String dueTimeText = taskDetails.substring(
+                dueTimeStartIndex + DEADLINE_TIME_PREFIX.length(),
+                taskDetails.length() - CLOSING_PARENTHESIS_LENGTH);
+        return new Deadline(description, parseSavedDateTime(dueTimeText));
+    }
+
+    private static Event createEvent(String taskDetails) {
+        int startTimeStartIndex = taskDetails.lastIndexOf(EVENT_START_TIME_PREFIX);
+        int endTimeStartIndex = taskDetails.lastIndexOf(EVENT_END_TIME_PREFIX);
+        String description = taskDetails.substring(0, startTimeStartIndex);
+        String startTimeText = taskDetails.substring(
+                startTimeStartIndex + EVENT_START_TIME_PREFIX.length(), endTimeStartIndex);
+        String endTimeText = taskDetails.substring(
+                endTimeStartIndex + EVENT_END_TIME_PREFIX.length(),
+                taskDetails.length() - CLOSING_PARENTHESIS_LENGTH);
+        return new Event(description, parseSavedDateTime(startTimeText), parseSavedDateTime(endTimeText));
+    }
+
+    private static LocalDateTime parseSavedDateTime(String dateTimeText) {
+        try {
+            return LocalDateTime.parse(dateTimeText, Task.DATE_TIME_FORMATTER);
+        } catch (DateTimeParseException exception) {
+            throw new IllegalArgumentException("Invalid saved task date and time", exception);
+        }
+    }
+
     /**
      * Appends one newly created task to the data file.
      *
@@ -22,7 +124,7 @@ public class TaskStorage {
             createTasksFile(filePath);
             Files.writeString(filePath, task + System.lineSeparator(), StandardOpenOption.APPEND);
         } catch (IOException exception) {
-            throw new NicoException("Sorry, I could not save this task to tasks.txt.");
+            throw new NicoException("Sorry, I could not save this task to tasks.txt.", exception);
         }
     }
 
@@ -42,7 +144,7 @@ public class TaskStorage {
             }
             Files.writeString(filePath, savedTasks.toString(), StandardOpenOption.TRUNCATE_EXISTING);
         } catch (IOException exception) {
-            throw new NicoException("Sorry, I could not update tasks.txt.");
+            throw new NicoException("Sorry, I could not update tasks.txt.", exception);
         }
     }
 
