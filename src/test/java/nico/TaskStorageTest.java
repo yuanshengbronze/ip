@@ -18,6 +18,30 @@ class TaskStorageTest {
     Path temporaryDirectory;
 
     @Test
+    void readTasks_prioritiesSaved_allTaskTypesRestored() throws NicoException {
+        Path filePath = temporaryDirectory.resolve("priorities.txt");
+        Task todo = new Todo("[high] read book");
+        Task deadline = new Deadline("report", LocalDateTime.of(2026, 8, 25, 19, 0));
+        Task event = new Event("meeting", LocalDateTime.of(2026, 8, 25, 19, 0),
+                LocalDateTime.of(2026, 8, 25, 20, 0));
+        todo.setPriority(Priority.HIGH);
+        deadline.setPriority(Priority.MEDIUM);
+        event.setPriority(Priority.LOW);
+        todo.markAsDone();
+        List<Task> tasks = List.of(todo, deadline, event, new Todo("[high] unassigned"));
+
+        TaskStorage.writeAllTasks(filePath, tasks);
+        List<Task> restored = TaskStorage.readTasks(filePath);
+
+        assertEquals(tasks.stream().map(Task::toString).toList(),
+                restored.stream().map(Task::toString).toList());
+        for (int i = 0; i < tasks.size(); i++) {
+            assertEquals(tasks.get(i).getPriority(), restored.get(i).getPriority());
+            assertEquals(tasks.get(i).getDescription(), restored.get(i).getDescription());
+        }
+    }
+
+    @Test
     void createTasksFile_nestedMissingPath_fileAndParentDirectoriesCreated() throws IOException {
         Path filePath = temporaryDirectory.resolve("nested/tasks.txt");
 

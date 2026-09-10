@@ -59,10 +59,25 @@ public final class TaskStorage {
     }
 
     private static Task parseTaskRecord(String taskRecord) {
+        // Priority metadata precedes the description, so old descriptions remain unambiguous.
+        Priority priority = null;
+        int priorityStartIndex = TASK_DETAILS_START_INDEX - 1;
+        if (taskRecord.charAt(priorityStartIndex) == '[') {
+            int priorityEndIndex = taskRecord.indexOf(']', priorityStartIndex);
+            String priorityText = taskRecord.substring(priorityStartIndex + 1, priorityEndIndex);
+            try {
+                priority = Priority.parse(priorityText);
+            } catch (NicoException exception) {
+                throw new IllegalArgumentException("Invalid saved priority", exception);
+            }
+            taskRecord = taskRecord.substring(0, priorityStartIndex)
+                    + taskRecord.substring(priorityEndIndex + 1);
+        }
         String taskType = taskRecord.substring(TASK_TYPE_START_INDEX, TASK_TYPE_END_INDEX);
         boolean isDone = taskRecord.charAt(TASK_STATUS_INDEX) == DONE_STATUS;
         String taskDetails = taskRecord.substring(TASK_DETAILS_START_INDEX);
         Task task = createTask(taskType, taskDetails);
+        task.setPriority(priority);
 
         if (isDone) {
             task.markAsDone();
