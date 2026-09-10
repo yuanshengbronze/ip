@@ -26,6 +26,7 @@ public class Nico {
         readSavedTasks(loadedTasks);
         tasks.clear();
         tasks.addAll(loadedTasks);
+        assert tasks.size() == loadedTasks.size() : "all successfully loaded tasks must be retained";
     }
 
     /**

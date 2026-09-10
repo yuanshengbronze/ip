@@ -44,6 +44,10 @@ public class UrgentCommand extends Command {
                 closestEvents.add(event);
             }
         }
+        LocalDateTime selectedStartTime = closestStartTime;
+        assert closestEvents.isEmpty() || closestEvents.stream().allMatch(event ->
+                !event.isDone() && event.getStartTime().equals(selectedStartTime))
+                : "urgent events must be incomplete and tied for the earliest start time";
         return closestEvents;
     }
 
@@ -69,6 +73,10 @@ public class UrgentCommand extends Command {
                 closestDeadlines.add(deadline);
             }
         }
+        LocalDateTime selectedDueTime = closestDueTime;
+        assert closestDeadlines.isEmpty() || closestDeadlines.stream().allMatch(deadline ->
+                !deadline.isDone() && deadline.getDueTime().equals(selectedDueTime))
+                : "urgent deadlines must be incomplete and tied for the earliest due time";
         return closestDeadlines;
     }
 }
