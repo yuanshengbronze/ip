@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Locale;
 
 /** Finds tasks whose descriptions contain a given keyword. */
-public class FindCommand extends ParamCommand {
+public class FindCommand extends ParameterCommand {
     /**
      * Creates a command that finds tasks with the given keyword.
      *
@@ -22,21 +22,21 @@ public class FindCommand extends ParamCommand {
             throw new NicoException("\tPlease use: find KEYWORD");
         }
 
-        List<Task> taskList = findKeywordMatches(tasks, keyword.trim());
-        ui.showTaskGroup("Here are the matching tasks in your list", taskList);
+        List<Task> matchingTasks = findKeywordMatches(tasks, keyword.trim());
+        ui.showTaskGroup("Here are the matching tasks in your list", matchingTasks);
     }
 
     /**
      * Returns tasks whose descriptions contain the keyword, regardless of letter case.
      */
     private List<Task> findKeywordMatches(List<Task> tasks, String keyword) {
-        List<Task> result = new ArrayList<>();
+        List<Task> matchingTasks = new ArrayList<>();
         String normalizedKeyword = keyword.toLowerCase(Locale.ROOT);
         for (Task task : tasks) {
             if (task.getDescription().toLowerCase(Locale.ROOT).contains(normalizedKeyword)) {
-                result.add(task);
+                matchingTasks.add(task);
             }
         }
-        return result;
+        return matchingTasks;
     }
 }

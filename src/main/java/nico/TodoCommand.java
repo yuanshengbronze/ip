@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Adds a todo task to the task list.
  */
-public class TodoCommand extends ParamCommand {
+public class TodoCommand extends ParameterCommand {
     /**
      * Creates a command with the todo description supplied by the user.
      */

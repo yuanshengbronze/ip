@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Adds a deadline task to the task list.
  */
-public class DeadlineCommand extends ParamCommand {
+public class DeadlineCommand extends ParameterCommand {
     /**
      * Creates a command with the deadline details supplied by the user.
      */

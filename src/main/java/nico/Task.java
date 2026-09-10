@@ -32,7 +32,7 @@ public class Task {
     }
 
     /** Marks this task as incomplete. */
-    public void unmarkAsDone() {
+    public void markAsNotDone() {
         this.isDone = false;
     }
 

@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Provides common validation for commands that identify a task by its list number.
  */
-public abstract class TaskNumberCommand extends ParamCommand {
+public abstract class TaskNumberCommand extends ParameterCommand {
     /**
      * Creates a command that operates on a task number.
      *

@@ -27,7 +27,7 @@ public class MarkCommand extends TaskNumberCommand {
         try {
             TaskStorage.writeAllTasks(Nico.FILE_PATH, tasks);
         } catch (NicoException exception) {
-            task.unmarkAsDone();
+            task.markAsNotDone();
             throw exception;
         }
         ui.showTaskMarkedDone(task);

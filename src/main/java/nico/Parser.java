@@ -19,9 +19,9 @@ public final class Parser {
      * @throws NicoException If the command is not recognized or has invalid arguments.
      */
     public static Command parseCommand(String fullCommand) throws NicoException {
-        String[] commandArray = fullCommand.trim().split("\\s+", 2);
-        String argument = commandArray.length > 1 ? commandArray[1] : null;
-        switch (commandArray[0]) {
+        String[] commandParts = fullCommand.trim().split("\\s+", 2);
+        String argument = commandParts.length > 1 ? commandParts[1] : null;
+        switch (commandParts[0]) {
             case "bye":
                 return new ExitCommand();
             case "list":

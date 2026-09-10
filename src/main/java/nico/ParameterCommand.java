@@ -3,7 +3,7 @@ package nico;
 /**
  * Stores shared command information for commands that accept one parameter.
  */
-public abstract class ParamCommand extends Command {
+public abstract class ParameterCommand extends Command {
     private final String commandWord;
     private final String parameter;
 
@@ -13,7 +13,7 @@ public abstract class ParamCommand extends Command {
      * @param commandWord Command word entered by the user.
      * @param parameter Parameter text entered after the command word.
      */
-    protected ParamCommand(String commandWord, String parameter) {
+    protected ParameterCommand(String commandWord, String parameter) {
         this.commandWord = commandWord;
         this.parameter = parameter;
     }
