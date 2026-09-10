@@ -22,7 +22,7 @@ public class MarkCommand extends TaskNumberCommand {
      */
     @Override
     public void execute(List<Task> tasks, Ui ui) throws NicoException {
-        Task task = getTask(tasks, ui);
+        Task task = getTask(tasks);
         task.markAsDone();
         try {
             TaskStorage.writeAllTasks(Nico.FILE_PATH, tasks);

@@ -22,7 +22,7 @@ public class DeleteCommand extends TaskNumberCommand {
      */
     @Override
     public void execute(List<Task> tasks, Ui ui) throws NicoException {
-        Task task = getTask(tasks, ui);
+        Task task = getTask(tasks);
         int taskIndex = tasks.indexOf(task);
         tasks.remove(task);
         try {
