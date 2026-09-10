@@ -4,11 +4,105 @@ The `test-ui` skill uses this file as the source of truth for console UI tests.
 Each test case records its aim, the console inputs, and the expected output after each input.
 
 ```program
-java -cp "%REPO_ROOT%\out\production\ip" nico.Nico
+java -cp "%REPO_ROOT%\build\classes\java\test;%REPO_ROOT%\build\libs\nico.jar" nico.ConsoleTestAdapter
 ```
 
 ```build
-javac -d out/production/ip src/main/java/*.java
+gradlew.bat testClasses shadowJar
+```
+
+## Test Case: Assign, replace, and filter priorities
+
+Aim: Verify all priorities, multiple matches, completed tasks, and empty results.
+
+```input
+todo report
+todo book
+addpriority 1 high
+addpriority 2 high
+showpriority high
+addpriority 1 medium
+showpriority medium
+addpriority 1 low
+mark 1
+showpriority low
+showpriority medium
+bye
+```
+
+```expected
+[T][ ] report
+---
+[T][ ] book
+---
+I've set this task's priority to high:
+[T][ ][high] report
+---
+I've set this task's priority to high:
+[T][ ][high] book
+---
+Tasks with priority high:
+- [T][ ][high] report
+- [T][ ][high] book
+---
+I've set this task's priority to medium:
+[T][ ][medium] report
+---
+Tasks with priority medium: [T][ ][medium] report
+---
+I've set this task's priority to low:
+[T][ ][low] report
+---
+I've marked this task as done:
+[T][X][low] report
+---
+Tasks with priority low: [T][X][low] report
+---
+Tasks with priority medium: None
+---
+Nice seeing you. Until next time!
+```
+
+## Test Case: Reject invalid priority commands
+
+Aim: Verify missing arguments, invalid priorities, extra arguments, and invalid task numbers.
+
+```input
+addpriority
+addpriority 1
+addpriority 1 high extra
+addpriority 1 urgent
+addpriority one high
+addpriority 0 high
+addpriority 99 high
+showpriority
+showpriority urgent
+showpriority high extra
+bye
+```
+
+```expected
+Please use: addpriority TASK_NUMBER PRIORITY
+---
+Please use: addpriority TASK_NUMBER PRIORITY
+---
+Please use: addpriority TASK_NUMBER PRIORITY
+---
+Priority must be high, medium, or low.
+---
+Task number must be an integer.
+---
+Sorry, that task number is not in the list.
+---
+Sorry, that task number is not in the list.
+---
+Please use: showpriority PRIORITY
+---
+Priority must be high, medium, or low.
+---
+Priority must be high, medium, or low.
+---
+Nice seeing you. Until next time!
 ```
 
 ## Test Case: Find tasks case-insensitively
