@@ -9,14 +9,13 @@ import javafx.scene.layout.HBox;
 
 /** Represents one message displayed in the conversation. */
 public class DialogBox extends HBox {
-
-    private final Label text;
+    private static final int MAX_TEXT_WIDTH = 270;
 
     /** Creates a dialog box containing the supplied message. */
     public DialogBox(String message) {
-        text = new Label(message);
+        Label text = new Label(message);
         text.setWrapText(true);
-        text.setMaxWidth(270);
+        text.setMaxWidth(MAX_TEXT_WIDTH);
         text.getStyleClass().add("message-bubble");
         getStyleClass().add("dialog");
         this.getChildren().add(text);
@@ -41,7 +40,7 @@ public class DialogBox extends HBox {
     }
 
     /** Creates a left-aligned dialog box for a Nico message. */
-    public static DialogBox getDukeDialog(String message) {
+    public static DialogBox getNicoDialog(String message) {
         DialogBox dialogBox = new DialogBox(message);
         dialogBox.flip();
         dialogBox.getStyleClass().add("nico-dialog");

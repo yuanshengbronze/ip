@@ -112,7 +112,7 @@ public class Ui extends Application {
 
     /** Adds a chatbot message to the conversation. */
     private void addBotDialog(String message) {
-        dialogContainer.getChildren().add(DialogBox.getDukeDialog(message));
+        dialogContainer.getChildren().add(DialogBox.getNicoDialog(message));
     }
 
     /** Appends one line to the current chatbot response. */

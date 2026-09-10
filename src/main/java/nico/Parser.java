@@ -7,7 +7,10 @@ import java.time.format.DateTimeParseException;
 /**
  * Interprets user input and creates command objects when possible.
  */
-public class Parser {
+public final class Parser {
+    private Parser() {
+    }
+
     /**
      * Splits user input into a command word and its optional argument.
      *
@@ -59,7 +62,7 @@ public class Parser {
         try {
             return LocalDateTime.parse(input, DateTimeFormatter.ofPattern(format));
         } catch (DateTimeParseException exception) {
-            throw new NicoException(String.format("Please use %s format for date and time!", format));
+            throw new NicoException(String.format("Please use %s format for date and time!", format), exception);
         }
     }
 }
