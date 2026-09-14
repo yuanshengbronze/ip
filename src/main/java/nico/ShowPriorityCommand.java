@@ -10,7 +10,7 @@ public class ShowPriorityCommand extends Command {
     /** Creates a filter for the given priority. */
     public ShowPriorityCommand(String argument) throws NicoException {
         if (argument == null || argument.isBlank()) {
-            throw new NicoException("Please use: showpriority PRIORITY");
+            throw NicoException.invalidInput("Choose a priority to show.", "showpriority PRIORITY");
         }
         priority = Priority.parse(argument);
     }

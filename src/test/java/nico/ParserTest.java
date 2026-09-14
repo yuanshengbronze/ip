@@ -31,28 +31,32 @@ class ParserTest {
     void parseCommand_emptyCommand_nicoExceptionThrown() {
         NicoException exception = assertThrows(NicoException.class, () -> Parser.parseCommand(""));
 
-        assertEquals("Sorry, I don't understand what that command means :(", exception.getMessage());
+        assertEquals("Error: I don't recognise that command." + System.lineSeparator()
+                + "Try: todo DESCRIPTION, list, mark TASK_NUMBER, or bye", exception.getMessage());
     }
 
     @Test
     void parseCommand_whitespaceCommand_nicoExceptionThrown() {
         NicoException exception = assertThrows(NicoException.class, () -> Parser.parseCommand("   "));
 
-        assertEquals("Sorry, I don't understand what that command means :(", exception.getMessage());
+        assertEquals("Error: I don't recognise that command." + System.lineSeparator()
+                + "Try: todo DESCRIPTION, list, mark TASK_NUMBER, or bye", exception.getMessage());
     }
 
     @Test
     void parseCommand_unknownCommand_nicoExceptionThrown() {
         NicoException exception = assertThrows(NicoException.class, () -> Parser.parseCommand("foo"));
 
-        assertEquals("Sorry, I don't understand what that command means :(", exception.getMessage());
+        assertEquals("Error: I don't recognise that command." + System.lineSeparator()
+                + "Try: todo DESCRIPTION, list, mark TASK_NUMBER, or bye", exception.getMessage());
     }
 
     @Test
     void parseCommand_urgentWithArgument_nicoExceptionThrown() {
         NicoException exception = assertThrows(NicoException.class, () -> Parser.parseCommand("urgent now"));
 
-        assertEquals("Please use: urgent", exception.getMessage());
+        assertEquals("Error: `urgent` does not take extra text." + System.lineSeparator() + "Try: urgent",
+                exception.getMessage());
     }
 
     @Test
@@ -67,6 +71,7 @@ class ParserTest {
         NicoException exception = assertThrows(NicoException.class, () ->
                 Parser.parseDateTime("Sunday", Nico.DATE_TIME_INPUT_FORMAT));
 
-        assertEquals("Please use dd-MM-yyyy HHmm format for date and time!", exception.getMessage());
+        assertEquals("Error: The date and time is invalid." + System.lineSeparator() + "Try: dd-MM-yyyy HHmm",
+                exception.getMessage());
     }
 }

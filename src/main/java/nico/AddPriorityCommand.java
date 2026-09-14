@@ -19,7 +19,8 @@ public class AddPriorityCommand extends TaskNumberCommand {
     private static String[] splitArgument(String argument) throws NicoException {
         String[] arguments = argument == null ? new String[0] : argument.trim().split("\\s+");
         if (arguments.length != 2) {
-            throw new NicoException("Please use: addpriority TASK_NUMBER PRIORITY");
+            throw NicoException.invalidInput("Choose a task number and priority.",
+                    "addpriority TASK_NUMBER PRIORITY");
         }
         return arguments;
     }

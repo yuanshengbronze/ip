@@ -82,25 +82,35 @@ bye
 ```
 
 ```expected
-Please use: addpriority TASK_NUMBER PRIORITY
+Error: Choose a task number and priority.
+Try: addpriority TASK_NUMBER PRIORITY
 ---
-Please use: addpriority TASK_NUMBER PRIORITY
+Error: Choose a task number and priority.
+Try: addpriority TASK_NUMBER PRIORITY
 ---
-Please use: addpriority TASK_NUMBER PRIORITY
+Error: Choose a task number and priority.
+Try: addpriority TASK_NUMBER PRIORITY
 ---
-Priority must be high, medium, or low.
+Error: Priority must be high, medium, or low.
+Try: high, medium, or low
 ---
-Task number must be an integer.
+Error: A task number must be a whole number.
+Try: addpriority TASK_NUMBER
 ---
-Sorry, that task number is not in the list.
+Error: That task number is not in the list.
+Try: addpriority TASK_NUMBER
 ---
-Sorry, that task number is not in the list.
+Error: That task number is not in the list.
+Try: addpriority TASK_NUMBER
 ---
-Please use: showpriority PRIORITY
+Error: Choose a priority to show.
+Try: showpriority PRIORITY
 ---
-Priority must be high, medium, or low.
+Error: Priority must be high, medium, or low.
+Try: high, medium, or low
 ---
-Priority must be high, medium, or low.
+Error: Priority must be high, medium, or low.
+Try: high, medium, or low
 ---
 Nice seeing you. Until next time!
 ```
@@ -159,7 +169,8 @@ bye
 ```
 
 ```expected
-Please use: find KEYWORD
+Error: Enter a keyword to search for.
+Try: find KEYWORD
 ---
 Nice seeing you. Until next time!
 ```
@@ -174,7 +185,8 @@ bye
 ```
 
 ```expected
-Sorry, I don't understand what that command means :(
+Error: I don't recognise that command.
+Try: todo DESCRIPTION, list, mark TASK_NUMBER, or bye
 ---
 Nice seeing you. Until next time!
 ```
@@ -370,7 +382,8 @@ bye
 ```
 
 ```expected
-Please use: urgent
+Error: `urgent` does not take extra text.
+Try: urgent
 ---
 Nice seeing you. Until next time!
 ```
@@ -433,7 +446,8 @@ bye
 Nice! I've added this task:
 [T][ ] borrow book
 ---
-Sorry, that task number is not in the list.
+Error: That task number is not in the list.
+Try: mark TASK_NUMBER
 ---
 Nice seeing you. Until next time!
 ```
@@ -448,7 +462,8 @@ bye
 ```
 
 ```expected
-Task number must be an integer.
+Error: A task number must be a whole number.
+Try: mark TASK_NUMBER
 ---
 Nice seeing you. Until next time!
 ```
@@ -463,7 +478,8 @@ bye
 ```
 
 ```expected
-Please use: deadline DESCRIPTION /by DUE TIME
+Error: I could not find a due time.
+Try: deadline DESCRIPTION /by dd-MM-yyyy HHmm
 ---
 Nice seeing you. Until next time!
 ```
@@ -478,7 +494,8 @@ bye
 ```
 
 ```expected
-Please use: event DESCRIPTION /from START TIME /to END TIME
+Error: I could not find both event times.
+Try: event DESCRIPTION /from dd-MM-yyyy HHmm /to dd-MM-yyyy HHmm
 ---
 Nice seeing you. Until next time!
 ```
@@ -493,7 +510,8 @@ bye
 ```
 
 ```expected
-Please use dd-MM-yyyy HHmm format for date and time!
+Error: The date and time is invalid.
+Try: dd-MM-yyyy HHmm
 ---
 Nice seeing you. Until next time!
 ```
@@ -508,7 +526,8 @@ bye
 ```
 
 ```expected
-Please use dd-MM-yyyy HHmm format for date and time!
+Error: The date and time is invalid.
+Try: dd-MM-yyyy HHmm
 ---
 Nice seeing you. Until next time!
 ```
@@ -523,7 +542,8 @@ bye
 ```
 
 ```expected
-Description can't be empty. Please use: todo DESCRIPTION
+Error: A to-do needs a description.
+Try: todo DESCRIPTION
 ---
 Nice seeing you. Until next time!
 ```
@@ -538,7 +558,8 @@ bye
 ```
 
 ```expected
-Description can't be empty. Please use: deadline DESCRIPTION /by DUE TIME
+Error: A deadline needs a description and due time.
+Try: deadline DESCRIPTION /by dd-MM-yyyy HHmm
 ---
 Nice seeing you. Until next time!
 ```
@@ -553,7 +574,8 @@ bye
 ```
 
 ```expected
-The description cannot be empty.
+Error: An event needs a description.
+Try: event DESCRIPTION /from dd-MM-yyyy HHmm /to dd-MM-yyyy HHmm
 ---
 Nice seeing you. Until next time!
 ```
@@ -568,7 +590,8 @@ bye
 ```
 
 ```expected
-Please use: event DESCRIPTION /from START TIME /to END TIME
+Error: An event needs both a start time and an end time.
+Try: event DESCRIPTION /from dd-MM-yyyy HHmm /to dd-MM-yyyy HHmm
 ---
 Nice seeing you. Until next time!
 ```
@@ -583,7 +606,8 @@ bye
 ```
 
 ```expected
-Please use: event DESCRIPTION /from START TIME /to END TIME
+Error: An event needs both a start time and an end time.
+Try: event DESCRIPTION /from dd-MM-yyyy HHmm /to dd-MM-yyyy HHmm
 ---
 Nice seeing you. Until next time!
 ```

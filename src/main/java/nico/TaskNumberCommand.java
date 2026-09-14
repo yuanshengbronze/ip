@@ -26,18 +26,20 @@ public abstract class TaskNumberCommand extends ParameterCommand {
     protected Task getTask(List<Task> tasks) throws NicoException {
         String taskNumberText = getParameter();
         if (taskNumberText == null || taskNumberText.trim().isEmpty()) {
-            throw new NicoException("\tNo task number. Please use: " + getCommandWord() + " TASK_NUMBER");
+            throw NicoException.invalidInput("Choose a task number.", getCommandWord() + " TASK_NUMBER");
         }
         try {
             int taskNumber = Integer.parseInt(taskNumberText.trim());
             if (taskNumber < 1 || taskNumber > tasks.size()) {
-                throw new NicoException("\tSorry, that task number is not in the list.");
+                throw NicoException.invalidInput("That task number is not in the list.",
+                        getCommandWord() + " TASK_NUMBER");
             }
             assert taskNumber >= 1 && taskNumber <= tasks.size()
                     : "a validated task number must identify an element in the task list";
             return tasks.get(taskNumber - 1);
         } catch (NumberFormatException exception) {
-            throw new NicoException("\tTask number must be an integer.");
+            throw NicoException.invalidInput("A task number must be a whole number.",
+                    getCommandWord() + " TASK_NUMBER");
         }
     }
 }

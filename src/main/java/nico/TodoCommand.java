@@ -24,7 +24,7 @@ public class TodoCommand extends ParameterCommand {
     public void execute(List<Task> tasks, Ui ui) throws NicoException {
         String description = getParameter();
         if (description == null || description.trim().isEmpty()) {
-            throw new NicoException("\tDescription can't be empty. Please use: todo DESCRIPTION");
+            throw NicoException.invalidInput("A to-do needs a description.", "todo DESCRIPTION");
         }
         Task newTodo = new Todo(description.trim());
         TaskStorage.writeTask(Nico.FILE_PATH, newTodo);

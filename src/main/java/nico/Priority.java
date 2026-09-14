@@ -19,7 +19,8 @@ public enum Priority {
                 }
             }
         }
-        throw new NicoException("Priority must be high, medium, or low.");
+        throw NicoException.invalidInput("Priority must be high, medium, or low.",
+                "high, medium, or low");
     }
 
     @Override

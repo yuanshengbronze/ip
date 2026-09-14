@@ -58,6 +58,15 @@
     -fx-effect: dropshadow(gaussian, rgba(31, 41, 55, 0.12), 8, 0, 0, 2);
 }
 
+.error-dialog .message-bubble {
+    -fx-background-color: #fee2e2;
+    -fx-text-fill: #991b1b;
+    -fx-background-radius: 18px 18px 18px 4px;
+    -fx-border-color: #fecaca;
+    -fx-border-radius: 18px 18px 18px 4px;
+    -fx-border-width: 1px;
+}
+
 .composer {
     -fx-alignment: center;
     -fx-background-color: white;

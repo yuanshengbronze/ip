@@ -25,18 +25,21 @@ public class EventCommand extends ParameterCommand {
     public void execute(List<Task> tasks, Ui ui) throws NicoException {
         String details = getParameter();
         if (details == null) {
-            throw new NicoException(
-                    "\tDescription can't be empty. Please use: event DESCRIPTION /from START TIME /to END TIME");
+            throw NicoException.invalidInput("An event needs a description, start time, and end time.",
+                    "event DESCRIPTION /from dd-MM-yyyy HHmm /to dd-MM-yyyy HHmm");
         }
         String[] parts = details.split("\\s*/from\\s*|\\s*/to\\s*", 3);
         if (parts.length < 3) {
-            throw new NicoException("\tPlease use: event DESCRIPTION /from START TIME /to END TIME");
+            throw NicoException.invalidInput("I could not find both event times.",
+                    "event DESCRIPTION /from dd-MM-yyyy HHmm /to dd-MM-yyyy HHmm");
         }
         if (parts[0].trim().isEmpty()) {
-            throw new NicoException("\tThe description cannot be empty.");
+            throw NicoException.invalidInput("An event needs a description.",
+                    "event DESCRIPTION /from dd-MM-yyyy HHmm /to dd-MM-yyyy HHmm");
         }
         if (parts[1].trim().isEmpty() || parts[2].trim().isEmpty()) {
-            throw new NicoException("\tPlease use: event DESCRIPTION /from START TIME /to END TIME");
+            throw NicoException.invalidInput("An event needs both a start time and an end time.",
+                    "event DESCRIPTION /from dd-MM-yyyy HHmm /to dd-MM-yyyy HHmm");
         }
 
         LocalDateTime startTime = Parser.parseDateTime(parts[1].trim(), Nico.DATE_TIME_INPUT_FORMAT);

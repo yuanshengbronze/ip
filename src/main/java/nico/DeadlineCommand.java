@@ -25,17 +25,21 @@ public class DeadlineCommand extends ParameterCommand {
     public void execute(List<Task> tasks, Ui ui) throws NicoException {
         String details = getParameter();
         if (details == null) {
-            throw new NicoException("\tDescription can't be empty. Please use: deadline DESCRIPTION /by DUE TIME");
+            throw NicoException.invalidInput("A deadline needs a description and due time.",
+                    "deadline DESCRIPTION /by dd-MM-yyyy HHmm");
         }
         String[] parts = details.split("\\s*/by\\s+", 2);
         if (parts.length < 2) {
-            throw new NicoException("\tPlease use: deadline DESCRIPTION /by DUE TIME");
+            throw NicoException.invalidInput("I could not find a due time.",
+                    "deadline DESCRIPTION /by dd-MM-yyyy HHmm");
         }
         if (parts[0].trim().isEmpty()) {
-            throw new NicoException("\tDescription can't be empty. Please use: deadline DESCRIPTION /by DUE TIME");
+            throw NicoException.invalidInput("A deadline needs a description.",
+                    "deadline DESCRIPTION /by dd-MM-yyyy HHmm");
         }
         if (parts[1].trim().isEmpty()) {
-            throw new NicoException("\tDue time can't be empty. Please use: deadline DESCRIPTION /by DUE TIME");
+            throw NicoException.invalidInput("A deadline needs a due time.",
+                    "deadline DESCRIPTION /by dd-MM-yyyy HHmm");
         }
 
         LocalDateTime dueTime = Parser.parseDateTime(parts[1].trim(), Nico.DATE_TIME_INPUT_FORMAT);

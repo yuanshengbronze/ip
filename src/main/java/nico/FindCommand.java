@@ -19,7 +19,7 @@ public class FindCommand extends ParameterCommand {
     public void execute(List<Task> tasks, Ui ui) throws NicoException {
         String keyword = getParameter();
         if (keyword == null || keyword.trim().isEmpty()) {
-            throw new NicoException("\tPlease use: find KEYWORD");
+            throw NicoException.invalidInput("Enter a keyword to search for.", "find KEYWORD");
         }
 
         List<Task> matchingTasks = findKeywordMatches(tasks, keyword.trim());
