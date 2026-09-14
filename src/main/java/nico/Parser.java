@@ -28,7 +28,7 @@ public final class Parser {
                 return new ListCommand();
             case "urgent":
                 if (argument != null) {
-                    throw new NicoException("Please use: urgent");
+                    throw NicoException.invalidInput("`urgent` does not take extra text.", "urgent");
                 }
                 return new UrgentCommand();
             case "mark":
@@ -50,7 +50,8 @@ public final class Parser {
             case "showpriority":
                 return new ShowPriorityCommand(argument);
             default:
-                throw new NicoException("Sorry, I don't understand what that command means :(");
+                throw NicoException.invalidInput("I don't recognise that command.",
+                        "todo DESCRIPTION, list, mark TASK_NUMBER, or bye");
         }
     }
 
@@ -66,7 +67,8 @@ public final class Parser {
         try {
             return LocalDateTime.parse(input, DateTimeFormatter.ofPattern(format));
         } catch (DateTimeParseException exception) {
-            throw new NicoException(String.format("Please use %s format for date and time!", format), exception);
+            throw new NicoException("Error: The date and time is invalid." + System.lineSeparator()
+                    + "Try: " + format, exception);
         }
     }
 }

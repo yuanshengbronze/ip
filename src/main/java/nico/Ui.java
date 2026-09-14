@@ -16,6 +16,8 @@ import javafx.stage.Stage;
 
 /** Provides the JavaFX user interface and FXML controller for the Nico chatbot. */
 public class Ui extends Application {
+    private static final int MINIMUM_WINDOW_WIDTH = 320;
+    private static final int MINIMUM_WINDOW_HEIGHT = 420;
     @FXML
     private ScrollPane scrollPane;
     @FXML
@@ -59,7 +61,9 @@ public class Ui extends Application {
         }
 
         stage.setTitle("Nico");
-        stage.setResizable(false);
+        stage.setMinWidth(MINIMUM_WINDOW_WIDTH);
+        stage.setMinHeight(MINIMUM_WINDOW_HEIGHT);
+        stage.setResizable(true);
         stage.setScene(new Scene(root));
         stage.show();
 
@@ -68,7 +72,7 @@ public class Ui extends Application {
         } catch (NicoException exception) {
             beginResponse();
             showMessage(exception.getMessage());
-            displayResponse();
+            displayErrorResponse();
         }
         addBotDialog("Hey man! It's Nico, what can I do for you?");
     }
@@ -88,12 +92,13 @@ public class Ui extends Application {
             }
         } catch (NicoException exception) {
             showMessage(exception.getMessage());
-            displayResponse();
+            displayErrorResponse();
         } catch (RuntimeException exception) {
             System.err.println("Unexpected error while processing a command: " + exception.getMessage());
             exception.printStackTrace();
-            showMessage("Sorry, something went wrong while processing that command.");
-            displayResponse();
+            showMessage("Error: Something went wrong while processing that command."
+                    + System.lineSeparator() + "Try again.");
+            displayErrorResponse();
         }
     }
 
@@ -107,6 +112,14 @@ public class Ui extends Application {
         String response = responseBuilder.toString().stripTrailing();
         if (!response.isEmpty()) {
             addBotDialog(response);
+        }
+    }
+
+    /** Adds the collected error response to the conversation in an error-styled dialog. */
+    private void displayErrorResponse() {
+        String response = responseBuilder.toString().stripTrailing();
+        if (!response.isEmpty()) {
+            dialogContainer.getChildren().add(DialogBox.getErrorDialog(response));
         }
     }
 

@@ -25,4 +25,15 @@ public class NicoException extends Exception {
     public NicoException(String message, Throwable cause) {
         super(message, cause);
     }
+
+    /**
+     * Creates a consistently formatted message for invalid user input.
+     *
+     * @param problem concise explanation of what prevented the command from running
+     * @param suggestion command or value the user can enter next
+     * @return exception containing the problem and an actionable suggestion
+     */
+    public static NicoException invalidInput(String problem, String suggestion) {
+        return new NicoException("Error: " + problem + System.lineSeparator() + "Try: " + suggestion);
+    }
 }
