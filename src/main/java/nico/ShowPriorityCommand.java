@@ -23,6 +23,6 @@ public class ShowPriorityCommand extends Command {
                 matchingTasks.add(task);
             }
         }
-        ui.showTaskGroup("Tasks with priority " + priority, matchingTasks);
+        ui.showTaskGroup("These tasks got priority " + priority, matchingTasks);
     }
 }

@@ -11,6 +11,35 @@ java -cp "%REPO_ROOT%\build\classes\java\test;%REPO_ROOT%\build\libs\nico.jar" n
 gradlew.bat testClasses shadowJar
 ```
 
+## Test Case: Singlish task list and deletion
+
+Aim: Verify Nico's Singlish empty list, task counts, list introduction, and deletion response.
+
+```input
+list
+todo buy kopi
+list
+delete 1
+bye
+```
+
+```expected
+Your list empty lah. Add a task to get started!
+---
+Can lah! I've added this task:
+[T][ ] buy kopi
+Now you got 1 task(s) on your list lah.
+---
+Here's your task list lah:
+1. [T][ ] buy kopi
+---
+Can, I've removed this task:
+[T][ ] buy kopi
+Now you got 0 task(s) on your list lah.
+---
+Okay lah, see you again! Take care hor!
+```
+
 ## Test Case: Assign, replace, and filter priorities
 
 Aim: Verify all priorities, multiple matches, completed tasks, and empty results.
@@ -35,32 +64,32 @@ bye
 ---
 [T][ ] book
 ---
-I've set this task's priority to high:
+Can lah, I've set this task's priority to high:
 [T][ ][high] report
 ---
-I've set this task's priority to high:
+Can lah, I've set this task's priority to high:
 [T][ ][high] book
 ---
-Tasks with priority high:
+These tasks got priority high:
 - [T][ ][high] report
 - [T][ ][high] book
 ---
-I've set this task's priority to medium:
+Can lah, I've set this task's priority to medium:
 [T][ ][medium] report
 ---
-Tasks with priority medium: [T][ ][medium] report
+These tasks got priority medium: [T][ ][medium] report
 ---
-I've set this task's priority to low:
+Can lah, I've set this task's priority to low:
 [T][ ][low] report
 ---
-I've marked this task as done:
+Steady lah, this task is done already:
 [T][X][low] report
 ---
-Tasks with priority low: [T][X][low] report
+These tasks got priority low: [T][X][low] report
 ---
-Tasks with priority medium: None
+These tasks got priority medium: Don't have lah
 ---
-Nice seeing you. Until next time!
+Okay lah, see you again! Take care hor!
 ```
 
 ## Test Case: Reject invalid priority commands
@@ -82,37 +111,37 @@ bye
 ```
 
 ```expected
-Error: Choose a task number and priority.
-Try: addpriority TASK_NUMBER PRIORITY
+Aiyoh! Choose a task number and priority.
+Try this lah: addpriority TASK_NUMBER PRIORITY
 ---
-Error: Choose a task number and priority.
-Try: addpriority TASK_NUMBER PRIORITY
+Aiyoh! Choose a task number and priority.
+Try this lah: addpriority TASK_NUMBER PRIORITY
 ---
-Error: Choose a task number and priority.
-Try: addpriority TASK_NUMBER PRIORITY
+Aiyoh! Choose a task number and priority.
+Try this lah: addpriority TASK_NUMBER PRIORITY
 ---
-Error: Priority must be high, medium, or low.
-Try: high, medium, or low
+Aiyoh! Choose high, medium, or low lah.
+Try this lah: high, medium, or low
 ---
-Error: A task number must be a whole number.
-Try: addpriority TASK_NUMBER
+Aiyoh! A task number must be a whole number.
+Try this lah: addpriority TASK_NUMBER
 ---
-Error: That task number is not in the list.
-Try: addpriority TASK_NUMBER
+Aiyoh! That task number is not in the list.
+Try this lah: addpriority TASK_NUMBER
 ---
-Error: That task number is not in the list.
-Try: addpriority TASK_NUMBER
+Aiyoh! That task number is not in the list.
+Try this lah: addpriority TASK_NUMBER
 ---
-Error: Choose a priority to show.
-Try: showpriority PRIORITY
+Aiyoh! Choose a priority to show.
+Try this lah: showpriority PRIORITY
 ---
-Error: Priority must be high, medium, or low.
-Try: high, medium, or low
+Aiyoh! Choose high, medium, or low lah.
+Try this lah: high, medium, or low
 ---
-Error: Priority must be high, medium, or low.
-Try: high, medium, or low
+Aiyoh! Choose high, medium, or low lah.
+Try this lah: high, medium, or low
 ---
-Nice seeing you. Until next time!
+Okay lah, see you again! Take care hor!
 ```
 
 ## Test Case: Find tasks case-insensitively
@@ -127,17 +156,17 @@ bye
 ```
 
 ```expected
-Nice! I've added this task:
+Can lah! I've added this task:
 [T][ ] Borrow Book
 ---
-Nice! I've added this task:
+Can lah! I've added this task:
 [D][ ] return book (by: Aug 25 2026 19:00)
 ---
-Here are the matching tasks in your list:
+Found these matching tasks for you lah:
 - [T][ ] Borrow Book
 - [D][ ] return book (by: Aug 25 2026 19:00)
 ---
-Nice seeing you. Until next time!
+Okay lah, see you again! Take care hor!
 ```
 
 ## Test Case: Find with no matching tasks
@@ -151,12 +180,12 @@ bye
 ```
 
 ```expected
-Nice! I've added this task:
+Can lah! I've added this task:
 [T][ ] borrow book
 ---
-Here are the matching tasks in your list: None
+Found these matching tasks for you lah: Don't have lah
 ---
-Nice seeing you. Until next time!
+Okay lah, see you again! Take care hor!
 ```
 
 ## Test Case: Reject find without keyword
@@ -169,10 +198,10 @@ bye
 ```
 
 ```expected
-Error: Enter a keyword to search for.
-Try: find KEYWORD
+Aiyoh! Enter a keyword to search for.
+Try this lah: find KEYWORD
 ---
-Nice seeing you. Until next time!
+Okay lah, see you again! Take care hor!
 ```
 
 ## Test Case: Reject unknown command
@@ -185,10 +214,10 @@ bye
 ```
 
 ```expected
-Error: I don't recognise that command.
-Try: todo DESCRIPTION, list, mark TASK_NUMBER, or bye
+Aiyoh! I don't recognise that command.
+Try this lah: todo DESCRIPTION, list, mark TASK_NUMBER, or bye
 ---
-Nice seeing you. Until next time!
+Okay lah, see you again! Take care hor!
 ```
 
 ## Test Case: Add a todo task
@@ -201,10 +230,10 @@ bye
 ```
 
 ```expected
-Nice! I've added this task:
+Can lah! I've added this task:
 [T][ ] borrow book
 ---
-Nice seeing you. Until next time!
+Okay lah, see you again! Take care hor!
 ```
 
 ## Test Case: Add a deadline task
@@ -217,10 +246,10 @@ bye
 ```
 
 ```expected
-Nice! I've added this task:
+Can lah! I've added this task:
 [D][ ] return book (by: Aug 25 2026 19:00)
 ---
-Nice seeing you. Until next time!
+Okay lah, see you again! Take care hor!
 ```
 
 ## Test Case: Add an event task
@@ -233,10 +262,10 @@ bye
 ```
 
 ```expected
-Nice! I've added this task:
+Can lah! I've added this task:
 [E][ ] project meeting (from: Aug 25 2026 14:00 to: Aug 25 2026 16:00)
 ---
-Nice seeing you. Until next time!
+Okay lah, see you again! Take care hor!
 ```
 
 ## Test Case: List mixed task types
@@ -252,20 +281,20 @@ bye
 ```
 
 ```expected
-Nice! I've added this task:
+Can lah! I've added this task:
 [T][ ] borrow book
 ---
-Nice! I've added this task:
+Can lah! I've added this task:
 [D][ ] submit report (by: Aug 25 2026 23:00)
 ---
-Nice! I've added this task:
+Can lah! I've added this task:
 [E][ ] project meeting (from: Aug 25 2026 14:00 to: Aug 25 2026 16:00)
 ---
 1. [T][ ] borrow book
 2. [D][ ] submit report (by: Aug 25 2026 23:00)
 3. [E][ ] project meeting (from: Aug 25 2026 14:00 to: Aug 25 2026 16:00)
 ---
-Nice seeing you. Until next time!
+Okay lah, see you again! Take care hor!
 ```
 
 ## Test Case: Show urgent event and deadline
@@ -284,28 +313,28 @@ bye
 ```
 
 ```expected
-Nice! I've added this task:
+Can lah! I've added this task:
 [E][ ] later meeting (from: Aug 30 2026 10:00 to: Aug 30 2026 11:00)
 ---
-Nice! I've added this task:
+Can lah! I've added this task:
 [D][ ] later report (by: Aug 30 2026 23:59)
 ---
-Nice! I've added this task:
+Can lah! I've added this task:
 [E][ ] standup (from: Aug 25 2026 09:00 to: Aug 25 2026 09:30)
 ---
-Nice! I've added this task:
+Can lah! I've added this task:
 [D][ ] submit draft (by: Aug 26 2026 23:59)
 ---
-I've marked this task as done:
+Steady lah, this task is done already:
 [E][X] standup (from: Aug 25 2026 09:00 to: Aug 25 2026 09:30)
 ---
-I've marked this task as done:
+Steady lah, this task is done already:
 [D][X] submit draft (by: Aug 26 2026 23:59)
 ---
-Most urgent event: [E][ ] later meeting (from: Aug 30 2026 10:00 to: Aug 30 2026 11:00)
-Most urgent deadline: [D][ ] later report (by: Aug 30 2026 23:59)
+Event to settle first hor: [E][ ] later meeting (from: Aug 30 2026 10:00 to: Aug 30 2026 11:00)
+Deadline to settle first hor: [D][ ] later report (by: Aug 30 2026 23:59)
 ---
-Nice seeing you. Until next time!
+Okay lah, see you again! Take care hor!
 ```
 
 ## Test Case: Show urgent with missing task types
@@ -319,13 +348,13 @@ bye
 ```
 
 ```expected
-Nice! I've added this task:
+Can lah! I've added this task:
 [T][ ] borrow book
 ---
-Most urgent event: None
-Most urgent deadline: None
+Event to settle first hor: Don't have lah
+Deadline to settle first hor: Don't have lah
 ---
-Nice seeing you. Until next time!
+Okay lah, see you again! Take care hor!
 ```
 
 ## Test Case: Show tied urgent tasks as bullets
@@ -344,32 +373,32 @@ bye
 ```
 
 ```expected
-Nice! I've added this task:
+Can lah! I've added this task:
 [E][ ] demo (from: Aug 25 2026 09:00 to: Aug 25 2026 10:00)
 ---
-Nice! I've added this task:
+Can lah! I've added this task:
 [E][ ] interview (from: Aug 25 2026 09:00 to: Aug 25 2026 09:30)
 ---
-Nice! I've added this task:
+Can lah! I've added this task:
 [E][ ] later meeting (from: Aug 30 2026 10:00 to: Aug 30 2026 11:00)
 ---
-Nice! I've added this task:
+Can lah! I've added this task:
 [D][ ] draft (by: Aug 26 2026 23:59)
 ---
-Nice! I've added this task:
+Can lah! I've added this task:
 [D][ ] slides (by: Aug 26 2026 23:59)
 ---
-Nice! I've added this task:
+Can lah! I've added this task:
 [D][ ] final report (by: Aug 30 2026 23:59)
 ---
-Most urgent event:
+Event to settle first hor:
 - [E][ ] demo (from: Aug 25 2026 09:00 to: Aug 25 2026 10:00)
 - [E][ ] interview (from: Aug 25 2026 09:00 to: Aug 25 2026 09:30)
-Most urgent deadline:
+Deadline to settle first hor:
 - [D][ ] draft (by: Aug 26 2026 23:59)
 - [D][ ] slides (by: Aug 26 2026 23:59)
 ---
-Nice seeing you. Until next time!
+Okay lah, see you again! Take care hor!
 ```
 
 ## Test Case: Reject urgent arguments
@@ -382,10 +411,10 @@ bye
 ```
 
 ```expected
-Error: `urgent` does not take extra text.
-Try: urgent
+Aiyoh! `urgent` does not take extra text.
+Try this lah: urgent
 ---
-Nice seeing you. Until next time!
+Okay lah, see you again! Take care hor!
 ```
 
 ## Test Case: Mark a task as done
@@ -399,13 +428,13 @@ bye
 ```
 
 ```expected
-Nice! I've added this task:
+Can lah! I've added this task:
 [T][ ] borrow book
 ---
-I've marked this task as done:
+Steady lah, this task is done already:
 [T][X] borrow book
 ---
-Nice seeing you. Until next time!
+Okay lah, see you again! Take care hor!
 ```
 
 ## Test Case: Unmark a task as not done
@@ -420,16 +449,16 @@ bye
 ```
 
 ```expected
-Nice! I've added this task:
+Can lah! I've added this task:
 [T][ ] borrow book
 ---
-I've marked this task as done:
+Steady lah, this task is done already:
 [T][X] borrow book
 ---
-I've marked this task as not done:
+Okay lah, this task not done yet:
 [T][ ] borrow book
 ---
-Nice seeing you. Until next time!
+Okay lah, see you again! Take care hor!
 ```
 
 ## Test Case: Reject invalid mark index
@@ -443,13 +472,13 @@ bye
 ```
 
 ```expected
-Nice! I've added this task:
+Can lah! I've added this task:
 [T][ ] borrow book
 ---
-Error: That task number is not in the list.
-Try: mark TASK_NUMBER
+Aiyoh! That task number is not in the list.
+Try this lah: mark TASK_NUMBER
 ---
-Nice seeing you. Until next time!
+Okay lah, see you again! Take care hor!
 ```
 
 ## Test Case: Reject non-numeric task number
@@ -462,10 +491,10 @@ bye
 ```
 
 ```expected
-Error: A task number must be a whole number.
-Try: mark TASK_NUMBER
+Aiyoh! A task number must be a whole number.
+Try this lah: mark TASK_NUMBER
 ---
-Nice seeing you. Until next time!
+Okay lah, see you again! Take care hor!
 ```
 
 ## Test Case: Reject malformed deadline
@@ -478,10 +507,10 @@ bye
 ```
 
 ```expected
-Error: I could not find a due time.
-Try: deadline DESCRIPTION /by dd-MM-yyyy HHmm
+Aiyoh! I could not find a due time.
+Try this lah: deadline DESCRIPTION /by dd-MM-yyyy HHmm
 ---
-Nice seeing you. Until next time!
+Okay lah, see you again! Take care hor!
 ```
 
 ## Test Case: Reject malformed event
@@ -494,10 +523,10 @@ bye
 ```
 
 ```expected
-Error: I could not find both event times.
-Try: event DESCRIPTION /from dd-MM-yyyy HHmm /to dd-MM-yyyy HHmm
+Aiyoh! I could not find both event times.
+Try this lah: event DESCRIPTION /from dd-MM-yyyy HHmm /to dd-MM-yyyy HHmm
 ---
-Nice seeing you. Until next time!
+Okay lah, see you again! Take care hor!
 ```
 
 ## Test Case: Reject invalid deadline date-time
@@ -510,10 +539,10 @@ bye
 ```
 
 ```expected
-Error: The date and time is invalid.
-Try: dd-MM-yyyy HHmm
+Aiyoh! The date and time is invalid.
+Try this lah: dd-MM-yyyy HHmm
 ---
-Nice seeing you. Until next time!
+Okay lah, see you again! Take care hor!
 ```
 
 ## Test Case: Reject invalid event date-times
@@ -526,10 +555,10 @@ bye
 ```
 
 ```expected
-Error: The date and time is invalid.
-Try: dd-MM-yyyy HHmm
+Aiyoh! The date and time is invalid.
+Try this lah: dd-MM-yyyy HHmm
 ---
-Nice seeing you. Until next time!
+Okay lah, see you again! Take care hor!
 ```
 
 ## Test Case: Reject empty todo description
@@ -542,10 +571,10 @@ bye
 ```
 
 ```expected
-Error: A to-do needs a description.
-Try: todo DESCRIPTION
+Aiyoh! A to-do needs a description.
+Try this lah: todo DESCRIPTION
 ---
-Nice seeing you. Until next time!
+Okay lah, see you again! Take care hor!
 ```
 
 ## Test Case: Reject empty deadline description
@@ -558,10 +587,10 @@ bye
 ```
 
 ```expected
-Error: A deadline needs a description and due time.
-Try: deadline DESCRIPTION /by dd-MM-yyyy HHmm
+Aiyoh! A deadline needs a description and due time.
+Try this lah: deadline DESCRIPTION /by dd-MM-yyyy HHmm
 ---
-Nice seeing you. Until next time!
+Okay lah, see you again! Take care hor!
 ```
 
 ## Test Case: Reject empty event description
@@ -574,10 +603,10 @@ bye
 ```
 
 ```expected
-Error: An event needs a description.
-Try: event DESCRIPTION /from dd-MM-yyyy HHmm /to dd-MM-yyyy HHmm
+Aiyoh! An event needs a description.
+Try this lah: event DESCRIPTION /from dd-MM-yyyy HHmm /to dd-MM-yyyy HHmm
 ---
-Nice seeing you. Until next time!
+Okay lah, see you again! Take care hor!
 ```
 
 ## Test Case: Reject empty event start time
@@ -590,10 +619,10 @@ bye
 ```
 
 ```expected
-Error: An event needs both a start time and an end time.
-Try: event DESCRIPTION /from dd-MM-yyyy HHmm /to dd-MM-yyyy HHmm
+Aiyoh! An event needs both a start time and an end time.
+Try this lah: event DESCRIPTION /from dd-MM-yyyy HHmm /to dd-MM-yyyy HHmm
 ---
-Nice seeing you. Until next time!
+Okay lah, see you again! Take care hor!
 ```
 
 ## Test Case: Reject empty event end time
@@ -606,8 +635,8 @@ bye
 ```
 
 ```expected
-Error: An event needs both a start time and an end time.
-Try: event DESCRIPTION /from dd-MM-yyyy HHmm /to dd-MM-yyyy HHmm
+Aiyoh! An event needs both a start time and an end time.
+Try this lah: event DESCRIPTION /from dd-MM-yyyy HHmm /to dd-MM-yyyy HHmm
 ---
-Nice seeing you. Until next time!
+Okay lah, see you again! Take care hor!
 ```

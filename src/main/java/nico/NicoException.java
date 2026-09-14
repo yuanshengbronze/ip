@@ -34,6 +34,6 @@ public class NicoException extends Exception {
      * @return exception containing the problem and an actionable suggestion
      */
     public static NicoException invalidInput(String problem, String suggestion) {
-        return new NicoException("Error: " + problem + System.lineSeparator() + "Try: " + suggestion);
+        return new NicoException("Aiyoh! " + problem + System.lineSeparator() + "Try this lah: " + suggestion);
     }
 }

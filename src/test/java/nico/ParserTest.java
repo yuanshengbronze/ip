@@ -31,31 +31,31 @@ class ParserTest {
     void parseCommand_emptyCommand_nicoExceptionThrown() {
         NicoException exception = assertThrows(NicoException.class, () -> Parser.parseCommand(""));
 
-        assertEquals("Error: I don't recognise that command." + System.lineSeparator()
-                + "Try: todo DESCRIPTION, list, mark TASK_NUMBER, or bye", exception.getMessage());
+        assertEquals("Aiyoh! I don't recognise that command." + System.lineSeparator()
+                + "Try this lah: todo DESCRIPTION, list, mark TASK_NUMBER, or bye", exception.getMessage());
     }
 
     @Test
     void parseCommand_whitespaceCommand_nicoExceptionThrown() {
         NicoException exception = assertThrows(NicoException.class, () -> Parser.parseCommand("   "));
 
-        assertEquals("Error: I don't recognise that command." + System.lineSeparator()
-                + "Try: todo DESCRIPTION, list, mark TASK_NUMBER, or bye", exception.getMessage());
+        assertEquals("Aiyoh! I don't recognise that command." + System.lineSeparator()
+                + "Try this lah: todo DESCRIPTION, list, mark TASK_NUMBER, or bye", exception.getMessage());
     }
 
     @Test
     void parseCommand_unknownCommand_nicoExceptionThrown() {
         NicoException exception = assertThrows(NicoException.class, () -> Parser.parseCommand("foo"));
 
-        assertEquals("Error: I don't recognise that command." + System.lineSeparator()
-                + "Try: todo DESCRIPTION, list, mark TASK_NUMBER, or bye", exception.getMessage());
+        assertEquals("Aiyoh! I don't recognise that command." + System.lineSeparator()
+                + "Try this lah: todo DESCRIPTION, list, mark TASK_NUMBER, or bye", exception.getMessage());
     }
 
     @Test
     void parseCommand_urgentWithArgument_nicoExceptionThrown() {
         NicoException exception = assertThrows(NicoException.class, () -> Parser.parseCommand("urgent now"));
 
-        assertEquals("Error: `urgent` does not take extra text." + System.lineSeparator() + "Try: urgent",
+        assertEquals("Aiyoh! `urgent` does not take extra text." + System.lineSeparator() + "Try this lah: urgent",
                 exception.getMessage());
     }
 
@@ -71,7 +71,7 @@ class ParserTest {
         NicoException exception = assertThrows(NicoException.class, () ->
                 Parser.parseDateTime("Sunday", Nico.DATE_TIME_INPUT_FORMAT));
 
-        assertEquals("Error: The date and time is invalid." + System.lineSeparator() + "Try: dd-MM-yyyy HHmm",
+        assertEquals("Aiyoh! The date and time is invalid." + System.lineSeparator() + "Try this lah: dd-MM-yyyy HHmm",
                 exception.getMessage());
     }
 }

@@ -84,7 +84,7 @@ class TaskStorageTest {
 
         NicoException exception = assertThrows(NicoException.class, () -> TaskStorage.readTasks(filePath));
 
-        assertEquals("Sorry, tasks.txt contains a task I could not understand.", exception.getMessage());
+        assertEquals("Aiyoh, got a task in tasks.txt I cannot understand.", exception.getMessage());
     }
 
     @Test
@@ -127,6 +127,6 @@ class TaskStorageTest {
         NicoException exception = assertThrows(NicoException.class, () ->
                 TaskStorage.writeTask(temporaryDirectory, new Todo("read book")));
 
-        assertEquals("Sorry, I could not save this task to tasks.txt.", exception.getMessage());
+        assertEquals("Aiyoh, cannot save this task to tasks.txt.", exception.getMessage());
     }
 }
