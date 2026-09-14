@@ -23,7 +23,7 @@ public class FindCommand extends ParameterCommand {
         }
 
         List<Task> matchingTasks = findKeywordMatches(tasks, keyword.trim());
-        ui.showTaskGroup("Here are the matching tasks in your list", matchingTasks);
+        ui.showTaskGroup("Found these matching tasks for you lah", matchingTasks);
     }
 
     /**

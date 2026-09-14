@@ -67,8 +67,8 @@ public final class Parser {
         try {
             return LocalDateTime.parse(input, DateTimeFormatter.ofPattern(format));
         } catch (DateTimeParseException exception) {
-            throw new NicoException("Error: The date and time is invalid." + System.lineSeparator()
-                    + "Try: " + format, exception);
+            throw new NicoException("Aiyoh! The date and time is invalid." + System.lineSeparator()
+                    + "Try this lah: " + format, exception);
         }
     }
 }

@@ -36,7 +36,7 @@ public class AddPriorityCommand extends TaskNumberCommand {
             task.setPriority(previousPriority);
             throw exception;
         }
-        ui.showMessage("I've set this task's priority to " + priority + ":");
+        ui.showMessage("Can lah, I've set this task's priority to " + priority + ":");
         ui.showMessage(task.toString());
     }
 }

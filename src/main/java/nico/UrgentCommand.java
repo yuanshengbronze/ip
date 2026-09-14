@@ -18,8 +18,8 @@ public class UrgentCommand extends Command {
     public void execute(List<Task> tasks, Ui ui) {
         List<Event> closestEvents = findClosestEvents(tasks);
         List<Deadline> closestDeadlines = findClosestDeadlines(tasks);
-        ui.showTaskGroup("Most urgent event", closestEvents);
-        ui.showTaskGroup("Most urgent deadline", closestDeadlines);
+        ui.showTaskGroup("Event to settle first hor", closestEvents);
+        ui.showTaskGroup("Deadline to settle first hor", closestDeadlines);
     }
 
     /**

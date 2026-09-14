@@ -42,9 +42,9 @@ public final class TaskStorage {
             createTasksFile(filePath);
             return parseTaskRecords(Files.readAllLines(filePath));
         } catch (IOException exception) {
-            throw new NicoException("Sorry, I could not load tasks.txt.", exception);
+            throw new NicoException("Aiyoh, cannot load tasks.txt.", exception);
         } catch (IllegalArgumentException | StringIndexOutOfBoundsException exception) {
-            throw new NicoException("Sorry, tasks.txt contains a task I could not understand.", exception);
+            throw new NicoException("Aiyoh, got a task in tasks.txt I cannot understand.", exception);
         }
     }
 
@@ -140,7 +140,7 @@ public final class TaskStorage {
             assert Files.exists(filePath) : "the task file must exist before a task is written";
             Files.writeString(filePath, task + System.lineSeparator(), StandardOpenOption.APPEND);
         } catch (IOException exception) {
-            throw new NicoException("Sorry, I could not save this task to tasks.txt.", exception);
+            throw new NicoException("Aiyoh, cannot save this task to tasks.txt.", exception);
         }
     }
 
@@ -161,7 +161,7 @@ public final class TaskStorage {
             }
             Files.writeString(filePath, savedTasks.toString(), StandardOpenOption.TRUNCATE_EXISTING);
         } catch (IOException exception) {
-            throw new NicoException("Sorry, I could not update tasks.txt.", exception);
+            throw new NicoException("Aiyoh, cannot update tasks.txt.", exception);
         }
     }
 

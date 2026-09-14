@@ -74,7 +74,7 @@ public class Ui extends Application {
             showMessage(exception.getMessage());
             displayErrorResponse();
         }
-        addBotDialog("Hey man! It's Nico, what can I do for you?");
+        addBotDialog("Eh hello! I'm Nico, your task kaki. What you need help with today?");
     }
 
     /** Executes the current input and renders either its response or its error. */
@@ -96,8 +96,8 @@ public class Ui extends Application {
         } catch (RuntimeException exception) {
             System.err.println("Unexpected error while processing a command: " + exception.getMessage());
             exception.printStackTrace();
-            showMessage("Error: Something went wrong while processing that command."
-                    + System.lineSeparator() + "Try again.");
+            showMessage("Aiyoh! Something went wrong with that command lah."
+                    + System.lineSeparator() + "Try again can?");
             displayErrorResponse();
         }
     }
@@ -138,7 +138,7 @@ public class Ui extends Application {
 
     /** Shows the farewell message before the application closes. */
     public void showGoodbye() {
-        appendLine("Nice seeing you. Until next time!");
+        appendLine("Okay lah, see you again! Take care hor!");
     }
 
     /** Shows an error or informational message from the chatbot. */
@@ -148,6 +148,8 @@ public class Ui extends Application {
 
     /** Shows all tasks with their one-based list numbers. */
     public void showTaskList(List<Task> tasks) {
+        appendLine(tasks.isEmpty() ? "Your list empty lah. Add a task to get started!"
+                : "Here's your task list lah:");
         for (int i = 0; i < tasks.size(); i++) {
             appendLine(String.format("%d. %s", i + 1, tasks.get(i)));
         }
@@ -155,34 +157,34 @@ public class Ui extends Application {
 
     /** Shows the confirmation after a task is added. */
     public void showTaskAdded(Task task, int taskCount) {
-        appendLine("Nice! I've added this task:");
+        appendLine("Can lah! I've added this task:");
         appendLine(task.toString());
-        appendLine("Now you have " + taskCount + " tasks.");
+        appendLine("Now you got " + taskCount + " task(s) on your list lah.");
     }
 
     /** Shows the confirmation after a task is marked as done. */
     public void showTaskMarkedDone(Task task) {
-        appendLine("I've marked this task as done:");
+        appendLine("Steady lah, this task is done already:");
         appendLine(task.toString());
     }
 
     /** Shows the confirmation after a task is marked as not done. */
     public void showTaskMarkedNotDone(Task task) {
-        appendLine("I've marked this task as not done:");
+        appendLine("Okay lah, this task not done yet:");
         appendLine(task.toString());
     }
 
     /** Shows the confirmation after a task is removed. */
     public void showTaskRemoved(Task task, int taskCount) {
-        appendLine("I've removed this task");
+        appendLine("Can, I've removed this task:");
         appendLine(task.toString());
-        appendLine("Now you have " + taskCount + " tasks.");
+        appendLine("Now you got " + taskCount + " task(s) on your list lah.");
     }
 
     /** Shows one task or all tasks tied for the requested group. */
     public void showTaskGroup(String label, List<? extends Task> tasks) {
         if (tasks.isEmpty()) {
-            appendLine(label + ": None");
+            appendLine(label + ": Don't have lah");
         } else if (tasks.size() == 1) {
             appendLine(label + ": " + tasks.getFirst());
         } else {
