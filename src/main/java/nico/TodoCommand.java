@@ -16,8 +16,8 @@ public class TodoCommand extends ParameterCommand {
     /**
      * Validates the supplied description, adds a todo task, and saves it.
      *
-     * @param tasks tasks currently managed by the chatbot
-     * @param ui user interface used to display confirmation
+     * @param tasks tasks currently managed by the chatbot.
+     * @param ui user interface used to display confirmation.
      * @throws NicoException if the description is empty or the task cannot be saved
      */
     @Override

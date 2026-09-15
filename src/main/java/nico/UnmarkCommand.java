@@ -16,8 +16,8 @@ public class UnmarkCommand extends TaskNumberCommand {
     /**
      * Marks the requested task as incomplete and saves the updated task list.
      *
-     * @param tasks tasks currently managed by the chatbot
-     * @param ui user interface used to display confirmation
+     * @param tasks tasks currently managed by the chatbot.
+     * @param ui user interface used to display confirmation.
      * @throws NicoException if the task number is invalid or the updated list cannot be saved
      */
     @Override

@@ -3,12 +3,16 @@ package nico;
 import java.lang.reflect.Field;
 import java.util.Scanner;
 
-/** Runs the actual command and response code through stdin for scripted UI tests. */
+/**
+ * Runs the actual command and response code through stdin for scripted UI tests.
+ */
 public final class ConsoleTestAdapter {
     private ConsoleTestAdapter() {
     }
 
-    /** Runs commands without starting the JavaFX window. */
+    /**
+     * Runs commands without starting the JavaFX window.
+     */
     public static void main(String[] args) throws ReflectiveOperationException, NicoException {
         Nico nico = new Nico();
         Ui ui = new Ui();

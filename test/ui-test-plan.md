@@ -587,7 +587,7 @@ bye
 ```
 
 ```expected
-Aiyoh! A deadline needs a description and due time.
+Aiyoh! A deadline needs a description.
 Try this lah: deadline DESCRIPTION /by dd-MM-yyyy HHmm
 ---
 Okay lah, see you again! Take care hor!

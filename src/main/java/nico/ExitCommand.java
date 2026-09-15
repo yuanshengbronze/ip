@@ -9,8 +9,8 @@ public class ExitCommand extends Command {
     /**
      * Displays the chatbot farewell message.
      *
-     * @param tasks tasks currently managed by the chatbot; not changed by this command
-     * @param ui user interface used to display the farewell
+     * @param tasks tasks currently managed by the chatbot; not changed by this command.
+     * @param ui user interface used to display the farewell.
      */
     @Override
     public void execute(List<Task> tasks, Ui ui) {

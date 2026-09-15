@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-/** Finds tasks whose descriptions contain a given keyword. */
+/**
+ * Finds tasks whose descriptions contain a given keyword.
+ */
 public class FindCommand extends ParameterCommand {
     /**
      * Creates a command that finds tasks with the given keyword.

@@ -5,7 +5,9 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Coordinates Nico's task list, storage, and command execution. */
+/**
+ * Coordinates Nico's task list, storage, and command execution.
+ */
 public class Nico {
     public static final Path FILE_PATH = Paths.get("data", "tasks.txt");
     public static final String DATE_TIME_INPUT_FORMAT = "dd-MM-yyyy HHmm";
@@ -27,8 +29,8 @@ public class Nico {
     /**
      * Executes one user command against this chatbot's persistent task list.
      *
-     * @param inputText command text entered by the user
-     * @param ui user interface used to display command output
+     * @param inputText command text entered by the user.
+     * @param ui user interface used to display command output.
      * @return whether the command requests that the application exit
      * @throws NicoException if the command cannot be parsed or executed
      */

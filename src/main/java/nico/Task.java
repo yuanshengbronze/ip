@@ -6,7 +6,9 @@ import java.time.format.DateTimeFormatter;
  * Represents a task with a description and completion status.
  */
 public class Task {
-    /** Date-time format shared by task display and saved task records. */
+    /**
+     * Date-time format shared by task display and saved task records.
+     */
     static final DateTimeFormatter DATE_TIME_FORMATTER =
             DateTimeFormatter.ofPattern("MMM dd yyyy HH:mm");
 
@@ -15,7 +17,10 @@ public class Task {
 
     private final String description;
     private boolean isDone;
-    /** Null until the user assigns a priority. */
+
+    /**
+     * Null until the user assigns a priority.
+     */
     private Priority priority;
 
     /**
@@ -28,12 +33,16 @@ public class Task {
         this.isDone = false;
     }
 
-    /** Marks this task as complete. */
+    /**
+     * Marks this task as complete.
+     */
     public void markAsDone() {
         this.isDone = true;
     }
 
-    /** Marks this task as incomplete. */
+    /**
+     * Marks this task as incomplete.
+     */
     public void markAsNotDone() {
         this.isDone = false;
     }
@@ -54,18 +63,24 @@ public class Task {
         return description;
     }
 
-    /** Returns the display marker for this task's completion status. */
+    /**
+     * Returns the display marker for this task's completion status.
+     */
     protected String getStatusMarker() {
         String status = isDone ? DONE_STATUS : NOT_DONE_STATUS;
         return priority == null ? status : status + "[" + priority + "]";
     }
 
-    /** Returns the assigned priority, or null if none has been assigned. */
+    /**
+     * Returns the assigned priority, or null if none has been assigned.
+     */
     public Priority getPriority() {
         return priority;
     }
 
-    /** Sets the priority; null restores the unassigned state. */
+    /**
+     * Sets the priority; null restores the unassigned state.
+     */
     public void setPriority(Priority priority) {
         this.priority = priority;
     }

@@ -3,11 +3,15 @@ package nico;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Shows all tasks with the requested priority, including completed tasks. */
+/**
+ * Shows all tasks with the requested priority, including completed tasks.
+ */
 public class ShowPriorityCommand extends Command {
     private final Priority priority;
 
-    /** Creates a filter for the given priority. */
+    /**
+     * Creates a filter for the given priority.
+     */
     public ShowPriorityCommand(String argument) throws NicoException {
         if (argument == null || argument.isBlank()) {
             throw NicoException.invalidInput("Choose a priority to show.", "showpriority PRIORITY");

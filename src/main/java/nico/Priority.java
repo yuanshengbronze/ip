@@ -2,7 +2,9 @@ package nico;
 
 import java.util.Locale;
 
-/** The three priorities that can be assigned to a task. */
+/**
+ * The three priorities that can be assigned to a task.
+ */
 public enum Priority {
     HIGH, MEDIUM, LOW;
 

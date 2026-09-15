@@ -9,7 +9,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
 
-/** Represents one message displayed in the conversation. */
+/**
+ * Represents one message displayed in the conversation.
+ */
 public class DialogBox extends HBox {
     private static final double MAX_BUBBLE_WIDTH_RATIO = 0.72;
     private static final int BUBBLE_HORIZONTAL_INSET = 32;
@@ -21,7 +23,9 @@ public class DialogBox extends HBox {
     private static final Image NICO_PROFILE_IMAGE = new Image(
             DialogBox.class.getResourceAsStream("/images/andremsdesign-robot-8449206.jpg"));
 
-    /** Creates a dialog box containing the supplied message. */
+    /**
+     * Creates a dialog box containing the supplied message.
+     */
     public DialogBox(String message) {
         Label text = new Label(message);
         text.setWrapText(true);
@@ -32,13 +36,17 @@ public class DialogBox extends HBox {
         this.getChildren().add(text);
     }
 
-    /** Adds Nico's profile picture and aligns the dialog box on the left. */
+    /**
+     * Adds Nico's profile picture and aligns the dialog box on the left.
+     */
     private void showAsNicoDialog() {
         getChildren().add(0, createNicoProfilePicture());
         setAlignment(Pos.TOP_LEFT);
     }
 
-    /** Creates a circular crop that keeps Nico's face recognizable at chat-avatar size. */
+    /**
+     * Creates a circular crop that keeps Nico's face recognizable at chat-avatar size.
+     */
     private StackPane createNicoProfilePicture() {
         double cropSize = NICO_PROFILE_IMAGE.getWidth() * PROFILE_CROP_SIZE_RATIO;
         ImageView profilePicture = new ImageView(NICO_PROFILE_IMAGE);
@@ -63,7 +71,9 @@ public class DialogBox extends HBox {
         return profileFrame;
     }
 
-    /** Creates a right-aligned dialog box for a user message. */
+    /**
+     * Creates a right-aligned dialog box for a user message.
+     */
     public static DialogBox getUserDialog(String message) {
         DialogBox dialogBox = new DialogBox(message);
         dialogBox.setAlignment(Pos.TOP_RIGHT);
@@ -71,7 +81,9 @@ public class DialogBox extends HBox {
         return dialogBox;
     }
 
-    /** Creates a left-aligned dialog box for a Nico message. */
+    /**
+     * Creates a left-aligned dialog box for a Nico message.
+     */
     public static DialogBox getNicoDialog(String message) {
         DialogBox dialogBox = new DialogBox(message);
         dialogBox.showAsNicoDialog();
@@ -79,7 +91,9 @@ public class DialogBox extends HBox {
         return dialogBox;
     }
 
-    /** Creates a left-aligned, visually distinct dialog box for an error message. */
+    /**
+     * Creates a left-aligned, visually distinct dialog box for an error message.
+     */
     public static DialogBox getErrorDialog(String message) {
         DialogBox dialogBox = new DialogBox(message);
         dialogBox.showAsNicoDialog();

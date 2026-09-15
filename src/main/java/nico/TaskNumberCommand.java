@@ -9,8 +9,8 @@ public abstract class TaskNumberCommand extends ParameterCommand {
     /**
      * Creates a command that operates on a task number.
      *
-     * @param commandWord word that identifies this command in error messages
-     * @param taskNumberText user-entered one-based task number
+     * @param commandWord word that identifies this command in error messages.
+     * @param taskNumberText user-entered one-based task number.
      */
     protected TaskNumberCommand(String commandWord, String taskNumberText) {
         super(commandWord, taskNumberText);
@@ -19,7 +19,7 @@ public abstract class TaskNumberCommand extends ParameterCommand {
     /**
      * Returns the requested task after validating its one-based list number.
      *
-     * @param tasks tasks currently managed by the chatbot
+     * @param tasks tasks currently managed by the chatbot.
      * @return task identified by the supplied one-based task number
      * @throws NicoException if the task number is missing, non-numeric, or outside the list
      */

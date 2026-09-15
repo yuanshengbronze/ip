@@ -33,7 +33,7 @@ public final class TaskStorage {
     /**
      * Reads all tasks from the data file, creating an empty file if necessary.
      *
-     * @param filePath path to the task data file
+     * @param filePath path to the task data file.
      * @return tasks represented by the saved records
      * @throws NicoException if the task file cannot be read or contains an invalid record
      */

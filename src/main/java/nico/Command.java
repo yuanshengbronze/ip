@@ -14,6 +14,7 @@ public abstract class Command {
      * @throws NicoException If the command cannot be completed.
      */
     public abstract void execute(List<Task> tasks, Ui ui) throws NicoException;
+
     /**
      * Returns whether this command should exit the chatbot.
      */

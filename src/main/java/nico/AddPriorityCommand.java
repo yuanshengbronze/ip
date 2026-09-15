@@ -2,11 +2,15 @@ package nico;
 
 import java.util.List;
 
-/** Assigns or replaces a task's priority and saves the change. */
+/**
+ * Assigns or replaces a task's priority and saves the change.
+ */
 public class AddPriorityCommand extends TaskNumberCommand {
     private final Priority priority;
 
-    /** Creates a priority command from a task number and priority value. */
+    /**
+     * Creates a priority command from a task number and priority value.
+     */
     public AddPriorityCommand(String argument) throws NicoException {
         this(splitArgument(argument));
     }

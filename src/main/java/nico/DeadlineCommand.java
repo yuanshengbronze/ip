@@ -17,8 +17,8 @@ public class DeadlineCommand extends ParameterCommand {
     /**
      * Validates the supplied details, adds a deadline task, and saves it.
      *
-     * @param tasks tasks currently managed by the chatbot
-     * @param ui user interface used to display confirmation
+     * @param tasks tasks currently managed by the chatbot.
+     * @param ui user interface used to display confirmation.
      * @throws NicoException if the description or due time is invalid
      */
     @Override

@@ -11,8 +11,8 @@ public class UrgentCommand extends Command {
     /**
      * Displays the incomplete events and deadlines with the earliest date-time values.
      *
-     * @param tasks tasks currently managed by the chatbot
-     * @param ui user interface used to display urgent task groups
+     * @param tasks tasks currently managed by the chatbot.
+     * @param ui user interface used to display urgent task groups.
      */
     @Override
     public void execute(List<Task> tasks, Ui ui) {
@@ -25,7 +25,7 @@ public class UrgentCommand extends Command {
     /**
      * Finds all incomplete events that share the earliest start time among all saved tasks.
      *
-     * @param tasks tasks to examine
+     * @param tasks tasks to examine.
      * @return all incomplete events with the earliest start time
      */
     private List<Event> findClosestEvents(List<Task> tasks) {
@@ -54,7 +54,7 @@ public class UrgentCommand extends Command {
     /**
      * Finds all incomplete deadlines that share the earliest due time among all saved tasks.
      *
-     * @param tasks tasks to examine
+     * @param tasks tasks to examine.
      * @return all incomplete deadlines with the earliest due time
      */
     private List<Deadline> findClosestDeadlines(List<Task> tasks) {

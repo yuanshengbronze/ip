@@ -1,8 +1,12 @@
 package nico;
 
-/** Represents an error caused by invalid user input or task storage. */
+/**
+ * Represents an error caused by invalid user input or task storage.
+ */
 public class NicoException extends Exception {
-    /** Creates an exception without a detail message. */
+    /**
+     * Creates an exception without a detail message.
+     */
     public NicoException() {
         super();
     }
@@ -19,8 +23,8 @@ public class NicoException extends Exception {
     /**
      * Creates an exception with a user-facing message and its underlying cause.
      *
-     * @param message detail message for the user
-     * @param cause underlying failure that caused this exception
+     * @param message detail message for the user.
+     * @param cause underlying failure that caused this exception.
      */
     public NicoException(String message, Throwable cause) {
         super(message, cause);
@@ -29,8 +33,8 @@ public class NicoException extends Exception {
     /**
      * Creates a consistently formatted message for invalid user input.
      *
-     * @param problem concise explanation of what prevented the command from running
-     * @param suggestion command or value the user can enter next
+     * @param problem concise explanation of what prevented the command from running.
+     * @param suggestion command or value the user can enter next.
      * @return exception containing the problem and an actionable suggestion
      */
     public static NicoException invalidInput(String problem, String suggestion) {
